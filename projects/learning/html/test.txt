@@ -1,0 +1,269 @@
+paragraph:
+<p>
+<hr>horizontal rule
+<br>line break
+<pre>preformatted text, poem like
+
+style attribute:
+<'any element' style="background-color:blue;color:blue;font-family:courier;font-size:60px or 200%;text-align:right">
+
+formatting:
+<b>bold text
+<strong>Important text(it is the same like <b> but with strong importance)
+<i>italic text
+<em>Emphasized text
+<mark>mark text
+<small>small text
+<del>deleted text
+<ins>inserted text
+<sub>subscript text
+<sup>superscript text
+
+quotation:
+<blockquote cite="...">a section that is quoted from another source.
+<q>insert quotation marks around the quotation
+<abbr title="...">description of the abbreviation
+<address>contact information of the author/owner. add line break before and after the address element,renders in italic
+<cite>the title of a creative work, usually renders in italic.
+<bdo>bi-directional override, override the current text direction
+
+color:
+html support 140 standart color names
+it can change the, background-color, text color, and border color(style="border:2px solid blue;")
+color value: rgb, hex, hsl
+rgb: has 16.777.216 possible colors
+rgb(255,255,255)
+shade of gray often defined using equal values for all three parameters
+hex the same
+hsl:
+hue 0 is red, 120 is green,240 is blue
+saturation 0 is shades of gray and 100% is full color
+lightness 0 is black and 100% is white
+for shade of gray usually the hue and saturation set to 0, and the lightness to get from darker to lighter shades
+
+CSS: cascading style sheets
+css can be use in three ways:
+inline, by using the style attribute inside HTML elements
+internal, by using the <style> element in the <head> section
+external, by using the <link> element to an external CSS file, example;
+<link rel="stylesheet" href="style.css">
+css border use border around the text
+example,style="border:2px solid black"
+padding property is the space between the text and the border
+margin property is the space outside the border
+example, style="border:2px solid white;padding:20px;margin:60px"
+
+link:
+<a href="...">
+target attribute, example: target="_self;_blank;_parent;top"
+absolute url vs relative url(a link to a page within the same website)
+image as link, example: <a href="..."><img src="..." alt="..."></a>
+email as link, example: <a href="mailto:blabla@bla.com">...</a>
+button as link, example: <button onclick="document.location='...'">
+link title, example: <a href="..." title="for hover the link">
+link colors; you can make buttons out of links with style
+<style>
+a:link{unvisited}
+a:visited{visited}
+a:hover{}
+a:active{}
+bookmark link; 
+<h2 id="04">chapter 4</h2>
+<a href="#04">jump to chapter 4</a>
+
+images:
+<img src="..." alt="..." style="float:right;width:2px;height:2px">
+image map:
+<img src="..." alt=".." usemap="#something" href="..">
+<map name="something">
+<area shape="rect" coords="9,9,20,20">
+rect coords from point to point
+circle from circle and radius
+poly from dot to dot
+image map and javascript; use javascript to add click notification
+<map name="something">
+<area shape="rect" coords="9,9,20,20" alt=".." href="something.html" onclick="myFunction()">
+<script>
+function myFunction() {
+alert("You clicked the image!");
+}
+</script>
+background-image:
+<style>
+p {
+background-image:url('something.jpg');
+background-repeat:no-repeat;
+background-size:cover(or use 100% 100% for stretch);
+background-attachment:fixed;
+}
+<picture>
+<source media="(min-width:450px)" srcset="something.jpg">
+<source media="(min-width:600px)" srcset="and.jgp">
+<img src="then.jpg">
+</picture>
+
+favicon:
+<head>
+<title>something</title>
+<link rel="icon" type="image/x-icon" href="something.jpg">
+
+title:
+for bookmark and search engine
+
+table:
+<table>
+<tr>
+<th>bla</th>
+<th>bla</th>
+</tr>
+<tr>
+<td>now</td>
+<td>when</td>
+</tr>
+</table>
+table border,example;
+<style>
+table, td, th {
+border:2px solid black;
+border-collapse:collapse;
+border-radius:20px;
+}
+border-style;
+dotted, dashed, solid, double, groove, ridge, inset, outset, none, hidden
+border size:
+<table style="width:100%">
+border heading: to make the heading horizontal.
+<table>
+<tr>
+<th>
+<td>
+<td>
+</tr>
+</table>
+colspan and rowspan;
+<table>
+<tr>
+<th colspan="2">
+table style:
+<style>
+th:nth-child(even){
+background-color:blue;
+}
+colgroup:
+<table>
+<colgroup>
+<col span="2" style="invisibility:collapse">
+
+list:
+unordered list:
+<ul style="list-style-type:disc/circle/square/none">
+<li>test</li>
+<li>now</li>
+</ul>
+horizontal unordered list:
+<style>
+ul {
+background-color:#111;
+padding:0;
+margin:0;
+list-style-type:none;
+overflow:hidden;
+}
+li a {
+display:block;
+text-align:center;
+color:white;
+float:left
+padding:18px;
+}
+li:hover{
+background-color:#333;
+}
+ordered list:
+<ol type="1,A,a,I,i">
+<li>etc</li>
+description list:
+<dl>
+<dt>coffee</dt>
+<dd>americano</dd>
+<dd>capucino</dd>
+
+block & inline:
+block level element always start in a new line, take the full width, and always begins and end with a margin, block level example element are <p> and <div>
+inline level element not start with a new line, and just take the width as it needs. inline level element example are <span>
+<div> element is a container for other html element, and is not require any attributes but class, id, and style are common
+<span> element is a container for text or document, and is not require any attributes but class, id and style are common
+
+Div:
+center a div with margin attribute,example;
+<style>
+div{
+margin:auto;
+}
+horizontal div, example;
+<style>
+.mycontainer {
+width:100%;
+overflow:auto;
+}
+.mycontainer > div {
+float:left;
+width:33%;
+}
+display:inline-block,example;
+div{
+display:inline-block;
+width:33%;  
+}
+flex, example;
+<style>
+.mycontainer {
+display:flex;
+}
+.mycontainer > div {
+width:33%;
+}
+grid, example;
+<style>
+.mycontainer{
+display:grid;
+grid-template-collumns: 33% 33% 33%;
+}
+
+class:
+"." then the name of the class, then put the class attribute in any elements you wish,
+class can be use in multiple elements
+and can put more than one class in an element
+
+id:
+"#" then the name of the id, then put the id in any elements you wish,
+the difference between class and id is class can be used with multiple elements while id only can be use in one element is a website
+
+iframe:
+is an element to open a webpage inside a webpage, example;
+<iframe src="test.html" style="width:400px;height:500px;" title="the project" name="target">
+<a href="google.com" target="target">google.com</a>
+
+Javascript:
+document.getElementById("demo").innerHTML="Hello Javascrip";
+document.getElementById("demo").style.color="blue";
+document.getElementById("demo").style.backgroundColor="white";
+document.getElementById("demo").style.fontSize="20px";
+
+File Paths:
+for good practices, use relative url.
+
+Head:
+<title>,<style>,<meta>,<link>,<script>,<base>
+<title> for Search Engine Optimizer
+<style> for CSS
+<meta>:
+<meta chrset="utf-8">
+<meta name="keyword" content="HTML,CSS,STYLE">
+<meta name="description" content="free web document tutorial">
+<meta name="author" content="van gogh">
+<meta http-equiv="refresh" content="30">
+<meta name="viewport" content="width:device-width,initial-scale=1.0">
+
+
+testing this on dotfile

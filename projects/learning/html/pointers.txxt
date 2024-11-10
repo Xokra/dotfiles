@@ -1,0 +1,1166 @@
+element:has start tag and end tag
+- <br> is an empty element no need for end tags
+
+attribute: more detail about element
+<a href="...">
+<img src="...">
+width="300"
+height="500"
+style=""
+<html lang="en">
+<p title="I am a tooltip">display title attribut as tootip, mouse over this paragraph.
+
+headings: make title and subtitle standout.search engine shows heading of the page
+h1 until h6
+<h1 style="font-size:60px; color:red;">
+
+style: style attribute
+style="background-color:powderblue;"
+style="color:blue"
+style="font-family:verdana"
+style="font-size:50"
+style="text-align:center;"
+
+formating:
+<b> bold text
+<strong> important text(with bold)
+<i> italic text
+<em> emphasized text (with italic)
+<mark> marked text
+<small> small text
+<del> deleted text
+<ins> inserted text
+<sub> subscript text
+<sup> superscript text
+
+colors:rgb,hex,color names
+html support 140 color names,
+rgb 0 to 255, 16 million possibilities
+hex #000000
+rgba with transparancy, the a is "alpha"
+
+css:inline, internal, external
+<p style="color:red">inline, a single element
+internal defined in the head section of an html page
+example:
+<head>
+<style>
+body {background-color:powderblue;}
+p {color:red;}
+external, change an the look of an entire website by changing only one file
+add link to it in the head section of the HTML page
+example
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+links: it can be text, image, a button
+<a href="https.....">absolute URL/ full web address
+<a href="html_images.asp">local link, link to the same website with a relative URL
+unvisited link in underline and blue
+visited link is underlined and purple
+active link is underline and red
+but you can change the default colors by using CSS
+target=".."
+_blank open in new tab
+_self open in the same window or tab(default)
+_parent open the link document in the parent frame
+_top open in the full body of the window
+frame name opens the linked document in a named frame
+example:
+<p><a href="https..." target="my_iframe">Visit ...</a></p>
+<iframe src="demo_iframe.htm" width="100%" name="my_iframe"></iframe>
+use image as links, example:
+<a href="default.asp">
+<img src="smiley.gif">
+</a>
+you can add title attribute to a link, to specifies extra information about an element
+
+image:
+<img src="...." alt="..."
+always specify the width and height of the image, if they aren't the page might flicker while the image loads
+use the style attribute is suggested
+float:right to float right the image
+<body style="background-image:url('...');">for the whole web
+<p style="background-image:url('...');">for the paragraph
+image maps can create clickable areas on an image. example;
+<img src="worplace.jpg" alt="workplace" usemap="#workmap"> 
+<map> name="workmap">
+<area shape="rect" coords="34,44,270,350" alt="computer" href="computer.htm">
+<area shape="circle" coords="337,300,44" alt="Coffee" href="cofee.htm">
+shape="poly" contains several coordinate points, which creates a shape formed with straight lines (a polygon).
+can be used to create any shape, like maybea croissant shape!
+Image Map and Javascript example;
+<map name="workmap">
+<area shape="circle" coords="337,309,44" href/"cofffee.htm" onclick="myFunction()">
+</map>
+<script>
+function myFunction(){
+alert("You clicked the coffee cup!");
+}
+</script>
+Background Images example
+<style>
+body {
+background-image:url('example.jpg');
+background-repeat:no-repeat;(for no repeat)
+background attachment
+}
+
+table:
+<table>
+<tr>table row
+<th>table heading(automatically bold and in the middle)
+<th>
+</tr>
+<tr>
+<td>table data
+use border internally, example;
+<style>
+table, th, td {
+border:1px solid black;(this default with double border)
+border-collapse:collapse;(to have only one border)
+}
+th,td {
+padding:15px;(to use css for padding from the border)
+}
+th {
+text-align:left;(to make the table heading align to the left)
+}
+<th colspan="2">(to make the table heading span 2 columns)
+<td rowspan="2">(ta make the table data span 2 rows)
+Zebra Stripes, example;
+tr:nth-child(even) {
+background-color: #D6EEEE;
+}
+tr for horizontal stripes, th and td for vertical stripes
+Horizontal Dividers, example;
+tr {
+border-bottom:1px soild #ddd;
+}
+Hoverable Table, example;
+tr:hover {
+background-color: #D6EEEE;
+}
+Table Colgroup, example;
+<table>
+<colgroup>
+<col span="2" style="background-color: #D6EEEE">
+</colgroup>
+<tr> etc...
+the <colgroup> tag must be a child of a <table> element and should be placed before any other table elements, like <thead>,<tr>,<td> etc but after the <caption element, if present.
+Legal CSS properties in colgroup, width,visbility,backgroud,border, other properties will have no effect on your tables.
+Multiple Col Elements example;
+<table>
+<colgroup>
+<col span="2" style="background-color: #D6EEEE">
+<col span="3" style="background-color: pink">
+</colgroup>
+Empty Colgroups, examples;
+<table>
+<colgroup>
+<col span="2" >
+<col span="3" style="background-color: pink">
+</colgroup>
+Hide Columns, examples;
+<table>
+<colgroup>
+<col span="2" >
+<col span="3" style="visibility:collapse">
+</colgroup>
+
+lists: ordered lists, unordered lists
+ordered lists use numbers
+unordered lists use bullet markers
+Unordered List,example;
+<ul>
+<li>coffee</li>
+<li>tea</li>
+<li>milk</li>
+</ul>
+Ordered list,example;
+<ol>
+<li>coffee</li>
+etc...
+</ol>
+Description Lists,<dl> tag defines the description list, the <dt> tag defines the term(name), and the <dd> tag describes each term,example;
+<dl>
+  <dt>Coffee</dt>
+  <dd>- black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>- white cold drink</dd>
+</dl>
+Unordered List item Marker: disc, circle, square, none, example;
+<ol style="list-style-type:upper-alpha">(to make the list style type change to abc not 123)
+or you can you the "upper-roman" to make it roman numerals
+<ul style="list-style-type:circle">
+Horizontal List with CSS, one popula rway is to style a list horizontally, to create a navigation menu;
+<style>
+ul {
+list-styl-type:none;
+margin:0;
+padding:0;
+overflow:hidden;
+background-color:#3333333;
+}
+li {
+float:left;
+}
+li a {
+display:block;
+color:white;
+text-align:center;
+padding: 16px;
+text-decoration:none;
+}
+li a:hover(
+background-color:#111111;
+)
+</style>
+Control List Counting in ordered list by default it will start counting from 1. if you want to start counting from a specified number you can use the 'start' attribute:
+<ol start="50">
+<li>etc..
+</ol>
+
+block and inline:
+block element start on a new line and take the full width available, example;
+<h1>,<p>,<table>,<div>
+inline elements only take up as much space as necessary, example;
+<a>,<img>,<button>,<span>
+The <div> Element is often used as a container for other HTML elements, has no required attributes, but 'style','class','id' are common. when use together with CSS, the <div> element can be used to style blocks of content:
+<div style="background-color:black;color:white;padding:20px;">
+<h2>etc...
+<p>etc>
+</div>
+The <span> Element is an inline container used to mark up a part of a text, or a part of a document, example;
+<p>my mother has <span style-"color:blue;font-weight:bold;">blue</span> eyes and my father has <span style="color:darkolivegreen;font-weight:bold;">dark green</span> eyes.</p>
+
+HTML Div
+Center align a <div> element, if you have a <div> element that is not 100% wide, and you want to center-align it, set the CSS margin property to auto, example;
+<style>
+div {
+width:300px;
+margin:auto;
+}
+</style>
+Aligning <div element side by side,
+the CSS 'float' properti was not originally meant to align <div> element side-by-side, but has been used for this purpose for many years,example;
+<style>
+div.container{
+width:100%;
+overflow:auto;
+}
+div.mycontainer div{
+width:33%;
+float:left;
+}
+</style>
+<body>
+<div class="mycontainer">
+<div style="background-color:#FFF4A3;">
+<h2>London</h2>
+<p>etc..
+</div>
+<div style="background-color:#FFC0C7;">
+<h2>Osl</h2>
+<p>etc..
+</div>
+<div style="background-color:#D9EEE1;">
+<h2>Rome</h2>
+<p>etc..
+</div>
+</div>
+</body>
+</html>
+Inlines-block, if you change the <div> element's display property from block to inline-block, the <div> elements will no longer add a line break before and after, and will be displayed side by side intstead of on top of each other.
+Flex, the CSS Flexbox Layout Module was introduced to make it easier to design flexible responsive layout structure without using float or positioning. To make the Css flex method work, surround the <div>> elements with another <div> element and give it the status as a flex container, example;
+<head>
+<style>
+.mycontainer{
+display:flex;
+}
+.mycontainer > div {
+width:33%;
+}
+</style>
+</head>
+<body>
+<div class="mycontainer">
+<div style="background-color:$FFF4A3;">
+<h2>London</h2>
+<p>etc..
+</div>
+</div>
+</body>
+Grid, the CSS Grid Layout Module offers a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning.
+sounds almost the same as flex, but has the ability to define more than one row and position each row individually.
+The CSS grid method requires that you surround the <div> element with another <div> element and give the status as a grid container, and you must specify the width of each column
+example;
+<style>
+.grid-container {
+display: grid;
+grid-template-columns: 33% 33% 33%;
+}
+</style>
+
+
+classes:
+make attribute class="something"
+syntax for the class selector,example
+<style>
+.something {(use dot/. followed by the class name)
+background-color:red;
+}
+.main {
+color:white;
+font-size:75px;
+}
+<p class="something">only this will called into the class
+<h1 class="something main">can use two of the class at the same time, just add space
+Use of the class attribute in Javascript, 
+the class name can also be used by JavaScript to perform certain tasks for specific elements.
+JavaScript can access elements with a specific class name with the 'getElementsByClassname()' method:
+<button onclick="myFunction()">hide elements</button>
+<h2 class="city">London</h2>
+<p>London is th ecapital of England.</p>
+<h2 class="city">Paris</h2>
+<p>Paris is the capital of france.</p>
+<script>
+function myFunction() {
+var x = document.getElementsByClassName("city");
+for (var i = 0; i <x.length;i++) {
+x[i].style.display ="none";
+}
+}
+</script>
+
+Id attribute:reach specific element in a page
+in css, example;
+<style>
+#myHeader {(add hashtag character and then the id of the element)
+background-color:lightblue;
+color:black;
+padding:40px;
+text-align:center;
+}
+<h1 id="myHeader"> 
+Difference Between Class and ID, a class name can be used by multiple HTML elements, while an id name must only be used by one HTML element within the page.
+in html, you can use it as bookmark, to just specific part of the web(handy if you web page is very very long)
+<a href="#C12">jump to chapter 12</a>
+<h2 id="#C12">chapter 12</h2>
+it will scroll to the section of the bookmark
+in javascript, example;
+<h1 id="myHeader">Hello world!</h1>
+<button onclick="displayResult()">Change Text</button>
+<script>
+function displayResult(){
+document.getElementById("myHeader").innerHTML= "Have nice day!";
+}
+</script>
+javascript can access an element with a specified id by using the "getElementById" method
+you can use the id attribute to manipulate text with javascript
+
+Iframes:display a webpage within a web page
+basic syntax example;
+<iframe src="demo_iframe.htm"></iframe>
+by default an iframe has a border around it,
+to remove the border add the style attribute, example;
+style="border:none;"
+or you change the size style or color of the border;
+style="border:5px solid red"
+iframe can be used as the target frame for a link
+example;
+<iframe src="demo_iframe.htm" name="iframe_a"></iframe>
+<p><a href="...." target="iframe_a">....</a></p>
+
+javascript:
+<script>define a client-side script, the script element either contains scripting statements or it points to an external script file through the src attribute,
+commonn uses for Javascript:
+- dynamic changes of content
+- image manipulation
+- form validation
+to select an HTML element javascript usually uses the document.getElementById method
+example,
+<button type="button" onclick="myFunction()">Click Me!</button>
+<p id="demo">this is a demonstration.</p>
+<script>
+function myFunction(){
+document.getElementById("demo").innerHTML ="Hello!";
+}
+you can change the style of HTML element like this examples;
+<p id="demo">javascript can change the style of an HTML element.</p>
+<script>
+document.getElementById("demo").style.fontsize="25px";
+document.getElementById("demo").style.color="red";
+document.getElementById("demo").style.backgroundColor="yellow";
+</script>
+or change HTML attribute like this example;
+<img id="myImage" src="img_girl.jpg"
+style="width:100%">
+<script>
+document.getElementById("myImage").src=".....jpg";
+</script>
+the HTML <noscript> tag
+defines an alternate content to be diplayed to users that ahve disabled scripts in their browser orhave a browser that does'n suppert scritps:
+example;
+<script>
+document.getElementById("demo").innerHTML = "Hello Javascript!";
+</script>
+<noscript>Sorry, your browser does not support Javascript!</noscript>
+
+File Paths:absolute file paths, relative file paths.
+absolute file paths example;
+<img src="https://www.w3schools.com/images/picture.jpg" alt="Mountain">
+relative file paths example;
+<img src="/images/picture.jpg" alt="Mountain">located at the root of the current web:
+<img src="images/picture.jpg" alt="Mountain">located at the current folder:
+<img src="../images/picture.jpg" alt="Mountain">located in the folder one level up from the current folder
+best practice to use relative file paths(if possible)
+
+Head:<title>,<style>,<meta>,<link>,<script>,<base>
+head place between <html> tag and the <body>tag
+<title>is required in HTML documents, it is very important for search engine optimization (SEO)!
+provides a title for the page when it is added to favorites
+make the title as accurate and meaningful as possible!
+<style>css
+<link rel="styleshet" href="mystyle.css">defines the relationship between the current decomument and an external resource.
+<meta charset="UTF-8">define the charactter set used
+<meta name="keywords" content="HTML,CSS,Javascript">defiren keywords for search engines
+<meta name="description" content="free web tutor">define a description of your web page:
+<meta name="author" content="John Doe">define the author of a page
+<meta http-equiv="refresh" content="30">refresh document every 30 seconds
+Setting The Viewport,
+the viewport is the user's visible area of a web page, It varies with the device - it will be smaller on a mobile phone than on a computer screen. example;
+<meta name="viewport" content="width=device-width, initial-scale=1.0">setting the viewport to make your website look good on all devices
+The HTML <script> Element
+the <script> element is used to define client-side JavaScripts. example;
+<script>
+function myFunction() {
+document.getElementById("demo").innerHTML = "Hello";
+}
+</script>
+
+Layout:
+Websites often display content in multiple columns (like a magazine or a newspaper).
+HTML Layout Elements;
+<header> - Defines a header for a document or a section
+<nav> - Defines a set of navigation links
+<section> - Defines a section in a document
+<article> - Defines an independent, self-contained content
+<aside> - Defines content aside from the content (like a sidebar)
+<footer> - Defines a footer for a document or a section
+<details> - Defines additional details that the user can open and close on demand
+<summary> - Defines a heading for the <details> element
+HTML Layout Techniques;
+- CSS framework
+- CSS float property
+- CSS flexbox
+- CSS grid
+CSS Float Layout, it is common to do entire web layouts using the CSS 'float' property. Float is easy to learn - you just need to remember how the 'float' and 'clear' properties work.
+Disadvantages: Floating elements are tied to the document flow, which may harm the flexibility.
+CSS Flexbox Layout, use of flexbox ensures that elements behave predictably when the page layout must accommodate different screen sizes and different display devices.
+CSS Grid Layout offers a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning.
+
+Responsive:
+responsive web design is about creating web pages that look good on all devices!
+a responsive web design will automatically adjust for different secreen sizes and viewports
+Setting The Viewport, add the following '<meta>' tag to all your web pages, example;
+<meta name="viewport" content"width=device-width, initial-scale=1.0">
+Using the 'Width' Property set to 100%, the image will be always in 100% even the web is scaled up or down, example;
+<img src="img_girl.jpg" style="width:100%;">
+the image can be scaled up to be larger than its original size. a better solution, in many cases, will be to use the 'max-width' property instead.
+Using the 'max-width' Property set to 100%, the image will scale down if it has to, but never scale up to be larger than its original size, example;
+<img src="img_girl.jpg" style="max-width:100%;height:auto;">
+Show Different Images Depending on Browser Width, example;
+<picture>
+<source srcset="img_smallflower.jpg" media="(max-width:600px)">
+<source srcset="img-flowers.jpg" media="(max-width: 1500px)">
+<source srcset="flowers.jpg">
+<img src="img_smallflower.jpg" alt="Flowers">
+Responsive Text Size can be set with a "vw" unit, which means the "viewport width", that way the text size will follow the size of the browser window, example;
+<h1 style="font-size:10vw">Hello World</h1>
+Viewport is the browser window size. 1vw = 1% of viewport width. If the viewport is 50cm wide, 1vw is 0.5cm.
+Media Quaries, can defiren completely different styles for different browser sizes, example;
+<style>
+.left, .right {
+float: left;
+width: 20%; /* The width is 20%, by default */
+}
+.main {
+float: left;
+width: 60%  /* The width is 60%, by default */
+}
+/* Use a media query to add a breakpoint at 800px: */
+@media screen and (max-width:800px) {
+.left,.main,right {
+width 100%; /* The width is 100%, when the viewport is 800px or smaller */
+}
+}
+</style>
+Responsive web page should look good on large desktop screens and on small mobile phones.
+Responsive Web Design - Frameworks: w3, bootstrap, tailwind, etc.
+
+Computer Code:
+HTML <kbd> For Keyboard Input, the content inside is displayed in the browser's default monospace font. example
+<p>Save the document by pressing<kbd>Ctrl + S</kbd></p>
+HTML <samp> For Program Output is used to define sample output from a computer program.
+the content inside is displayed in the browser's default monospace font. example;
+<p>Message from my computer:</p>
+<p><samp>File not found.<br>Press F1 to continue</samp></p>
+HTML <code> For Computer Code is used to define a piece of computer code.
+The content inside is displayed in the browser's defdault monospace font. example;
+<code>
+x = 5;
+y = 6;
+z = x + y;
+</code>
+notice that the <code> element does not preserve exatra whitespace and line-breaks.
+to fix this, you can put the <code> element inside a <pre> element:
+<pre>
+<code>
+x = 5;
+y = 6;
+z = x + y;
+</code>
+</pre>
+HTML <var> For Variables is used to define a variable in programming or in a mathematical expression.-
+The content inside is typically displayed in italic. example;
+<p>The area of a triangle is: 1/2 x <var>b</var> x <var>h</var>, where <var>b</var> is the base, and <var>h</var> is the vertical height.</p>
+
+Semantics:
+semantic elements = elements witha meaning.
+examples of non-semanic elements:<div> and <span> - tells nothing about its content.
+Examples of semantic elements:<form>,<table>,and<article> - Clearly defines its content.
+Semantic Elements in HTML,
+Many websites contain HTML code like <div id="nav><div class="header"><div id="footer"> to indicate navigation,header,and footer.
+In HTML there are some semantic elements that can be used to define different parts of a web page:
+- <article>
+- <aside>
+- <details>
+- <figcaption>
+- <figure>
+- <footer>
+- <header>
+- <main>
+- <mark>
+- <nav>
+- <section>
+- <summary>
+- <time>
+HTML <section Element, defines a section in a document. According to w3c's HTML documentition: "A section is a thematic grouping of content, typically with a heading." 
+Examples of where a <section> can be used:
+Chapters, Introduction, News Items, Contact information.
+A web page could normally be spilt into sections for introduction, content, and contract information. example;
+<section>
+<h1>WWF</h1>
+<p>The World Wide Fund for Nature (WWF) is an international organization working on issues regarding the conservation, research and restoration of the environment, formerly named the World Wildlife Fund. WWF was founded in 1961.</p>
+</section>
+<section>
+<h1>WWF's Panda symbol</h1>
+<p>The Panda has become the symbol of WWF. The well-known panda logo of WWF originated from a panda named Chi Chi that was transferred from the Beijing Zoo to the London Zoo in the same year of the establishment of WWF.</p>
+</section>
+HTML <article> Element specifies independent, sel9f-contained content.
+an article should make sense on its own, and it should be possible to distribute it independently from the rest of the web site.
+example of where the <article> element can be used:
+Forum posts, Blog posts, User comments, Product cards, Newspaper articles. example;
+<article>
+<h2>Google Chrome</h2>
+<p>Google Chrome is a web browser developed by Google, released in 2008. Chrome is the world's most popular web browser today!</p>
+</article>
+Nesting <article> in <section> or vice versa?
+The <article> element specifies independent, self-contained content. The <section> element defines section in a document.
+can we use the difinitions to decide how to nest those elements?NO, we cannot!
+so, you will find HTML pages with <section> elements containing <article> elements, and <article> elements containing <section> elements.
+HTML <header> Element, represents a container for introductory content or a set of navigational links.
+a <header> element typically contains:
+- one or more heading elements(<h1> - <h6>)
+- logo or icon
+- authorship information.
+Note: you can have several <header> elements in one HTML document. However, <header> cannot be placed within a <footer>, <address> or another <header> element.
+HTML <footer> Element, defines a footer for a document or section. typically contains
+- authorship information
+- copyright information
+- contact information
+- sitemap
+- back to top links
+- related documents.
+you can have several <footer elements in one document.>
+HTML <nav> Element, defines a set of navigation link.
+Notice that NOT all links of a document should be inside a <nav> element. The <nav> element is indended only for major blocks of navigation links.
+Browsers, such as screen reader for disabled users, can use this element to determine whether to omit the initial rendering of this content. example;
+<nav>
+<a href="/html/">HTML</a> |
+<a href="/css/">CSS</a> |
+<a href="/js/">JavaScript</a> |
+<a href="/jquery/">jQuery</a> 
+</nav>
+HTML <aside> ELement defines some content aside from the content it is placed in (like a sidebar).
+the <aside> content should be indirectly related to the surrounding content. example;
+<p>My family and I visited The Epcot center this summer. The weather was nice, and Epcot was amazing! I had a great summer together with my family!</p>
+<aside>
+<h4>Epcot Center</h4>
+<p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p>
+</aside>
+HTML <figure> and <figcaption> Elements,
+the <figure> tag specifies self-contained content, like illustrations, diagrams, photos, code listings, etc.
+the <figcaption> tag defines a caption for a <figure> element. The <figcaption> element can be placed as the first or as the last child of a <figure> element.
+the <img> element defines the actual image/illutration.
+example;
+<figure>
+  <img src="pic_trulli.jpg" alt="Trulli">
+  <figcaption>Fig1. - Trulli, Puglia, Italy.</figcaption>
+</figure>
+
+Style Guide:
+Always Declare Document Type as the first line in you document; <!DOCTYPE html>
+Use Lowercase Element Names,
+Close All HTML Elements,
+Use Lowercase Attribute Names,
+Always Quote Attribute Values,
+Always Specify alt, width, and height for Images, example;
+<img src="html5.gif" alt="HTML5" style="width:128px;height:128px">\
+Spaces and Equal Signs, space-less is easier to read and groups entities better together, example;
+<link rel="stylesheet" href="styles.css">
+Avoid Long Code Lines, when using an HTML editor, it is NOT convenient to scroll right and left to read the HTML code.
+Blank Lines and Indentation:
+Do not add blank lines, spaces, or indentations without a reason.
+For readability, add blank lines to eperate large or logicas code blocks. 
+For readeability, add two spaces of indentation. Do not use the tab key. example;
+<body>
+
+<h1>Famous Cities</h1>
+
+<h2>Tokyo</h2>
+<p>Tokyo is the capital of Japan, the center of the Greater Tokyo Area, and the most populous metropolitan area in the world.</p>
+
+<h2>London</h2>
+<p>London is the capital city of England. It is the most populous city in the United Kingdom.</p>
+
+<h2>Paris</h2>
+<p>Paris is the capital of France. The Paris area is one of the largest population centers in Europe.</p>
+
+</body>
+Good Table Example:
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>A</td>
+    <td>Description of A</td>
+  </tr>
+  <tr>
+    <td>B</td>
+    <td>Description of B</td>
+  </tr>
+</table>
+Good List Example;
+<ul>
+  <li>London</li>
+  <li>Paris</li>
+  <li>Tokyo</li>
+</ul>
+Never Skip the '<title>' Element,
+the contents of a page title is very important for search engine optimization (SEO)!-
+the page title is used by search engine algorithms to decide the order when listing pages in search results.
+the <title> element:
+- defines a title in the browser toolbar
+- provides a title for the page when it is added to favorites
+- displays a title for the page in search-engine results,example;
+<title>HTML Style Guid and Coding Conventions</title>
+Omitting <body> can produce errors in older browsers.
+Omitting <html> and <body> can also crash DOM and XML softwrare.
+so we strongly recommend to always add the <html> and <body> tags!
+Omitting <head>?the HTML <head> tag can also be omitted, browsers will add all elements before <body>
+however, we recommend using the <head> tag.
+Close Empty HTML Elements?in HTML, it is optional to close empty elements,example allowed;
+1.<meta charset="utf-8">
+2.<meta charset="utf-8" />
+if you expect XML/XHTML software to access your page, keep the closing slash (/), because it is required in XML and XHTML.
+Add the lang Attribute, you should always include the 'lang' attribute inside the <html> tag, to declare the language of the web page.
+this is meant to assist search engines and browsers. example;
+<html lang="en-us">
+Meta data:
+to ensure proper interpretation and correct search engine indexing, both the language and the character encoding '<meta charset="charset">' should be defined as early as possible in an HTML document, example;
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Title</title>
+</head>
+Setting The Viewport:
+the viewport is the user's visibile area of a web page. It varies with the device - it will be smaller on a mobile phone than on a computer screen.
+you should include the following <meta> element in all you web pages:
+<meta name="viewport" content="width=device-width, initial-scale-1.0">
+this gives the browser instructions on how to control the page's dimensions and scaling.
+the 'width=device-width' part sets the width of the page to follow the screen-width of the device (which will vary depending on the device).
+the 'initial-scale=1.0' part sets the initial zoom level when the page is first loaded by the browser
+HTML Comments:
+short comments should be written on one line, like this:
+<!-- This is a comment -->
+Comments than spans more than one line, should be written like this:
+<!--
+  This is a long comment example. This is a long comment example.
+  This is a long comment example. This is a long comment example.
+-->
+Using Style Sheets:
+use simple syntax for linking to style sheets (the 'type' attribute is not necessary):
+<link rel="stylesheet" href="styles.css">
+Short CSS rules can be written compressed, like this:
+p.intro {font-family:Verdana;font-size:16em;}
+Long CSS rules should be written over multiple lines, example:
+body {
+background-color: lightgrey;
+font-family: "Arial Black", Helevetica, sans-serif;
+font-size: 16em;
+color: black;
+}
+- place the opening bracket on the same line as the selector
+- use one space before the opening bracket
+- use two spaces of indentation
+- use semicolon after each property-value pair, including the last
+- only use quotes around values if the value contain spaces
+- place the closing bracket on a new line, without leading spaces
+Loading JavaScript in HTML:
+use simple syntax for loading external scripts(the 'type' attribute is not necessary):
+<script src="myscript.js">
+Accessing HTML Elements with JavaScript:
+using "intudy" HTML code can result in JavaScript errors.
+these two JavaScript statements will produce different results:
+getElementById("Demo").innerHTML = "Hello";
+getElementById("demo").innerHTML = "Hello";
+Use Lower Case File Names:
+some web servers(Apache,Unix) are case sensitive about file names: "london.jpg" cannot be accessed as "London.jpg".
+Other web servers(Microsoft, IIS) are not case sensitive: "london.jpg" can be accessed as "London.jpg".
+if you use a maix of uppercase and lowercase, you have to be aware of this.
+if you move from a case-insensitive to a case-sensitive server, even small errors will break your web!
+to avoid these problems, always use lowercase file names!
+File Extensions:
+HTML files should have a '.html' extension(.htm is allowed).
+CSS file should have a '.css' extension.
+JavaScript files should have a .js extension.
+There is no difference between the '.htm' and '.html' file extensions! both will be treated as HTML by any web browser and web server.
+Default Filenames:
+when URL does not specify a filename at the end(like "https://www,w3schools.com/"),
+the server just adds a default filename, such as "index.html", "index.htm", "default.html", or "default.htm".
+If your server is configured only with "index.html" as the default filename, your file must be named "index.html", and not "default.html".
+however, servers can be configured with more than one default filename; unually you can set up as many default filenames as you want.
+
+Entities:
+some characters are reserved in HTML.
+if you use the less than (<) or greater than (>) signs in your HTML text, the browser might mix them with tags.
+entity names or entity numbers can be used to display reserved HTML characters:
+Result	Description	Name	Number	
+       non-breaking space	&nbsp;	&#160;	
+<	less than	&lt;	&#60;	
+>	greater than	&gt;	&#62;	
+&	ampersand	&amp;	&#38;	
+"	double quotation mark	&quot;	&#34;	
+'	single quotation mark	&apos;	&#39;	
+¢	cent	&cent;	&#162;	
+£	pound	&pound;	&#163;	
+¥	yen	&yen;	&#165;	
+€	euro	&euro;	&#8364;	
+©	copyright	&copy;	&#169;	
+®	trademark	&reg;	&#174;
+Non-breaking Space:
+A commonly used HTML entity is the non-breaking space: &nbsp;
+a non-breaking space is a space that  will not break into a new line, examples:
+- § 10
+- 10 km/h
+- 10 PM
+another common use of the non-breaking space is to prevent browsers from truncating spaces in HTML pages.
+if you write 10 spaces in you tex, the browser will remove 9 of them. to add real spaces to your text, you can use the &nbsp; character entity.
+Note: the non-breaking hypen '(&#8209;)' is used to define a hyphen character '(-)' that does not break into a new line.
+Combining Diacritical Marks:
+a diacritical mark is a "glyph" added to a letter.
+some diacritical marks, like grave (`)and acute( ́ )are called accents.
+diacritical marks can be used in combination with alphanumeric character to produc a character that is not present in the character set (encoding) used in the page. example;
+Mark	Character	Construct	Result	
+ ̀	a	a&#768;	à	
+ ́	a	a&#769;	á	
+̂	a	a&#770;	â	
+ ̃	a	a&#771;	ã	
+ ̀	O	O&#768;	Ò	
+ ́	O	O&#769;	Ó	
+̂	O	O&#770;	Ô	
+ ̃	O	O&#771;	Õ
+
+Symbols:
+many mathematical, technical, and currency symbols, are not present on a normal keyboard.
+to add such symbols to an HTML page, you can use the entity name or the intity number (a decimal or a dexadecimal reference) for the symbol:
+example:
+<p>I will display &euro;</p>
+<p>I will display &#8364;</p>
+<p>I will display &#x20AC;</p>
+will display as:
+I will display €
+I will display €
+I will display €
+Some Mathematical Symbols Supported by HTML:
+Char	Number	Entity	Description	
+∀	&#8704;	&forall;	For all	
+∂	&#8706;	&part;	Partial differential	
+∃	&#8707;	&exist;	There exists	
+∅	&#8709;	&empty;	Empty sets	
+∇	&#8711;	&nabla;	Nabla	
+∈	&#8712;	&isin;	Element of	
+∉	&#8713;	&notin;	Not an element of	
+∋	&#8715;	&ni;	Contains as member	
+∏	&#8719;	&prod;	N-ary product	
+∑	&#8721;	&sum;	N-ary summation
+Some Greek Letters Supported by HTML:
+Char	Number	Entity	Description	
+Α	&#913;	&Alpha;	GREEK ALPHA	
+Β	&#914;	&Beta;	GREEK BETA	
+Γ	&#915;	&Gamma;	GREEK GAMMA	
+Δ	&#916;	&Delta;	GREEK DELTA	
+Ε	&#917;	&Epsilon;	GREEK EPSILON	
+Ζ	&#918;	&Zeta;	GREEK ZETA
+Some Other Entities Supported by HTML:
+Char	Number	Entity	Description	
+©	&#169;	&copy;	COPYRIGHT	
+®	&#174;	&reg;	REGISTERED	
+€	&#8364;	&euro;	EURO SIGN	
+™	&#8482;	&trade;	TRADEMARK	
+←	&#8592;	&larr;	LEFT ARROW	
+↑	&#8593;	&uarr;	UP ARROW	
+→	&#8594;	&rarr;	RIGHT ARROW	
+↓	&#8595;	&darr;	DOWN ARROW	
+♠	&#9824;	&spades;	SPADE	
+♣	&#9827;	&clubs;	CLUB	
+♥	&#9829;	&hearts;	HEART	
+♦	&#9830;	&diams;	 DIAMOND
+
+Emojis:
+emojis look like images, or icons, but they are not.
+they are letters (characters) from the UTF-8(Unicode) character set.example;
+Emoji	Value	
+🗻	&#128507;	
+🗼	&#128508;	
+🗽	&#128509;	
+🗾	&#128510;	
+🗿	&#128511;	
+😀	&#128512;	
+😁	&#128513;	
+😂	&#128514;	
+😃	&#128515;	
+😄	&#128516;	
+😅	&#128517;
+The HTML charset Attribute:
+to display an HTML page correctly, a web browser must know the character set used in the page.
+this is specified in the  '<meta>' tag:
+<meta charset="UTF-8">
+if not specified, UTF-8 is the default character set in HTML.
+UTF-8 Characters:
+many UTF-8 characters cannot be typed on a keyboard, but they can always be displayed using numbers(called entity numbers):
+<p>I will display A B C</p>
+<p>I will display &#65; &#66; &#67;</p>
+the '<meta charset="UTF-8">' element defines the character set.
+the characters A, B, and C, are displayed by the number 65, 66, and 67.
+to let the browser understand that you are dispalying a character,
+you must start the entity number with '&#' and end it with ';'(semicolon).
+Emoji Characters:
+since emojis are characters, they can be copied, displayed, and sized just like any other character in HTML. example;
+<p style="font-size:48px">
+&#128512; &#128516; &#128525; &#128151;
+</p>
+
+Charsets:
+The HTML charset Attribute:
+the character set is specified in the '<meta>' tag,example;
+<meta charset="UTF-8">
+the HTML5 specification encourages web developers to use the UTF-8 character set.
+UTF-8 covers almost all of the characters and symbols in the wold!
+The ASCII Character Set:
+ASCII was the first character encoding standrd for the web. It defined 128 differernt characters that could be used on the internet:
+- english letters (A-Z)
+- numbers (0-9)
+- special characters like ! $ + - ( ) @ < >.
+The ANSI Character set:
+ANSI (Windows-1252) was the original Winodws character set:
+- indentical to ASCII for the first 127 characters
+- special characters from 128 to 159
+- identical to UTF-8 from 160 to 255
+example: <meta charset="Windows-1252">
+The ISO-8859-1 Character Set
+ISO-8859-1 was the default character set for HTML 4. This character set supported 256 different character codes. HTML 4 also supported UTF-8.
+- identical to ASCII for the first 127 characters
+- does not use the characters from 128 to 159
+- identical to ANSI and UTF-8 from 160 to 255
+HTML 4 example:
+<meta http-equiv="Content-Type" content/"text/html;charset=ISO-8859-1">
+HTML 5 example:
+<meta charset="ISO-8859-1">
+The UTF-8 Character Set
+- is identical to ASCII for the values from 0 to 127
+- does not use the characters from 128 to 159
+- identical to ANSI and 8859-1 from 160 to 255
+- continues from the value 256 to 10 000 characters
+example: <meta charset="UTF-8">
+The following table displays the differeces betweeen the character set:
+Numb	ASCII	ANSI	8859	UTF‑8	Description
+32					space
+33	!	!	!	!	exclamation mark
+34	"	"	"	"	quotation mark
+35	#	#	#	#	number sign
+36	$	$	$	$	dollar sign
+37	%	%	%	%	percent sign
+38	&	&	&	&	ampersand
+39	'	'	'	'	apostrophe
+40	(	(	(	(	left parenthesis
+41	)	)	)	)	right parenthesis
+42	*	*	*	*	asterisk
+43	+	+	+	+	plus sign
+44	,	,	,	,	comma
+45	-	-	-	-	hyphen-minus
+46	.	.	.	.	full stop
+47	/	/	/	/	solidus
+48	0	0	0	0	digit zero
+49	1	1	1	1	digit one
+50	2	2	2	2	digit two
+51	3	3	3	3	digit three
+52	4	4	4	4	digit four
+53	5	5	5	5	digit five
+54	6	6	6	6	digit six
+55	7	7	7	7	digit seven
+56	8	8	8	8	digit eight
+57	9	9	9	9	digit nine
+58	:	:	:	:	colon
+59	;	;	;	;	semicolon
+60	<	<	<	<	less than
+61	=	=	=	=	equals sign
+62	>	>	>	>	greater than
+63	?	?	?	?	question mark
+64	@	@	@	@	commercial at
+65	A	A	A	A	Latin A
+66	B	B	B	B	Latin B
+67	C	C	C	C	Latin C
+68	D	D	D	D	Latin D
+69	E	E	E	E	Latin E
+70	F	F	F	F	Latin F
+71	G	G	G	G	Latin G
+72	H	H	H	H	Latin H
+73	I	I	I	I	Latin I
+74	J	J	J	J	Latin J
+75	K	K	K	K	Latin K
+76	L	L	L	L	Latin L
+77	M	M	M	M	Latin M
+78	N	N	N	N	Latin N
+79	O	O	O	O	Latin O
+80	P	P	P	P	Latin P
+81	Q	Q	Q	Q	Latin Q
+82	R	R	R	R	Latin R
+83	S	S	S	S	Latin S
+84	T	T	T	T	Latin T
+85	U	U	U	U	Latin U
+86	V	V	V	V	Latin V
+87	W	W	W	W	Latin W
+88	X	X	X	X	Latin X
+89	Y	Y	Y	Y	Latin Y
+90	Z	Z	Z	Z	Latin Z
+91	[	[	[	[	left square bracket
+92	\	\	\	\	reverse solidus
+93	]	]	]	]	right square bracket
+94	^	^	^	^	circumflex accent
+95	_	_	_	_	low line
+96	`	`	`	`	grave accent
+97	a	a	a	a	Latin small a
+98	b	b	b	b	Latin small b
+99	c	c	c	c	Latin small c
+100	d	d	d	d	Latin small d
+101	e	e	e	e	Latin small e
+102	f	f	f	f	Latin small f
+103	g	g	g	g	Latin small g
+104	h	h	h	h	Latin small h
+105	i	i	i	i	Latin small i
+106	j	j	j	j	Latin small j
+107	k	k	k	k	Latin small k
+108	l	l	l	l	Latin small l
+109	m	m	m	m	Latin small m
+110	n	n	n	n	Latin small n
+111	o	o	o	o	Latin small o
+112	p	p	p	p	Latin small p
+113	q	q	q	q	Latin small q
+114	r	r	r	r	Latin small r
+115	s	s	s	s	Latin small s
+116	t	t	t	t	Latin small t
+117	u	u	u	u	Latin small u
+118	v	v	v	v	Latin small v
+119	w	w	w	w	Latin small w
+120	x	x	x	x	Latin small x
+121	y	y	y	y	Latin small y
+122	z	z	z	z	Latin small z
+123	{	{	{	{	left curly bracket
+124	|	|	|	|	vertical line
+125	}	}	}	}	right curly bracket
+126	~	~	~	~	tilde
+127	DEL	 	 	 	 
+128	 	€	 	 	euro sign
+129	 				NOT USED
+130	 	‚	 	 	single low-9 quotation mark
+131	 	ƒ	 	 	Latin small f with hook
+132	 	„	 	 	double low-9 quotation mark
+133	 	…	 	 	horizontal ellipsis
+134	 	†	 	 	dagger
+135	 	‡	 	 	double dagger
+136	 	ˆ	 	 	modifier letter circumflex accent
+137	 	‰	 	 	per mille sign
+138	 	Š	 	 	Latin S with caron
+139	 	‹	 	 	single left-pointing angle quotation mark
+140	 	Œ	 	 	Latin capital ligature OE
+141	 				NOT USED
+142	 	Ž	 	 	Latin Z with caron
+143	 				NOT USED
+144	 				NOT USED
+145	 	‘	 	 	left single quotation mark
+146	 	’	 	 	right single quotation mark
+147	 	“	 	 	left double quotation mark
+148	 	”	 	 	right double quotation mark
+149	 	•	 	 	bullet
+150	 	–	 	 	en dash
+151	 	—	 	 	em dash
+152	 	˜	 	 	small tilde
+153	 	™	 	 	trade mark sign
+154	 	š	 	 	Latin small s with caron
+155	 	›	 	 	single right-pointing angle quotation mark
+156	 	œ	 	 	Latin small ligature oe
+157	 				NOT USED
+158	 	ž	 	 	Latin small z with caron
+159	 	Ÿ	 	 	Latin Y with diaeresis
+160	 	 	 	 	no-break space
+161	 	¡	¡	¡	inverted exclamation mark
+162	 	¢	¢	¢	cent sign
+163	 	£	£	£	pound sign
+164	 	¤	¤	¤	currency sign
+165	 	¥	¥	¥	yen sign
+166	 	¦	¦	¦	broken bar
+167	 	§	§	§	section sign
+168	 	¨	¨	¨	diaeresis
+169	 	©	©	©	copyright sign
+170	 	ª	ª	ª	feminine ordinal indicator
+171	 	«	«	«	left-pointing double angle quotation mark
+172	 	¬	¬	¬	not sign
+173	 	­	­	­	soft hyphen
+174	 	®	®	®	registered sign
+175	 	¯	¯	¯	macron
+176	 	°	°	°	degree sign
+177	 	±	±	±	plus-minus sign
+178	 	²	²	²	superscript two
+179	 	³	³	³	superscript three
+180	 	´	´	´	acute accent
+181	 	µ	µ	µ	micro sign
+182	 	¶	¶	¶	pilcrow sign
+183	 	·	·	·	middle dot
+184	 	¸	¸	¸	cedilla
+185	 	¹	¹	¹	superscript one
+186	 	º	º	º	masculine ordinal indicator
+187	 	»	»	»	right-pointing double angle quotation mark
+188	 	¼	¼	¼	vulgar fraction one quarter
+189	 	½	½	½	vulgar fraction one half
+190	 	¾	¾	¾	vulgar fraction three quarters
+191	 	¿	¿	¿	inverted question mark
+192	 	À	À	À	Latin A with grave
+193	 	Á	Á	Á	Latin A with acute
+194	 	Â	Â	Â	Latin A with circumflex
+195	 	Ã	Ã	Ã	Latin A with tilde
+196	 	Ä	Ä	Ä	Latin A with diaeresis
+197	 	Å	Å	Å	Latin A with ring above
+198	 	Æ	Æ	Æ	Latin AE
+199	 	Ç	Ç	Ç	Latin C with cedilla
+200	 	È	È	È	Latin E with grave
+201	 	É	É	É	Latin E with acute
+202	 	Ê	Ê	Ê	Latin E with circumflex
+203	 	Ë	Ë	Ë	Latin E with diaeresis
+204	 	Ì	Ì	Ì	Latin I with grave
+205	 	Í	Í	Í	Latin I with acute
+206	 	Î	Î	Î	Latin I with circumflex
+207	 	Ï	Ï	Ï	Latin I with diaeresis
+208	 	Ð	Ð	Ð	Latin Eth
+209	 	Ñ	Ñ	Ñ	Latin N with tilde
+210	 	Ò	Ò	Ò	Latin O with grave
+211	 	Ó	Ó	Ó	Latin O with acute
+212	 	Ô	Ô	Ô	Latin O with circumflex
+213	 	Õ	Õ	Õ	Latin O with tilde
+214	 	Ö	Ö	Ö	Latin O with diaeresis
+215	 	×	×	×	multiplication sign
+216	 	Ø	Ø	Ø	Latin O with stroke
+217	 	Ù	Ù	Ù	Latin U with grave
+218	 	Ú	Ú	Ú	Latin U with acute
+219	 	Û	Û	Û	Latin U with circumflex
+220	 	Ü	Ü	Ü	Latin U with diaeresis
+221	 	Ý	Ý	Ý	Latin Y with acute
+222	 	Þ	Þ	Þ	Latin Thorn
+223	 	ß	ß	ß	Latin small sharp s
+224	 	à	à	à	Latin small a with grave
+225	 	á	á	á	Latin small a with acute
+226	 	â	â	â	Latin small a with circumflex
+227	 	ã	ã	ã	Latin small a with tilde
+228	 	ä	ä	ä	Latin small a with diaeresis
+229	 	å	å	å	Latin small a with ring above
+230	 	æ	æ	æ	Latin small ae
+231	 	ç	ç	ç	Latin small c with cedilla
+232	 	è	è	è	Latin small e with grave
+233	 	é	é	é	Latin small e with acute
+234	 	ê	ê	ê	Latin small e with circumflex
+235	 	ë	ë	ë	Latin small e with diaeresis
+236	 	ì	ì	ì	Latin small i with grave
+237	 	í	í	í	Latin small i with acute
+238	 	î	î	î	Latin small i with circumflex
+239	 	ï	ï	ï	Latin small i with diaeresis
+240	 	ð	ð	ð	Latin small eth
+241	 	ñ	ñ	ñ	Latin small n with tilde
+242	 	ò	ò	ò	Latin small o with grave
+243	 	ó	ó	ó	Latin small o with acute
+244	 	ô	ô	ô	Latin small o with circumflex
+245	 	õ	õ	õ	Latin small o with tilde
+246	 	ö	ö	ö	Latin small o with diaeresis
+247	 	÷	÷	÷	division sign
+248	 	ø	ø	ø	Latin small o with stroke
+249	 	ù	ù	ù	Latin small u with grave
+250	 	ú	ú	ú	Latin small u with acute
+251	 	û	û	û	Latin small with circumflex
+252	 	ü	ü	ü	Latin small u with diaeresis
+253	 	ý	ý	ý	Latin small y with acute
+254	 	þ	þ	þ	Latin small thorn
+255	 	ÿ	ÿ	ÿ	Latin small y with diaeresis
+
+URL Encode:
+a URL is another word for a web address
+a URL can be composed of words(e.g. w3schools.com), or an Internet Protocol(IP) address(e.g. 192.68.20.50).
+Most people enter the name when surfing, because names are easier to remember than numbers
+URL - Uniform Resource Locator is used to address a document (or other data) on the web.
+A web address follows these syntax rules;
+"scheme://prefix.domain:port/path/filename"
+explanation:
+scheme - defines the type of Internet service (most common is http or https)
+prefix - defines a domain prefix(default for http is www)
+domain - defines the Intenet domain name (like w3schools.com)
+port - defines the port number at the host (default for http is 80)
+path - defines a path at the server (If omitted: the root directory of the site)
+filename - defines the name of a document or resource 
+Common URL Schemes:
+http - HyperTex Transfer Protocol, Common web pages. Not encrypted
+https - Secure HyperTex Transfer Protocol, Secure web pages. Encrypted
+ftp - File Tranfer Protocol, Downloading or uploading files
+file - a file on your computer
+URL Encoding,
+URLs can only be sent over the Internet using the 'ASCII character-set'
+if a URL contains characters outside the ASCII set, the URL has to be converted.
+URL encoding converts non-ASCII characters into a format that can be transmitted over the Internet.
+URL encoding replaces non -ASCII characters with a "%" followed by hexadecimal digits.
+URL cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign, or %20.
+ASCII Encoding Examples:
+Character	From Windows-1252	From UTF-8
+€	%80	%E2%82%AC
+£	%A3	%C2%A3
+©	%A9	%C2%A9
+®	%AE	%C2%AE
+À	%C0	%C3%80
+Á	%C1	%C3%81
+Â	%C2	%C3%82
+Ã	%C3	%C3%83
+Ä	%C4	%C3%84
+Å	%C5	%C3%85
