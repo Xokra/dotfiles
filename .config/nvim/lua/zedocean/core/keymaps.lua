@@ -48,3 +48,7 @@ keymap.set("n", "<leader>l", ":Lazy<CR>", { noremap = true, silent = true, desc 
 keymap.set("n", "`", vim.cmd.UndotreeToggle)
 
 keymap.set("n", "<leader>m", ":Mason<CR>", { desc = "Mason" })
+keymap.set("n", "<leader>ob", function()
+  local file = vim.fn.expand("%:p") -- Get full path of current file
+  vim.fn.system('wslview "' .. file .. '"')
+end, { desc = "Open in Browser" })
