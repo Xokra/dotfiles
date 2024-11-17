@@ -237,7 +237,7 @@ and can put more than one class in an element
 
 id:
 "#" then the name of the id, then put the id in any elements you wish,
-the difference between class and id is class can be used with multiple elements while id only can be use in one element is a website
+the difference between class and id is class can be used with multiple elements while id only can be use in one element in a website
 
 iframe:
 is an element to open a webpage inside a webpage, example;
@@ -245,10 +245,12 @@ is an element to open a webpage inside a webpage, example;
 <a href="google.com" target="target">google.com</a>
 
 Javascript:
+<p id="demo">something</p>
 document.getElementById("demo").innerHTML="Hello Javascrip";
 document.getElementById("demo").style.color="blue";
 document.getElementById("demo").style.backgroundColor="white";
 document.getElementById("demo").style.fontSize="20px";
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
 
 File Paths:
 for good practices, use relative url.
@@ -265,4 +267,71 @@ Head:
 <meta http-equiv="refresh" content="30">
 <meta name="viewport" content="width:device-width,initial-scale=1.0">
 
-the newest testing commit
+Layout:
+<header>,<nav>,<section>,<article>,<aside>,<footer>
+Layout Techniques:
+CSS Frameworks, tailwind, bootstrap, w3.css
+float layout, common to do entire web with float property, but the disadvantage that the float property tied to the document flow, which may harm the flexibility.
+flex layout, ensure that elements behave predictably when the page layout accomodate different screen sizes and different display devices.
+grid layout, offer a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning
+
+Responsive:
+Setting Viewport; <meta name="viewport" content="width=device-width, initial-scale=1.0">
+Responsive Images; width="100%", max-width="100%",<picture>
+Responsive Text; font-size="1vw"
+Media Querie; 
+<style>
+.left, .right {
+width:20%;
+float:left;
+}
+.main {
+width:60%;
+float:left;
+}
+@media screen and (max-width: 800px){
+.left, .main, . right {
+width:100%
+}
+}
+</style>
+Responsive Framework; w3.css, bootstrap, tailwind.
+
+Computer Code:
+<kbd> for computer input, example "ctrl + s" 
+<samp> for computer output, example "File is not found"
+<code> for computer code, example "x+y"
+<var> for variable, it is in italic, example <p>this is <var>x</var> + <var>y</var>
+
+Semantics:
+<section> contain;
+- chapter
+- introduction
+- news item
+- contact information
+<article> contain;
+- forum post
+- blog post
+- user comments
+- product cards
+- newspaper articles
+<header> contain;
+- one or more heading(h1-h6)
+- logo or icon
+- authorship information
+<footer>
+- authorship information
+- copyright information
+- contact information
+- sitemap
+- back to top link
+- related documents
+<nav> navigation link, for screen reader for the disabled
+<aside> for explaination
+<figure> contain; illustrations, diagrams, photos, code-listing.
+example;
+<figure>
+<img>
+<figcaption></figcaption>
+</figure>
+<figcaption> caption of the figure
