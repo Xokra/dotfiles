@@ -335,3 +335,27 @@ example;
 <figcaption></figcaption>
 </figure>
 <figcaption> caption of the figure
+
+Style Guide:
+- always declare document type, example; <!DOCTYPE html>
+- always use lowercase HTML elements
+- always close HTML elements
+- always use lowercase attributes
+- always quote attribute value
+- define alt,width,height for <img> element
+- spaceless equal sign
+- avoid long code blocks
+- add line break for large or logical code block, add two spaces of indentation
+- ommit <body> can produce error in older browser, ommit <html> and <body> can crash DOM & XML software
+- always use closing slash(/) if you want to use XML or XHTML to access your webpage
+- add "lang" attribute in <html> element
+- add "charset" attribute in <meta> element
+- set viewport
+- commenting
+- CSS guide
+- <script src="MyScript.js">
+- javascript is case sensitive for the ID
+- always use lowercase filename
+- file extension
+- .html and .htm are the same
+- servers can automatically add default filename at the end if it is not defined, server can configure more than one 'default' filename
