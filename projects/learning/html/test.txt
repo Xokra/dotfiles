@@ -359,3 +359,35 @@ Style Guide:
 - file extension
 - .html and .htm are the same
 - servers can automatically add default filename at the end if it is not defined, server can configure more than one 'default' filename
+
+Entities:
+non-breaking space; &nbsp ,&#160
+less than; &lt, &#60
+greater than; &gt, &#62
+Combine Diacritical Mark
+a&#768
+a&#769
+a&#770
+a&#771
+
+Symbol:
+there are Mathematical Symbol, Greek Symbol, and others
+
+Emojis:
+from the UTF-8 charset
+
+Charset:
+ASCII is the first character encoding standart for the web, it has 128 different characters
+ANSI is the original Window character set, it has 256 different characters;
+- it is the same with ASCII for the first 127 characters
+- special characters from 128 to 159
+- same with UTF-8 from 160 to 255
+ISO-8859-1 is the default character set for HTML 4;
+- it is the same with ASCII for the first 127 characters
+- does not use the character from 128 to 159
+- same with UTF-8 and ANSI from 160 to 255
+UTF-8;
+- it is the same with ASCII for the first 127 characters
+- does not use the character from 128 to 159
+- same with ANSI and 8859 from 160 to 255
+- more from 256 to 10000 characters
