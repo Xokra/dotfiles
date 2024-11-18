@@ -391,3 +391,22 @@ UTF-8;
 - does not use the character from 128 to 159
 - same with ANSI and 8859 from 160 to 255
 - more from 256 to 10000 characters
+
+Uniform Resource Locators:
+Uniform Resource Locators compose with "name" (www.w3schools.com) or Internet Protocol addreses (e.g. 192.68.20.50).
+Uniform Resource Locators used to addres documents or data on the web.
+Web address sytax rules;
+scheme://prefix.domain:port/path/filename
+Scheme: the 'type' of internet services, usually http or https
+Prefix: the domain prefix, usually www
+Port: the port number of a server, for http usually 80
+Path: path of the server, if ommited it is the root of the directory of the site
+Filename: the name of the document or resource
+Different Scheme:
+HTTP, Hypertext Transfer Protocol, common web, non-encrypted
+HTTPS, Secure Hypertext Transfer Protocol, secure web, encrypted
+FTP, downloading and uploading file
+File,
+URL can only be sent over the internet using the ASCII character set, if it use outside the ASCII character set, it has to be converted
+URL replace non-ASCII character with a "%" followed by hexidecimal digit
+URL cannot contain spaces, URL encoding normally replace spaces with (+) or %20
