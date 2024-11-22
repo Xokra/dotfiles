@@ -410,3 +410,98 @@ File,
 URL can only be sent over the internet using the ASCII character set, if it use outside the ASCII character set, it has to be converted
 URL replace non-ASCII character with a "%" followed by hexidecimal digit
 URL cannot contain spaces, URL encoding normally replace spaces with (+) or %20
+
+HTML vs XHTML:
+XHTML stands for Extensible Hypertext Markup Language;
+XHTML is a stricter, more XML base version of HTML
+The Most Important differences from HTML
+<!DOCTYPE> is mandatory
+the xmlns attribute in <html> element are mandatory
+<html>, <head>, <title>, and <body> are mandatory
+elements must always properly nested
+elements must always be closed, <p></p>
+empty element must always be closed, <br/>,<hr/>,<img/>
+elements must always be in lowercase
+attribute name must always in lowercase
+attribute values must always be quoted
+attribute minimization is forbidden, example;
+<input type="checkbox" name="vehicle" value="car" checked="checked" />
+<input type="text" name="lastname" disabled="disabled" />
+
+FORM:
+<form> element is a container for different types of input elements, such as:
+<input type="text">
+<input type="radio">
+<input type="checkbox">
+<input type="submit">
+<input type="button">
+<label> element is useful for screen-reader users, when the user clicks the text within the <label> element, it toggles the radio/checkbox
+the 'for' attribute of the <label> tag should be equal to the id attribute of the <input> element to bind them together.
+the 'name' attribute for <input> has to have the same value as 'for' attribute from the <label> element or the value of the input field will not be sent at all
+<form>
+<label for="fname">First Name</label><br>
+<input type="text" id="fname" name="fname" value="john"><br><br>
+<input type="submit" value="Submit">
+</form>
+
+Form Attributes:
+list of all <form> attributes;
+accept-charset,action,autocomplete,enctype,method,name,novalidate,rel,target.
+<form action="/action_page.php">
+<form action="/action_page.php" target="_blank">
+<form action="/action_page.php" method="post" (or 'get')
+<form action="/action_page.php" autocomplete="on">
+<form action="/action_page.php" novalidate>
+
+Form Elements:
+<input>
+<label>
+<select id="a" name="a" size="3" multiple>
+<option value="cars" selected>
+<textarea name="a" rows="30" cols="20" style="width:100px;height:200px">something</textarea>
+<button type="button" onclick="alert("bakekok")">Click Me!</button>
+<fieldset>
+<legend>Personalia:</legend>
+datalist;
+<input list="browsers" name="browser">
+<datalist id="browsers">
+<option value="a">
+output;
+<form action=""
+oninput="x.value=parseINT(a.value)+parseINT(b.value)">
+0
+<input type="range" id="a" name="a" value="50">
+100 +
+<input type="number" id="b" name="b" value="50">
+=
+<output name="x" for="a b"></output>
+<br><br>
+<input type="submit" value="Submit">
+</form>
+
+Input Types:
+-text
+-password
+-submit
+-reset
+-radio
+-checkbox
+-button
+-color
+-date
+-datetime-local
+-email
+-images
+-file
+-hidden
+-month
+-number
+Input Restriction:
+checked,disabled,max,max-length,min,pattern,readonly,required,size,step,value
+another input types:
+-range
+-search
+-tel
+-time
+-url
+-week
