@@ -505,3 +505,20 @@ another input types:
 -time
 -url
 -week
+
+Input Attributes:
+-value
+-readonly
+-disable
+-size
+-max-length
+-min max
+-multiple
+-pattern
+-placeholder
+-require
+-step
+-autofocus
+-width & height in image
+-list
+-autocomplete
