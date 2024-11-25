@@ -522,3 +522,11 @@ Input Attributes:
 -width & height in image
 -list
 -autocomplete
+
+Input Form* Attributes:
+form = specifies the form the <input> element belongs to. must be equal to the id attribute of the <form> elemnt it belongs to
+formaction = specifies the URL of the file that will process the input when the form is submitted
+formenctype = specifies how the form-data should be encoded when submitted
+formmethod = overrides the 'method' atribute of the <form> element, input types:submit and image.
+formtarget = overrides the 'target' attribute of the <form> element.
+formnovalidate = overrides the 'novalidate' attribute of the <form> element
