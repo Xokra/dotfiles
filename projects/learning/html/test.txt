@@ -530,3 +530,57 @@ formenctype = specifies how the form-data should be encoded when submitted
 formmethod = overrides the 'method' atribute of the <form> element, input types:submit and image.
 formtarget = overrides the 'target' attribute of the <form> element.
 formnovalidate = overrides the 'novalidate' attribute of the <form> element
+
+Canvas:
+canvas used to draw graphics, on the fly, via Javascript.
+good for:games, animations, real-time graphics
+
+SVG:
+stands for Scalable Vector Graphics
+good for: logos, icons,illustrations that need to stay sharp at any size
+better than regular images(jpg/png)when you need graphics that can resize without getting blurry
+
+CSS:
+
+CSS Background:
+background-repeat:repeat-x
+background shorthand:
+background: #ffffff url("img_tree.png") no-repeat right top;
+
+CSS Border:
+width can be set as a specific size (in px, pt, cm, em, etc) or thin, medium, or thick:
+border-width: 20px 5px; /* 20px top and bottom, 5px on the sides */
+border-width: 25px 10px 4px 35px; /* 25px top, 10px right, 4px bottom and 35px left */
+border-color: red green blue yellow; /* red top, green right, blue bottom and yellow left */
+border-top-style: dotted;
+border-right-style: solid;
+border-bottom-style: dotted;
+border-left-style: solid;
+(mix)border-style: dotted dashed solid double;
+this properties can be used with border-width and border-color
+Border Shorthand: border-left: 6px solid red;
+
+Margin:
+margin: 25px 50px 75px, top 25px, right and left 50px, bottom 75px
+margin-left:100px
+margin-left:inherit(it will inherited from the parent element)
+
+Padding:
+p {
+width: 300px;
+padding: 25px;
+}
+the total width will be 350px
+but with:
+p {
+width: 300px;
+padding: 25px;
+box-sizing: border-box;
+}
+the width will keep at 300px
+
+Outline:
+outline is a line drawn outside the element's border
+pretty much the same properties used by 'border'
+outline offset is a space between an outline and the border, example;
+outline-offset: 15px
