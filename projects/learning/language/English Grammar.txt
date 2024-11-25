@@ -1,2 +1,42 @@
 Noun:
 People, Places, Things, Ideas
+
+Singular and plural nouns:
+Regular plural:
+dogs,cats,dinosaurs,whales
+Irregular plural:
+leaf - leaves
+child - children
+fungus - fungi
+mouse - mice
+sheep - sheep
+
+Common and proper nouns:
+common - proper
+city - Chicago
+frog - Kermit
+river - Nile
+mountain - Kilimanjaro
+common only capitalized when they begin sentences
+proper noun always capitalized
+
+Concrete and Abstract Nouns:
+concrete are physical, example dog, ball, cliff
+abstract is not physical or can't be measure like sadness, happiness, freedom, permission
+
+Irregular plural: -f to -ves plurals
+end with single 'f' generally plural are 'ves' but not all, different with double 'f'
+leaf - leaves
+loaf - loaves
+calf - calves
+
+Irregular plural : -en plurals
+child - children
+ox - oxen
+brother/sister - brethren/sisteren(not common)
+
+Irregular plural nouns: the base plural
+sheep - sheep
+bison - bison
+fish - fish (fishes only used for individual species of fishes)
+species - specieses

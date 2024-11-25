@@ -45,3 +45,8 @@ blue = "#A277FF"
 magenta = "#a277ff"
 cyan = "#24EAF7"
 white = "#24EAF7"
+
+# [keyboard]
+# bindings = [
+#   { key = "Backspace", mods = "Control", chars = "" }
+# ]
