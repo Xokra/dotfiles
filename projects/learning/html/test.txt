@@ -614,3 +614,138 @@ word-spacing: -2px;
 white-space: nowrap;
 Text Shadow;
 text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+CSS Fonts;
+Font Web Safe;
+- Arial(sans-serif)
+- Verdana(sans-serif)
+- Tahoma(sans-serif)
+- Trebuchet MS(sans-serif)
+- Times New Roman (serif)
+- Georgia (serif)
+- Garamond (serif)
+- Courier New (monospace)
+- Brush Script MT(cursive)
+Font Style;
+font-style: normal italic oblique
+font-weight: normal bold
+font-variant: normal small-caps
+Font Size;
+The default text size in browsers is 16px. So, the default size of 1em is 16px.
+font-size: 2.5em; /* 40px/16=2.5em */
+Font Google;
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+<style>
+h1.a {font-family: "Audiowide", sans-serif;}
+h1.b {font-family: "Sofia", sans-serif;}
+h1.c {font-family: "Trirong", serif;}
+</style>
+</head>
+Request multiple font effects:
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
+<style>
+body {
+  font-family: "Sofia", sans-serif;
+  font-size: 30px;
+}
+</style>
+</head>
+<body>
+
+<h1 class="font-effect-neon">Neon Effect</h1>
+<h1 class="font-effect-outline">Outline Effect</h1>
+<h1 class="font-effect-emboss">Emboss Effect</h1>
+<h1 class="font-effect-shadow-multiple">Multiple Shadow Effect</h1>
+
+</body>
+Font Pairings;
+font pairing rules:
+1. Complement, without being too similar or too different
+2. Use Font Superfamilies, example 'Lucida' superfamily
+3. Contrast is King, example combining serif with sans serif is well known combination
+4. Choose Only One Boss
+popular font pairings:
+- Georgia and Verdana
+- Helvetica and Garamond
+popular google font pairings:
+- Merriweather and Open Sans
+- Ubuntu and Lora
+- Abril Fatface and Poppins
+- Cinzel and Fauna One
+- Fjalla One and Libre Baskerville
+- Space Mono and Muli
+- Spectral and Rubik
+- Oswald and Noto Sans
+Font Shorthand;
+'font' property is a shorthand property for:
+- font-style
+- font-variant
+- font-weight
+- font-size/line-hight
+- font-family
+Note: the font-size and font-family are required. if one of the other values is missing, their default value are used.
+font: 20px Arial, sans-serif;
+font: italic small-caps bold 12px/30px Georgia, serif;
+
+CSS Icons;
+Font Awesome Icons;
+<head>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<i class="fas fa-cloud"></i>
+<i class="fas fa-heart"></i>
+<i class="fas fa-car"></i>
+<i class="fas fa-file"></i>
+<i class="fas fa-bars"></i>
+
+</body>
+Bootstrap Icons;
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+<i class="glyphicon glyphicon-cloud"></i>
+<i class="glyphicon glyphicon-remove"></i>
+<i class="glyphicon glyphicon-user"></i>
+<i class="glyphicon glyphicon-envelope"></i>
+<i class="glyphicon glyphicon-thumbs-up"></i>
+
+</body>
+Google Icons;
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+
+<i class="material-icons">cloud</i>
+<i class="material-icons">favorite</i>
+<i class="material-icons">attachment</i>
+<i class="material-icons">computer</i>
+<i class="material-icons">traffic</i>
+
+</body>
+
+CSS Links;
+different types of cursors:
+<span style="cursor: auto">auto</span><br>
+<span style="cursor: crosshair">crosshair</span><br>
+<span style="cursor: default">default</span><br>
+<span style="cursor: e-resize">e-resize</span><br>
+<span style="cursor: help">help</span><br>
+<span style="cursor: move">move</span><br>
+<span style="cursor: n-resize">n-resize</span><br>
+<span style="cursor: ne-resize">ne-resize</span><br>
+<span style="cursor: nw-resize">nw-resize</span><br>
+<span style="cursor: pointer">pointer</span><br>
+<span style="cursor: progress">progress</span><br>
+<span style="cursor: s-resize">s-resize</span><br>
+<span style="cursor: se-resize">se-resize</span><br>
+<span style="cursor: sw-resize">sw-resize</span><br>
+<span style="cursor: text">text</span><br>
+<span style="cursor: w-resize">w-resize</span><br>
+<span style="cursor: wait">wait</span>
