@@ -40,3 +40,64 @@ sheep - sheep
 bison - bison
 fish - fish (fishes only used for individual species of fishes)
 species - specieses
+
+Irregular plural nouns: mutant plurals
+foot - feet
+women - women
+man - men
+tooth - teeth
+goose - geese
+mouse - mice
+louse - lice
+
+Irregular plural nouns: foreign plurals
+language - change - singular - Irr. plural - Reg. plural
+latin - a to ae - larva - larvae - larvas
+latin - us to i - fungus - fungi - funguses
+latin - um to a - datum - data - ....
+latin - ex to ices - index - indices - indexes
+greek - is to es - thesis - theses - thesises
+greek - on to a - criterion - criteria - ......
+phenomenon - phenomena
+alumnus - alumni
+bacterium - bacteria
+
+Verb:
+show action
+the bear 'roars'
+the bear 'runs'
+the bear 'sleeps'
+
+Verb Agreement:
+the correct way: the dog barks, the dogs bark.
+not correct way: the dog bark, the dogs barks
+the correct way: Jake bakes a cake. we bake a cake
+the wrong way: jake bake a cake. we bakes a cake
+
+Verb Tense:
+past - present - future
+I talked - I talk - I will talk
+
+Present Tense:
+I 'eat' a donut
+Bertie is 'singing' in the shower
+
+Past Tense:
+add '-ed'
+i 'walked' to the moon
+
+Future Tense:
+add 'will'
+i 'will' eat this cupcake
+add 'is going to'
+Lorraine 'is going to' visit canada!
+
+Linking Verbs:
+- link ideas/state of being
+the difference is:
+action: the bear 'eats' a fish
+link ideas:the bear 'is' hungry
+action: the bear 'looked' at me
+state of being: the bear 'looked' lonely
+action: the bear 'smells' a person
+link ideas: the bear 'smells' like cinnamon!
