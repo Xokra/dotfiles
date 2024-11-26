@@ -346,6 +346,7 @@ Style Guide:
 - spaceless equal sign
 - avoid long code blocks
 - add line break for large or logical code block, add two spaces of indentation
+-<title> for SEO
 - ommit <body> can produce error in older browser, ommit <html> and <body> can crash DOM & XML software
 - always use closing slash(/) if you want to use XML or XHTML to access your webpage
 - add "lang" attribute in <html> element
@@ -584,3 +585,32 @@ outline is a line drawn outside the element's border
 pretty much the same properties used by 'border'
 outline offset is a space between an outline and the border, example;
 outline-offset: 15px
+
+Text:
+Text Alignment;
+text-align: center, left, right, justify
+text-align-last: right, left, justify
+text direction;
+p {
+direction: rtl;
+unicode-bidi: bidi-override:
+}
+vertical-align: baseline, text-top, text-bottom, sub, super
+Text Decoration;
+text-decoration-line: overline line-through underline
+it is not recommended to underline text that is not a link, as this often confunses the reader
+text-decoration-color: red blue green purple
+text-decoration-style: solid double dotted dashed wavy
+text-decoration-thickness: 5px auto 25%
+text-decoration: underline red double 5px;
+text-decoration:none(to remove the underline from links)
+Text Tranformation;
+text-transform: uppercase lowercase capitalize
+Text Spacing;
+text-indent: 20px;
+letter-spacing: 5px;
+line-height: 1.8;
+word-spacing: -2px;
+white-space: nowrap;
+Text Shadow;
+text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
