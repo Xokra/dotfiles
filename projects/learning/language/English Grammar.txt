@@ -148,3 +148,22 @@ eat - ate - eaten
 speak - spoke - spoken
 be - was/were - been
 go - went - gone
+
+The Truly Irregular Verbs:
+change - present - past
+-ught:
+teach - taught
+catch - caught
+bring - brought
+-d+Ushift:
+flee - fled
+say - said
+past = present:
+bet - bet
+set - set 
+hurt - hurt
+model aux:
+can - could
+may - might
+shall - should
+will - would
