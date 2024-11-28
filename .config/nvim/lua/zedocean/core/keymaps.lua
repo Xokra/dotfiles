@@ -54,4 +54,11 @@ keymap.set("n", "<leader>ob", function()
   vim.fn.system('wslview "' .. file .. '"')
 end, { desc = "Open in Browser" })
 
-vim.keymap.set("i", "<C-BS>", "dw", { silent = true, desc = "delete from cursor to ending word" })
+-- -- Table Mode keymaps
+-- keymap.set("n", "<Leader>tm", ":TableModeToggle<CR>", { desc = "Toggle Table Mode" })
+-- keymap.set("n", "<Leader>ta", ":TableModeRealign<CR>", { desc = "Realign Table" })
+-- keymap.set("n", "<Leader>tr", ":TableModeInsertRow<CR>", { desc = "Insert Row in Table" })
+-- keymap.set("n", "<Leader>td", ":TableModeDeleteRow<CR>", { desc = "Delete Row in Table" })
+-- keymap.set("n", "<Leader>tc", ":TableModeInsertColumn<CR>", { desc = "Insert Column in Table" })
+-- keymap.set("n", "<Leader>tx", ":TableModeDeleteColumn<CR>", { desc = "Delete Column in Table" })
+-- keymap.set("n", "<Leader>te", ":TableModeDisable<CR>", { desc = "Disable Table Mode" })

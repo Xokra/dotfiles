@@ -101,3 +101,16 @@ action: the bear 'looked' at me
 state of being: the bear 'looked' lonely
 action: the bear 'smells' a person
 link ideas: the bear 'smells' like cinnamon!
+
+Helping Verbs:
+Brian 'is' eating a pizza
+Brian 'has' eaten a pizza
+Brian 'was' eating a pizza
+Brian 'had been' eating a pizza
+
+Irregular Verbs:
+verb - 1st pres - 3rd press - plural press - 1st past - plural past
+be - I am - she is - we are - I was - we were
+have - I have - She has - we have - I had - we had
+do - I do - she does - we do - I did - we did
+say - I say - she says - we say - I said - we said
