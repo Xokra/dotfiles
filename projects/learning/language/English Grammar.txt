@@ -135,3 +135,16 @@ find - found - found
 sit - sat - sat
 sneak - snuck - snuck
 run - ran - run
+
+Irregular Verb Gets Taken For a Ride:
+present - past - past p
+sing - sang - sung
+tear - tore - torn
+show - showed - shown
+prove - proved - proven
+bite - bit - bitten
+ride - rode - ridden
+eat - ate - eaten
+speak - spoke - spoken
+be - was/were - been
+go - went - gone
