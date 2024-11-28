@@ -114,3 +114,14 @@ be - I am - she is - we are - I was - we were
 have - I have - She has - we have - I had - we had
 do - I do - she does - we do - I did - we did
 say - I say - she says - we say - I said - we said
+
+funky -ed irregular verb:
+past - present
+walked - walk
+slept - sleep
+kept - keep
+built - build
+spent - spend
+left - leave
+leapt - leap
+lost - lose
