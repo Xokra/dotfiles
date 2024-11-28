@@ -115,7 +115,7 @@ have - I have - She has - we have - I had - we had
 do - I do - she does - we do - I did - we did
 say - I say - she says - we say - I said - we said
 
-funky -ed irregular verb:
+Funky -Ed Irregular Verb:
 past - present
 walked - walk
 slept - sleep
@@ -125,3 +125,13 @@ spent - spend
 left - leave
 leapt - leap
 lost - lose
+
+Vovel-shift Irregular Verb:
+present - past - past p
+sing - sang - sung
+drink - drank - drunk
+win - won - won
+find - found - found
+sit - sat - sat
+sneak - snuck - snuck
+run - ran - run
