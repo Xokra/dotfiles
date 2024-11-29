@@ -167,3 +167,11 @@ can - could
 may - might
 shall - should
 will - would
+
+Verb Aspect: Simple
+past - present - future
+I walked - I walk - I will walk
+
+Progressive Aspect:
+past prog - present prog - fut prog
+I was walking - I am walking - I will be walking
