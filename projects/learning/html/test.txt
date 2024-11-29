@@ -797,9 +797,17 @@ none,The element is completely removed
 visibility: hidden
 
 
+CSS Max-Width:
+it can have a responsive div
+
+
 CSS Position:
 - static
 - relative
 - fixed
 - absolute
 - sticky
+
+CSS Z-Index:
+z-index: 1;
+it is a stack order priority
