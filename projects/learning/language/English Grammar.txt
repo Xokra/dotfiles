@@ -175,3 +175,7 @@ I walked - I walk - I will walk
 Progressive Aspect:
 past prog - present prog - fut prog
 I was walking - I am walking - I will be walking
+
+Perfect Aspect:
+before past - before present - before future
+i had washed the dishes - i have washed the dishes - i will have washed the dishes
