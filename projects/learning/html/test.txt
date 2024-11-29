@@ -797,10 +797,6 @@ none,The element is completely removed
 visibility: hidden
 
 
-CSS Max-Width:
-it can have a responsive div
-
-
 CSS Position:
 - static
 - relative
@@ -808,6 +804,40 @@ CSS Position:
 - absolute
 - sticky
 
+
+CSS Max-Width:
+it can have a responsive div
+
+
 CSS Z-Index:
 z-index: 1;
 it is a stack order priority
+
+
+CSS Overflow:
+- visible
+- hidden
+- scroll
+- auto
+overflow-x: hidden;
+overflow-y: scroll;
+
+
+CSS Float:
+float: inherit;
+Clear;
+- none
+- left
+- right 
+- both
+- inherit
+The cleafix Hack;
+.clearfix {
+overflow: auto;
+}
+Modern clearfix hack;
+.clearfix::after {
+content: "";
+clear: both;
+display: table;
+}
