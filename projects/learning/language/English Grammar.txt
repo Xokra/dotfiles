@@ -203,3 +203,6 @@ I 'can' eat ten pounds of broccoli!(ability)
 I 'would' make the bed, but i'm tired.(possibility)
 You 'shouldn't' do that.(advice)
 He 'will' win the competition(future!)
+
+Pronouns:
+meaning stand in for other words
