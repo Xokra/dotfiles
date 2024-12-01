@@ -908,7 +908,9 @@ CSS Pseudo-element:
 ::before {}
 ::after {}
 ::marker {}
-::selection {}
+::selection {
+color;background;cursor;outline;
+}
 
 
 CSS Navigation Bar:
