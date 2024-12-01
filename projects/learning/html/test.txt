@@ -875,6 +875,45 @@ CSS Combinators:
 
 
 CSS Pseudo-classes:
-div:hover p {}
+first child;
 p i:first-child {}
 p:first-child i {}
+
+
+CSS Pseudo-element:
+::first-line, can only be applied to block-level elements,properties example;
+- font properties
+- color properties
+- background properties
+- text-decoration
+- text-transform
+- line-height
+- vertical-align
+- clear
+- word-spacing
+- letter-spacing
+::first-letter, properties example
+- font properties
+- color properties 
+- background properties
+- text-decoration
+- text-transform
+- line-height
+- vertical-align (only if "float" is "none")
+- clear
+- float
+- border properties
+- margin properties
+- padding properties
+::before {}
+::after {}
+::marker {}
+::selection {}
+
+
+CSS Navigation Bar:
+IE does not suppert 'sticky' positioning. safari requires '-webkit-sticky', you must also specify at least one of the 'top','right','bottom' or 'left' for sticky positioning to work
+ul{
+position: -webkit-sticky; (for safari)
+position: sticky;
+}
