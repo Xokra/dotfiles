@@ -691,45 +691,9 @@ font: italic small-caps bold 12px/30px Georgia, serif;
 
 
 CSS Icons;
-Font Awesome Icons;
-<head>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-</head>
-<body>
-
-<i class="fas fa-cloud"></i>
-<i class="fas fa-heart"></i>
-<i class="fas fa-car"></i>
-<i class="fas fa-file"></i>
-<i class="fas fa-bars"></i>
-
-</body>
-Bootstrap Icons;
-<head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
-
-<i class="glyphicon glyphicon-cloud"></i>
-<i class="glyphicon glyphicon-remove"></i>
-<i class="glyphicon glyphicon-user"></i>
-<i class="glyphicon glyphicon-envelope"></i>
-<i class="glyphicon glyphicon-thumbs-up"></i>
-
-</body>
-Google Icons;
-<head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-</head>
-<body>
-
-<i class="material-icons">cloud</i>
-<i class="material-icons">favorite</i>
-<i class="material-icons">attachment</i>
-<i class="material-icons">computer</i>
-<i class="material-icons">traffic</i>
-
-</body>
+-Font Awesome Icons;
+-Bootstrap Icons;
+-Google Icons;
 
 
 CSS Links;
@@ -901,3 +865,10 @@ center vertically - using flexbox;
   height: 200px;
   border: 3px solid green;
 }
+
+
+CSS Combinators:
+- 'div p {}'descendant combinator (space), "in the div, even there is another element with it like <section>"
+- 'div > p {}'child combinator (>) "in the div, but outside other specific element like <section>"
+- 'div + p {}'next sibling combinator (+) "first element after the div"
+- 'div ~ p {}'subsequest-sibling combinator (~) "after the div"
