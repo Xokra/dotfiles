@@ -872,3 +872,9 @@ CSS Combinators:
 - 'div > p {}'child combinator (>) "in the div, but outside other specific element like <section>"
 - 'div + p {}'next sibling combinator (+) "first element after the div"
 - 'div ~ p {}'subsequest-sibling combinator (~) "after the div"
+
+
+CSS Pseudo-classes:
+div:hover p {}
+p i:first-child {}
+p:first-child i {}
