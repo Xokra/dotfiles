@@ -977,3 +977,25 @@ li.dropdown {
     </div>
   </li>
 </ul>
+
+
+CSS Image Sprites:
+An image sprite is a collection of images put into a single image
+#home {
+width:
+height:
+background: url(img_navsprites.fig) 0 0;
+}
+
+
+CSS Attribute Selectors:
+a[target] {}, selects all <a> elements with a target attribute
+a[target="_blank"] {}, selects all <a> elements with a target="_blank" attribute
+[title~="flower"] {}, containing a specified word
+[class|="top"] {}, only for the word 'top' alone or followed by a hyphen(-)
+[class^]="top"] {}, selects all elements with a class attribute value that starts with "top"
+[class$="test"] {}, selects all elements witha class attribute value that ends with "test"
+[class*="te"] {}, selects all elements with a class attribute value that contain "te"
+Styling Forms;
+input[type="text"] {}
+input[type="button"] {}
