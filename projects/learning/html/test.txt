@@ -996,3 +996,19 @@ a[target="_blank"] {}, selects all <a> elements with a target="_blank" attribute
 [class^]="top"] {}, starts with "top"
 [class$="test"] {}, ends with "test"
 [class*="te"] {}, contain "te"
+
+
+CSS Forms:
+Animate Search Input;
+input[type-text] {
+-webkit-transition: 0.4s;
+transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+width: 100%;
+}
+Styling Textareas:
+textarea {
+resize: none vertical horizontal;
+}
+
