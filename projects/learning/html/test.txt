@@ -1012,3 +1012,28 @@ textarea {
 resize: none vertical horizontal;
 }
 
+
+CSS Counters:
+counter-reset - creates or resets a counter
+counter-increment - icrements a counter value
+content - inserts generated content
+counter() or counters() function - adds the value of a counter to an element
+body {
+counter-reset: section;
+}
+h1 {
+counter-reset: subsection;
+}
+h1::before {
+counter-increment: section;
+content: "Section " counter(section) ". ";
+}
+h2::before {
+counter-increment: subsection;
+content: counter(section) "." counter(subsection) " ";
+}
+or
+li::before {
+counter-increment: section;
+content : counters(section,".") " ";
+}
