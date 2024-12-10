@@ -1049,3 +1049,17 @@ pt = points (1pt = 1/72 of 1in)
 pc = picas (1pc = 12 pt)
 Relative Lengths;
 em, ex, ch, rem, vw, vh, vmin, vmax, %
+
+
+CSS Specificity:
+Hierarchy Priority;
+-Inline style = <h1 style="color: pink;">
+-Id selectors = #navbar
+-Classes and pseudo-classes = .test, :hover
+-Attributes = [type="text"]
+-Elements and Pseudo-elements = h1; ::before, ::after
+Equal secificity: the latest rule wins
+ID selectors have a higher specificity than attribute selectors:
+div#myDiv {background-color: green;}
+#myDiv {background-color: yellow;}
+div[id=myDiv] {background-color: blue;}
