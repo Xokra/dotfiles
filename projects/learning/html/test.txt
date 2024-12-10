@@ -1077,6 +1077,16 @@ min();
 width: min(50%, 300px)
 
 
+CSS ADVANCED
+
 CSS Border Images:
 border-image: url(border.png) 30 round;
 border-image: url(border.png) 30 stretch;
+
+
+CSS Background:
+background-size: contain
+background: url(img_tree.gif) left top no-repeat, url(img_flwr.gif) right bottom no-repeat, url(paper.gif) left top repeat;
+background-size: 50px, 130px, auto;
+background-origin: 'border-box' 'padding-box'(default) 'content-box'
+background-clip: 'border-box'(default) 'padding-box' 'content-box'
