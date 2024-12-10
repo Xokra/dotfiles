@@ -1075,3 +1075,8 @@ max();
 width: max(50%, 300px)
 min();
 width: min(50%, 300px)
+
+
+CSS Border Images:
+border-image: url(border.png) 30 round;
+border-image: url(border.png) 30 stretch;
