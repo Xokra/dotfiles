@@ -849,7 +849,7 @@ center vertically - using position & transform;
   position: relative;
   border: 3px solid green;
 }
-
+center with tranform;
 .center p {
   margin: 0;
   position: absolute;
@@ -1090,3 +1090,8 @@ background: url(img_tree.gif) left top no-repeat, url(img_flwr.gif) right bottom
 background-size: 50px, 130px, auto;
 background-origin: 'border-box' 'padding-box'(default) 'content-box'
 background-clip: 'border-box'(default) 'padding-box' 'content-box'
+
+
+CSS Color Keywords:
+background-color: transparent, currentcolor, inherit
+border: currentcolor, inherit
