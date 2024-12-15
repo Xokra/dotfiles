@@ -1,79 +1,257 @@
 <!doctype html>
 <html>
-  <title>welcome to dixie's page</title>
   <head>
-    <meta name="viewport" content="width=device-width, inital-scale=1.0" />
     <style>
-.mycontainer {
-  width:100%;
-  overflow:auto;
-}
-.mycontainer div {
-  width:33%;  
-  float:left;
-}
-</style>
-<body>
+      .gradient {
+        height: 150px;
+        width: 150px;
+        background-color: red; /* Fallback color */
+        display: inline-block;
+        margin: 10px;
+      }
 
-<div class="mycontainer">
+      #grad1 {
+        background-image: radial-gradient(
+          closest-side at 35% 35%,
+          red,
+          yellow,
+          black
+        );
+      }
 
-  <div style="background-color:#FFF4A3;">
-    <h2>London</h2>
-    <p>London is the capital city of England.</p>
-    <p>London has over 13 million inhabitants.</p>
-  </div>
-  
-  <div style="background-color:#FFC0C7;">
-    <h2>Oslo</h2>
-    <p>Oslo is the capital city of Norway.</p>
-    <p>Oslo has over 600.000 inhabitants.</p>
-  </div>
-  
-  <div style="background-color:#D9EEE1;">
-    <h2>Rome</h2>
-    <p>Rome is the capital city of Italy.</p>
-    <p>Rome has almost 3 million inhabitants.</p>
-  </div>
-<form>
-          <label for="fname">First Name:</label><br>
-          <input type="text" id="fname" name="fname"><br><br>
-          <input type="submit" value="Submit">
-</form>
-        <!--
-</div>
-th,
-td {
-background-color: pink;
-border: 1px outset pink;
-border-radius: 8px;
-color: white;
-font-family: sans-serif;
-}
-th:hover,
-td:hover {
-border: 1px inset pink;
-}
-</style>
-</head>
-<body style="background-color: #333">
-<table style="width: 100%">
-<tr>
-<th>test</th>
-<th>this</th>
-<th>thing</th>
-</tr>
-<tr>
-<td>another</td>
-<td>test</td>
-<td>this</td>
-</tr>
-<tr>
-<td>want</td>
-<td>another</td>
-<td>thing</td>
-</tr>
-</table>
-<h2 style="font-size: 5vw">testing scale</h2>
--->
+      #grad2 {
+        background-image: radial-gradient(
+          farthest-side at 35% 35%,
+          red,
+          yellow,
+          black
+        );
+      }
+
+      #grad3 {
+        background-image: radial-gradient(
+          closest-corner at 35% 35%,
+          red,
+          yellow,
+          black
+        );
+      }
+
+      #grad4 {
+        background-image: radial-gradient(
+          farthest-corner at 35% 35%,
+          red,
+          yellow,
+          black
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Radial Gradients - Adjustable % with Sliders</h1>
+
+    <label for="sliderAll">Adjust Both %:</label>
+    <input
+      type="range"
+      id="sliderAll"
+      min="0"
+      max="100"
+      value="35"
+    />
+    <span id="sliderAllValue">35%</span>
+    <br><br>
+
+    <label for="sliderX">Adjust Global X%:</label>
+    <input
+      type="range"
+      id="sliderX"
+      min="0"
+      max="100"
+      value="35"
+    />
+    <span id="sliderXValue">35%</span>
+    <br><br>
+
+    <label for="sliderY">Adjust Global Y%:</label>
+    <input
+      type="range"
+      id="sliderY"
+      min="0"
+      max="100"
+      value="35"
+    />
+    <span id="sliderYValue">35%</span>
+    <br><br>
+    <label for="sliderComplementary">Adjust Complementary %:</label>
+    <input
+      type="range"
+      id="sliderComplementary"
+      min="0"
+      max="100"
+      value="35"
+    />
+    <span id="sliderComplementaryValue">35%</span>
+    <br><br>
+
+    <h2>closest-side:</h2>
+    <div id="grad1" class="gradient"></div>
+    <label>X%:</label>
+    <input type="range" id="sliderX1" min="0" max="100" value="35" />
+    <span id="sliderXValue1">35%</span>
+    <label>Y%:</label>
+    <input type="range" id="sliderY1" min="0" max="100" value="35" />
+    <span id="sliderYValue1">35%</span>
+
+    <h2>farthest-side:</h2>
+    <div id="grad2" class="gradient"></div>
+    <label>X%:</label>
+    <input type="range" id="sliderX2" min="0" max="100" value="35" />
+    <span id="sliderXValue2">35%</span>
+    <label>Y%:</label>
+    <input type="range" id="sliderY2" min="0" max="100" value="35" />
+    <span id="sliderYValue2">35%</span>
+
+    <h2>closest-corner:</h2>
+    <div id="grad3" class="gradient"></div>
+    <label>X%:</label>
+    <input type="range" id="sliderX3" min="0" max="100" value="35" />
+    <span id="sliderXValue3">35%</span>
+    <label>Y%:</label>
+    <input type="range" id="sliderY3" min="0" max="100" value="35" />
+    <span id="sliderYValue3">35%</span>
+
+    <h2>farthest-corner (default):</h2>
+    <div id="grad4" class="gradient"></div>
+    <label>X%:</label>
+    <input type="range" id="sliderX4" min="0" max="100" value="35" />
+    <span id="sliderXValue4">35%</span>
+    <label>Y%:</label>
+    <input type="range" id="sliderY4" min="0" max="100" value="35" />
+    <span id="sliderYValue4">35%</span>
+
+    <script>
+      const sliderAll = document.getElementById('sliderAll');
+      const sliderX = document.getElementById('sliderX');
+      const sliderY = document.getElementById('sliderY');
+      const sliderAllValue = document.getElementById('sliderAllValue');
+      const sliderXValue = document.getElementById('sliderXValue');
+      const sliderYValue = document.getElementById('sliderYValue');
+
+      const slidersX = [
+        document.getElementById('sliderX1'),
+        document.getElementById('sliderX2'),
+        document.getElementById('sliderX3'),
+        document.getElementById('sliderX4'),
+      ];
+      const slidersY = [
+        document.getElementById('sliderY1'),
+        document.getElementById('sliderY2'),
+        document.getElementById('sliderY3'),
+        document.getElementById('sliderY4'),
+      ];
+
+      const valuesX = [
+        document.getElementById('sliderXValue1'),
+        document.getElementById('sliderXValue2'),
+        document.getElementById('sliderXValue3'),
+        document.getElementById('sliderXValue4'),
+      ];
+      const valuesY = [
+        document.getElementById('sliderYValue1'),
+        document.getElementById('sliderYValue2'),
+        document.getElementById('sliderYValue3'),
+        document.getElementById('sliderYValue4'),
+      ];
+
+      const gradients = document.querySelectorAll('.gradient');
+
+      const updateGradient = (index, xPercent, yPercent) => {
+        let sizeType = '';
+        switch (index) {
+          case 0:
+            sizeType = 'closest-side';
+            break;
+          case 1:
+            sizeType = 'farthest-side';
+            break;
+          case 2:
+            sizeType = 'closest-corner';
+            break;
+          case 3:
+            sizeType = 'farthest-corner';
+            break;
+        }
+
+        gradients[index].style.backgroundImage = `radial-gradient(
+          ${sizeType} at ${xPercent}% ${yPercent}%,
+          red,
+          yellow,
+          black
+        )`;
+      };
+
+      sliderAll.addEventListener('input', (event) => {
+        const percent = event.target.value;
+        sliderAllValue.textContent = `${percent}%`;
+        sliderX.value = percent;
+        sliderY.value = percent;
+        sliderXValue.textContent = `${percent}%`;
+        sliderYValue.textContent = `${percent}%`;
+
+        gradients.forEach((_, index) => {
+          slidersX[index].value = percent;
+          slidersY[index].value = percent;
+          valuesX[index].textContent = `${percent}%`;
+          valuesY[index].textContent = `${percent}%`;
+          updateGradient(index, percent, percent);
+        });
+      });
+
+      sliderX.addEventListener('input', (event) => {
+        const xPercent = event.target.value;
+        sliderXValue.textContent = `${xPercent}%`;
+        gradients.forEach((_, index) => {
+          updateGradient(index, xPercent, slidersY[index].value);
+        });
+      });
+
+      sliderY.addEventListener('input', (event) => {
+        const yPercent = event.target.value;
+        sliderYValue.textContent = `${yPercent}%`;
+        gradients.forEach((_, index) => {
+          updateGradient(index, slidersX[index].value, yPercent);
+        });
+      });
+
+      slidersX.forEach((slider, index) => {
+        slider.addEventListener('input', (event) => {
+          const xPercent = event.target.value;
+          valuesX[index].textContent = `${xPercent}%`;
+          updateGradient(index, xPercent, slidersY[index].value);
+        });
+      });
+
+      slidersY.forEach((slider, index) => {
+        slider.addEventListener('input', (event) => {
+          const yPercent = event.target.value;
+          valuesY[index].textContent = `${yPercent}%`;
+          updateGradient(index, slidersX[index].value, yPercent);
+        });
+      });
+
+      sliderComplementary.addEventListener('input', (event) => {
+        const percent = event.target.value;
+        const complementary = 100 - percent;
+        sliderComplementaryValue.textContent = `${percent}%`;
+
+        gradients.forEach((_, index) => {
+          updateGradient(index, percent, complementary);
+          slidersX[index].value = percent;
+          slidersY[index].value = complementary;
+          valuesX[index].textContent = `${percent}%`;
+          valuesY[index].textContent = `${complementary}%`;
+        });
+      });
+    </script>
   </body>
 </html>

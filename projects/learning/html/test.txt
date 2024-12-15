@@ -1095,3 +1095,21 @@ background-clip: 'border-box'(default) 'padding-box' 'content-box'
 CSS Color Keywords:
 background-color: transparent, currentcolor, inherit
 border: currentcolor, inherit
+
+
+CSS Gradients:
+Linear Gradients;
+background-image: linear-gradient(to right, red, yellow);
+to right(90deg)
+to left(-90deg)
+to top(0deg)
+to bottom(180deg)
+background-image: repeating-linear-gradient(red, yellow 10%, green 20%);
+Radial Gradient;
+ellipse(default), circle
+background-image: radial-gradient(circle, red, yellow, green);
+different size keywords;
+closest-side
+fathest-side
+closest-corner
+farthest-corner
