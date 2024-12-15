@@ -1113,3 +1113,7 @@ closest-side
 fathest-side
 closest-corner
 farthest-corner
+background-image: repeating-radial-gradient(red, yellow 10%, green 15%);
+Conic Gradients;
+background-image: conic-gradient([from angle] [at position,] color [degree], color [degree], ...);
+repeating-conic-gradient
