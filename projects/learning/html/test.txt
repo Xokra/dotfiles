@@ -1117,3 +1117,13 @@ background-image: repeating-radial-gradient(red, yellow 10%, green 15%);
 Conic Gradients;
 background-image: conic-gradient([from angle] [at position,] color [degree], color [degree], ...);
 repeating-conic-gradient
+
+
+CSS Text Effects:
+- text-overflow: clip ellipsis;
+.test:hover {
+overflow:visible;
+}
+- word-wrap: break-word;
+- word-break: keep-all break-all;
+- writing-mode: horizontal-tb vertical-rl;
