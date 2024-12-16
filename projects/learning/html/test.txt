@@ -1125,5 +1125,22 @@ CSS Text Effects:
 overflow:visible;
 }
 - word-wrap: break-word;
-- word-break: keep-all break-all;
+- word-break: keep-all break-all(readability is not priority);
 - writing-mode: horizontal-tb vertical-rl;
+
+
+CSS Web Fonts:
+@font-face {
+font-family: myFirstFont;
+src: url(sansation_light.woff);
+}
+div {
+font-family: myFirstFont;
+}
+Font Formats;
+- TrueType Fonts(TTF)
+- OpenType Fonts(OTF)
+- The Web Open Font Format (WOFF)
+- The Web Open Font Format (WOFF 2.0)
+- SVG Fonts/Shapes
+- Embedded OpenType Fonts (EOT)
