@@ -2,256 +2,143 @@
 <html>
   <head>
     <style>
-      .gradient {
-        height: 150px;
-        width: 150px;
-        background-color: red; /* Fallback color */
-        display: inline-block;
-        margin: 10px;
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 2em;
       }
 
-      #grad1 {
-        background-image: radial-gradient(
-          closest-side at 35% 35%,
-          red,
-          yellow,
-          black
-        );
+      .cube {
+        font-size: 4em;
+        width: 2em;
+        height: 2em;
+        margin: 1.5em auto;
+        transform-style: preserve-3d;
+        transform: perspective(5cm) rotateX(-15deg) rotateY(30deg);
+        position: relative;
+        pointer-events: none; /* Makes the cube untargetable */
       }
 
-      #grad2 {
-        background-image: radial-gradient(
-          farthest-side at 35% 35%,
-          red,
-          yellow,
-          black
-        );
+      .side {
+        position: absolute;
+        width: 2em;
+        height: 2em;
+        background: rgba(100, 100, 100, 0.3);
+        border: 1px solid red;
+        text-align: center;
+        line-height: 2em;
       }
 
-      #grad3 {
-        background-image: radial-gradient(
-          closest-corner at 35% 35%,
-          red,
-          yellow,
-          black
-        );
+      .front {
+        transform: translateZ(1em);
+      }
+      .back {
+        transform: rotateY(-180deg) translateZ(1em);
+      }
+      .right {
+        transform: rotateY(90deg) translateZ(1em);
+      }
+      .left {
+        transform: rotateY(-90deg) translateZ(1em);
+      }
+      .top {
+        transform: rotateX(90deg) translateZ(1em);
+      }
+      .bottom {
+        transform: rotateX(-90deg) translateZ(1em);
       }
 
-      #grad4 {
-        background-image: radial-gradient(
-          farthest-corner at 35% 35%,
-          red,
-          yellow,
-          black
-        );
+      .controls {
+        margin-top: 2em;
+      }
+
+      .control {
+        margin-bottom: 1em;
+      }
+
+      .value {
+        margin-left: 10px;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <h1>Radial Gradients - Adjustable % with Sliders</h1>
+    <h1>The perspective() Function</h1>
+    <h2>Interactive Cube Transformation</h2>
 
-    <label for="sliderAll">Adjust Both %:</label>
-    <input
-      type="range"
-      id="sliderAll"
-      min="0"
-      max="100"
-      value="35"
-    />
-    <span id="sliderAllValue">35%</span>
-    <br><br>
+    <div class="cube" id="cube">
+      <div class="side front">1</div>
+      <div class="side back">6</div>
+      <div class="side right">4</div>
+      <div class="side left">3</div>
+      <div class="side top">5</div>
+      <div class="side bottom">2</div>
+    </div>
 
-    <label for="sliderX">Adjust Global X%:</label>
-    <input
-      type="range"
-      id="sliderX"
-      min="0"
-      max="100"
-      value="35"
-    />
-    <span id="sliderXValue">35%</span>
-    <br><br>
-
-    <label for="sliderY">Adjust Global Y%:</label>
-    <input
-      type="range"
-      id="sliderY"
-      min="0"
-      max="100"
-      value="35"
-    />
-    <span id="sliderYValue">35%</span>
-    <br><br>
-    <label for="sliderComplementary">Adjust Complementary %:</label>
-    <input
-      type="range"
-      id="sliderComplementary"
-      min="0"
-      max="100"
-      value="35"
-    />
-    <span id="sliderComplementaryValue">35%</span>
-    <br><br>
-
-    <h2>closest-side:</h2>
-    <div id="grad1" class="gradient"></div>
-    <label>X%:</label>
-    <input type="range" id="sliderX1" min="0" max="100" value="35" />
-    <span id="sliderXValue1">35%</span>
-    <label>Y%:</label>
-    <input type="range" id="sliderY1" min="0" max="100" value="35" />
-    <span id="sliderYValue1">35%</span>
-
-    <h2>farthest-side:</h2>
-    <div id="grad2" class="gradient"></div>
-    <label>X%:</label>
-    <input type="range" id="sliderX2" min="0" max="100" value="35" />
-    <span id="sliderXValue2">35%</span>
-    <label>Y%:</label>
-    <input type="range" id="sliderY2" min="0" max="100" value="35" />
-    <span id="sliderYValue2">35%</span>
-
-    <h2>closest-corner:</h2>
-    <div id="grad3" class="gradient"></div>
-    <label>X%:</label>
-    <input type="range" id="sliderX3" min="0" max="100" value="35" />
-    <span id="sliderXValue3">35%</span>
-    <label>Y%:</label>
-    <input type="range" id="sliderY3" min="0" max="100" value="35" />
-    <span id="sliderYValue3">35%</span>
-
-    <h2>farthest-corner (default):</h2>
-    <div id="grad4" class="gradient"></div>
-    <label>X%:</label>
-    <input type="range" id="sliderX4" min="0" max="100" value="35" />
-    <span id="sliderXValue4">35%</span>
-    <label>Y%:</label>
-    <input type="range" id="sliderY4" min="0" max="100" value="35" />
-    <span id="sliderYValue4">35%</span>
+    <div class="controls">
+      <div class="control">
+        <label for="perspective">Perspective (cm):</label>
+        <input
+          type="range"
+          id="perspective"
+          min="1"
+          max="10"
+          step="0.1"
+          value="5"
+        />
+        <span class="value" id="perspectiveValue">5</span>
+      </div>
+      <div class="control">
+        <label for="rotateX">Rotate X (deg):</label>
+        <input
+          type="range"
+          id="rotateX"
+          min="-180"
+          max="180"
+          step="1"
+          value="-15"
+        />
+        <span class="value" id="rotateXValue">-15</span>
+      </div>
+      <div class="control">
+        <label for="rotateY">Rotate Y (deg):</label>
+        <input
+          type="range"
+          id="rotateY"
+          min="-180"
+          max="180"
+          step="1"
+          value="30"
+        />
+        <span class="value" id="rotateYValue">30</span>
+      </div>
+    </div>
 
     <script>
-      const sliderAll = document.getElementById('sliderAll');
-      const sliderX = document.getElementById('sliderX');
-      const sliderY = document.getElementById('sliderY');
-      const sliderAllValue = document.getElementById('sliderAllValue');
-      const sliderXValue = document.getElementById('sliderXValue');
-      const sliderYValue = document.getElementById('sliderYValue');
+      const cube = document.getElementById("cube");
+      const perspectiveInput = document.getElementById("perspective");
+      const rotateXInput = document.getElementById("rotateX");
+      const rotateYInput = document.getElementById("rotateY");
 
-      const slidersX = [
-        document.getElementById('sliderX1'),
-        document.getElementById('sliderX2'),
-        document.getElementById('sliderX3'),
-        document.getElementById('sliderX4'),
-      ];
-      const slidersY = [
-        document.getElementById('sliderY1'),
-        document.getElementById('sliderY2'),
-        document.getElementById('sliderY3'),
-        document.getElementById('sliderY4'),
-      ];
+      const perspectiveValue = document.getElementById("perspectiveValue");
+      const rotateXValue = document.getElementById("rotateXValue");
+      const rotateYValue = document.getElementById("rotateYValue");
 
-      const valuesX = [
-        document.getElementById('sliderXValue1'),
-        document.getElementById('sliderXValue2'),
-        document.getElementById('sliderXValue3'),
-        document.getElementById('sliderXValue4'),
-      ];
-      const valuesY = [
-        document.getElementById('sliderYValue1'),
-        document.getElementById('sliderYValue2'),
-        document.getElementById('sliderYValue3'),
-        document.getElementById('sliderYValue4'),
-      ];
+      function updateCubeTransform() {
+        const perspective = perspectiveInput.value;
+        const rotateX = rotateXInput.value;
+        const rotateY = rotateYInput.value;
 
-      const gradients = document.querySelectorAll('.gradient');
+        cube.style.transform = `perspective(${perspective}cm) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 
-      const updateGradient = (index, xPercent, yPercent) => {
-        let sizeType = '';
-        switch (index) {
-          case 0:
-            sizeType = 'closest-side';
-            break;
-          case 1:
-            sizeType = 'farthest-side';
-            break;
-          case 2:
-            sizeType = 'closest-corner';
-            break;
-          case 3:
-            sizeType = 'farthest-corner';
-            break;
-        }
+        perspectiveValue.textContent = perspective;
+        rotateXValue.textContent = rotateX;
+        rotateYValue.textContent = rotateY;
+      }
 
-        gradients[index].style.backgroundImage = `radial-gradient(
-          ${sizeType} at ${xPercent}% ${yPercent}%,
-          red,
-          yellow,
-          black
-        )`;
-      };
-
-      sliderAll.addEventListener('input', (event) => {
-        const percent = event.target.value;
-        sliderAllValue.textContent = `${percent}%`;
-        sliderX.value = percent;
-        sliderY.value = percent;
-        sliderXValue.textContent = `${percent}%`;
-        sliderYValue.textContent = `${percent}%`;
-
-        gradients.forEach((_, index) => {
-          slidersX[index].value = percent;
-          slidersY[index].value = percent;
-          valuesX[index].textContent = `${percent}%`;
-          valuesY[index].textContent = `${percent}%`;
-          updateGradient(index, percent, percent);
-        });
-      });
-
-      sliderX.addEventListener('input', (event) => {
-        const xPercent = event.target.value;
-        sliderXValue.textContent = `${xPercent}%`;
-        gradients.forEach((_, index) => {
-          updateGradient(index, xPercent, slidersY[index].value);
-        });
-      });
-
-      sliderY.addEventListener('input', (event) => {
-        const yPercent = event.target.value;
-        sliderYValue.textContent = `${yPercent}%`;
-        gradients.forEach((_, index) => {
-          updateGradient(index, slidersX[index].value, yPercent);
-        });
-      });
-
-      slidersX.forEach((slider, index) => {
-        slider.addEventListener('input', (event) => {
-          const xPercent = event.target.value;
-          valuesX[index].textContent = `${xPercent}%`;
-          updateGradient(index, xPercent, slidersY[index].value);
-        });
-      });
-
-      slidersY.forEach((slider, index) => {
-        slider.addEventListener('input', (event) => {
-          const yPercent = event.target.value;
-          valuesY[index].textContent = `${yPercent}%`;
-          updateGradient(index, slidersX[index].value, yPercent);
-        });
-      });
-
-      sliderComplementary.addEventListener('input', (event) => {
-        const percent = event.target.value;
-        const complementary = 100 - percent;
-        sliderComplementaryValue.textContent = `${percent}%`;
-
-        gradients.forEach((_, index) => {
-          updateGradient(index, percent, complementary);
-          slidersX[index].value = percent;
-          slidersY[index].value = complementary;
-          valuesX[index].textContent = `${percent}%`;
-          valuesY[index].textContent = `${complementary}%`;
-        });
-      });
+      perspectiveInput.addEventListener("input", updateCubeTransform);
+      rotateXInput.addEventListener("input", updateCubeTransform);
+      rotateYInput.addEventListener("input", updateCubeTransform);
     </script>
   </body>
 </html>
