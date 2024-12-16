@@ -1144,3 +1144,16 @@ Font Formats;
 - The Web Open Font Format (WOFF 2.0)
 - SVG Fonts/Shapes
 - Embedded OpenType Fonts (EOT)
+
+
+CSS 2D Transforms:
+translate (50px,50px)
+rotate (20deg)
+scaleX(2)
+scaleY(0.5)
+scale(2,0.5)
+skewY(20deg)
+skewX(-20deg)
+skew(-20deg,20deg)
+matrix(scaleX(),skewY(),skewX(),scaleY(),transaletX(),translateY())
+transform: matrix(1, -0.3, 0, 1, 0, 0);
