@@ -1157,3 +1157,9 @@ skewX(-20deg)
 skew(-20deg,20deg)
 matrix(scaleX(),skewY(),skewX(),scaleY(),transaletX(),translateY())
 transform: matrix(1, -0.3, 0, 1, 0, 0);
+
+
+CSS 3D Transforms:
+rotateX ()
+rotateY ()
+rotateZ ()
