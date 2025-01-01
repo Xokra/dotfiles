@@ -1234,7 +1234,7 @@ transition: opacity 1s;
 content: "";
 position: absolute;
 margin-left: -5px;
-border-width: 5px;/*should be the same value as margin-left to keep the arrow centered.
+border-width: 5px;/*should be the same value as margin-left to keep the arrow centered*/
 border-style: solid;
 /*bottom & top arrow*/
 left: 50%;
