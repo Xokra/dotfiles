@@ -1239,7 +1239,7 @@ border-style: solid;
 /*bottom & top arrow*/
 left: 50%;
 top: 100%;/*at the bottom of the tooltip*/
-border-color: black transparent transparent transparent transparent;/*at the bottom of the tooltip*/
+border-color: black transparent transparent transparent;/*at the bottom of the tooltip*/
 bottom: 100%;/*at the top of the tooltip*/
 border-color: transparent transparent black transparent;/*at the top of the tooltip*/
 /*left & right arrow*/
