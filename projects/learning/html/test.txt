@@ -1215,7 +1215,7 @@ border-radius: 6px;
 position: absolute;
 z-index: 1;
 /* for right and left*/
-top: -5px;
+top: -5px;/*same as the padding*/
 left: 105%;/*right tooltip*/
 right: 105%; /*left tooltip*/
 /*for top & bottom*/
