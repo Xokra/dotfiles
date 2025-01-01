@@ -1189,7 +1189,7 @@ div {
   animation-delay: 2s;
   animation-iteration-count: infinite;
   animation-direction: normal reverse alternate-reverse alternate;
-  animation-fill-mode: backwards;
+  animation-fill-mode: forwards backwards;
 }
 div {
   animation: example 5s linear 2s infinite alternate backwards;
@@ -1197,4 +1197,60 @@ div {
 
 
 CSS Tooltip:
+.tooltip {
+position: relative;
+display: inline-block;
+border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+visibility: hidden;
+width 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+padding: 5px 0;
+border-radius: 6px;
 
+/* Position the tooltip*/
+position: absolute;
+z-index: 1;
+/* for right and left*/
+top: -5px;
+left: 105%;/*right tooltip*/
+right: 105%; /*left tooltip*/
+/*for top & bottom*/
+margin-left: -60px; /*use half of the width (120/2=60), to center the tooltip */
+left: 50%;
+bottom: 100%;/*top tooltip*/
+top: 100%;/*bottom tooltip/
+
+/*fade in tooltips (Animation)*/
+opacity: 0;
+transition: opacity 1s;
+}
+
+/*tooltip arrow*/
+.tooltip .tooltiptext::after {
+content: "";
+position: absolute;
+margin-left: -5px;
+border-width: 5px;/*should be the same value as margin-left to keep the arrow centered.
+border-style: solid;
+/*bottom & top arrow*/
+left: 50%;
+top: 100%;/*at the bottom of the tooltip*/
+border-color: black transparent transparent transparent transparent;/*at the bottom of the tooltip*/
+bottom: 100%;/*at the top of the tooltip*/
+border-color: transparent transparent black transparent;/*at the top of the tooltip*/
+/*left & right arrow*/
+top: 50%;
+right: 100%; /*to the left of the tooltip*/
+border-color: transparent black transparent transparent;
+left: 100% /*to the right of the tooltip*/
+border-color: transparent transparent transparent black;
+}
+.tooltip:hover .tooltiptext {
+visibility: visible;
+/*fade in tooltips*/
+opacity: 1;
+}
