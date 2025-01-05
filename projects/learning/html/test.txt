@@ -1254,3 +1254,49 @@ visibility: visible;
 /*fade in tooltips*/
 opacity: 1;
 }
+
+
+CSS Image-Styling:
+responsive images;
+img {
+max-width: 100%;
+height: auto;
+}
+
+polaroid images/cards;
+div.polaroid {
+width: 80%;
+background-color: white;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+img {width: 100%}
+div.container {
+text-align: center;
+padding: 10px 20px;
+}
+
+image text:
+.container {
+position: relative;
+}
+.top(left or right) or bottom(left or right) {
+position: absolute;
+font-size: 20px;
+/*for top left/right*/
+top: 8px;
+left: 12px;/*if it is topleft*/
+right: 12px;/*if it is topright*/
+/*for bottom left/right*/
+bottom: 8px;
+left: 12px;/*if it is bottomleft*/
+right: 12px;/*if it is bottomright*/
+/*for center*/
+top: 50%;
+left: 50%;
+tranform: translate(-50%,-50%);
+}
+img {
+width: 100%;
+height: auto;
+opacity: 0.5;
+}
