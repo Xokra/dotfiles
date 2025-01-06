@@ -1310,7 +1310,7 @@ width: 50%
 display: block;
 width: 100%;
 height: auto;
-/*for fade in overlay*/
+/*for fade in a box*/
 opacity: 1;
 transition: 0.5 ease;
 backface-visibility: hidden;
