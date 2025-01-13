@@ -1302,6 +1302,10 @@ opacity: 0.5;
 }
 
 image hover overlay:
+there are;
+-fade in text
+-fade in a box
+-slide in(top,bottom,left,right)
 .container {
 position: relative;
 width: 50%
@@ -1310,17 +1314,17 @@ width: 50%
 display: block;
 width: 100%;
 height: auto;
-/*for fade in a box*/
+/*only for fade in a box*/
 opacity: 1;
 transition: 0.5 ease;
 backface-visibility: hidden;
 }
-.overlay /*all except fade in overlay*/ {
+.overlay /*all except fade in text*/ {
 position: absolute;
 right: 0;
 background-color: #008CBA
 transition: .5s ease;
-overflow: hidden; /*none for fade in overlay*/
+overflow: hidden; /*none for fade in text*/
 width: 100%; /*except for slide in overlay from the left and right is 0*/
 height: 100%; /*except for slide in overlay from the top and bottom is 0*/
 bottom: 0; /*except for slide in overlay on the top is 100%*/
@@ -1331,7 +1335,7 @@ height: 100%;/*for slide in overlay from the top and bottom*/
 width: 100%;/*for slide in from the right and left*/
 bottom: 0;/*for slide in overlay from the top*/
 left: 0;/*for slide in from the right*/
-opacity: 1;/*only for fade in overlay*/
+opacity: 1;/*only for fade in text*/
 }
 /*only for fade in a box*/
 .middle {
