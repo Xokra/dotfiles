@@ -992,7 +992,7 @@ CSS Attribute Selectors:
 a[target] {}, selects all <a> elements with a target attribute
 a[target="_blank"] {}, selects all <a> elements with a target="_blank" attribute
 [title~="flower"] {}, contains a space-seperated list of word 
-[class|="top"] {}, only for the word 'top' alone or followed by a hyphen(-)
+[class|="top"] {}, only the word 'top' alone or followed by a hyphen(-)
 [class^]="top"] {}, starts with "top"
 [class$="test"] {}, ends with "test"
 [class*="te"] {}, contain "te"
@@ -1314,30 +1314,30 @@ width: 50%
 display: block;
 width: 100%;
 height: auto;
-/*only for fade in a box*/
+/*only fade in a box*/
 opacity: 1;
 transition: 0.5 ease;
 backface-visibility: hidden;
 }
-.overlay /*all except fade in text*/ {
+.overlay /*all except fade in box*/ {
 position: absolute;
 right: 0;
 background-color: #008CBA
 transition: .5s ease;
 overflow: hidden; /*none for fade in text*/
-width: 100%; /*except for slide in overlay from the left and right is 0*/
-height: 100%; /*except for slide in overlay from the top and bottom is 0*/
-bottom: 0; /*except for slide in overlay on the top is 100%*/
-left: 0: /*except for slide in overlay from the right is 100%*/  
+width: 100%; /*except slide in left and right is 0*/
+height: 100%; /*except slide in top and bottom is 0*/
+bottom: 0; /*except slide in top is 100%*/
+left: 0: /*except slide in right is 100%*/  
 }
 .container:hover .overlay {
-height: 100%;/*for slide in overlay from the top and bottom*/
-width: 100%;/*for slide in from the right and left*/
-bottom: 0;/*for slide in overlay from the top*/
-left: 0;/*for slide in from the right*/
-opacity: 1;/*only for fade in text*/
+height: 100%;/*for slide in top and bottom*/
+width: 100%;/*for slide in right and left*/
+bottom: 0;/*for slide in top*/
+left: 0;/*for slide in right*/
+opacity: 1;/*only fade in text*/
 }
-/*only for fade in a box*/
+/*only fade in a box*/
 .middle {
 transition: .5s ease;
 opacity: 0;
@@ -1357,16 +1357,16 @@ opacity: 1;
 .text {
 color: white;
 font-size: 20px;
-/*all except for fade in*/
+/*all except fade in*/
 white-space: nowrap;
 overflow: hidden;
-/*all except for fade in a box*/
+/*all except fade in a box*/
 position: absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 -ms-transform: translate(-50%, -50%);
-/*only for fade in a box*/
+/*only fade in a box*/
 background-color: #4CAF50;
 padding 16px 32px;
 }
