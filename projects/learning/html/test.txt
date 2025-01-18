@@ -152,7 +152,7 @@ background-color:blue;
 colgroup:
 <table>
 <colgroup>
-<col span="2" style="invisibility:collapse">
+<col span="2" style="visibility: collapse">
 
 list:
 unordered list:
@@ -1331,17 +1331,17 @@ bottom: 0; /*except slide in top is 100%*/
 left: 0: /*except slide in right is 100%*/  
 }
 .container:hover .overlay {
-height: 100%;/*for slide in top and bottom*/
-width: 100%;/*for slide in right and left*/
-bottom: 0;/*for slide in top*/
-left: 0;/*for slide in right*/
+width: 100%;/*only slide in right and left*/
+height: 100%;/*only slide in top and bottom*/
+bottom: 0;/*only slide in top*/
+left: 0;/*only slide in right*/
 opacity: 1;/*only fade in text*/
 }
 /*only fade in a box*/
 .middle {
-transition: .5s ease;
-opacity: 0;
 position: absolute;
+opacity: 0;
+transition: .5s ease;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
@@ -1357,7 +1357,7 @@ opacity: 1;
 .text {
 color: white;
 font-size: 20px;
-/*all except fade in*/
+/*only slide in*/
 white-space: nowrap;
 overflow: hidden;
 /*all except fade in a box*/
@@ -1368,11 +1368,40 @@ transform: translate(-50%, -50%);
 -ms-transform: translate(-50%, -50%);
 /*only fade in a box*/
 background-color: #4CAF50;
-padding 16px 32px;
+padding: 16px 32px;
 }
 <div class="container">
   <image src="img_avatar.png" alt="Avatar" class="image" style="width:100%">
-  <div class="middle">
+  <div class="middle/overlay">
     <div class="text">John Deo</div>
   </div>
 </div>
+
+
+CSS Image Centering:
+1. Using margin:auto
+img {
+display: block;
+margin: auto;
+}
+2. Using display: flex
+img {
+display: flex;
+justify-content: center /*centers the image horizontally in the div container*/
+align-items: center /*centers the image verticaly in the div container*/
+}
+
+
+CSS Image Filters:
+img {
+filter: blur(2px);
+filter: brightness(150%);
+filter: contrast(150%);
+filter: drop-shadow(8px 8px 10px gray);
+filter: grayscale(60% or 0.4);
+filter: hue-rotate(200deg);
+filter: invert(70% or 0.3);
+filter: opacity(80% or 0.3);
+filter: saturate(0 - 200%);
+filter: sepia(60% or 0.4);
+}
