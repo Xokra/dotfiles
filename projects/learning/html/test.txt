@@ -1430,3 +1430,35 @@ object-fit: fill;/* will be stretched or squized to fit*/
 object-fit: none;/* not resized*/
 object-fit: scale-down;/* scaled down to the smallest version of 'none' or 'contain'*/
 }
+
+
+CSS Masking:
+Image as the Mask Layer;
+.mask1 {
+-webkit-mask-image: url(w3logo.png);
+mask-image: url(w3logo.png);
+mask-repeat: no-repeat;
+}
+Gradients as the Mask Layer;
+/*linear gradient*/
+.mask1 {
+-webkit-mask-image: linear-gradient(black, transparent);
+mask-image: linear-gradient(black, transparent);
+}
+/*radial-gradient*/
+.mask2 {
+-webkit-mask-image: radial-gradient(cilcle, black 50%, rgba(0, 0, 0, 0.5) 50%);
+mask-image: radial-gradient(cilcle, black 50%, rgba(0, 0, 0, 0.5) 50%);
+}
+.mask3 {
+  -webkit-mask-image: radial-gradient(ellipse, black 50%, rgba(0, 0, 0, 0.5) 50%);
+  mask-image: radial-gradient(ellipse, black 50%, rgba(0, 0, 0, 0.5) 50%);
+}
+SVG as the Mask Layer;
+/*triangle*/
+<svg width="600" height="400">
+  <mask id="svgmask1">
+    <polygon fill="#ffffff" points="200 0, 400 400, 0 400"></polygon>
+  </mask>
+  <image xmsne:xlink="http://www.w3.org/1999/xlink" xlink:href="img_5terre.jpg" mask="url(#svgmask1)"</image>
+</svg>
