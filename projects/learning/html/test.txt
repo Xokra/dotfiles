@@ -1418,3 +1418,15 @@ clip-path: ellipse(40% 50% at right);
 shape-outside: ellipse(45% 50%);
 clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
+
+
+CSS Object Fit:
+img {
+width: 200px;
+height: 300px;
+object-fit: cover;/* clip to fit*/
+object-fit: contain;/* resized to fit within the given dimension*/
+object-fit: fill;/* will be stretched or squized to fit*/
+object-fit: none;/* not resized*/
+object-fit: scale-down;/* scaled down to the smallest version of 'none' or 'contain'*/
+}
