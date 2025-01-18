@@ -1405,3 +1405,16 @@ filter: opacity(80% or 0.3);
 filter: saturate(0 - 200%);
 filter: sepia(60% or 0.4);
 }
+
+
+CSS Image Shapes:
+img {
+float: left;
+clip-path: circle(40%);
+clip-path: circle(40% at right);
+shape-outside: circle(45%);
+clip-path: ellipse(40% 50%);
+clip-path: ellipse(40% 50% at right);
+shape-outside: ellipse(45% 50%);
+clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
