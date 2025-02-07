@@ -1379,7 +1379,7 @@ padding: 16px 32px;
 
 Flip an Image:
 img:hover {
-tranform: scaleX(-1);
+transform: scaleX(-1);
 }
 
 
