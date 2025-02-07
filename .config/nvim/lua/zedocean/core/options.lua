@@ -23,7 +23,7 @@ opt.undofile = true
 opt.hlsearch = false
 opt.incsearch = true
 
-opt.scrolloff = 9
+opt.scrolloff = 20
 opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
