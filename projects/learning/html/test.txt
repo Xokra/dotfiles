@@ -1495,19 +1495,19 @@ CSS Pagination:
   display: inline-block;
 }
 .pagination a {
-  color: black;
   float: left;
+  color: black;
+  border: 1px solid #ddd;
+  border-radius: 2.65px;
   padding: 6px 17px;
+  margin: 0 4px;
   text-decoration: none;
   transition: background-color .3s;
-  border: 1px solid #ddd;
-  margin: 0 4px;
-  border-radius: 2.65px;
 }
 .pagination a.active {
+  border: 1px solid #4CAF50;
   background-color: #4Caf87;
   color: white;
-  border: 1px solid #4CAF50;
 }
 .pagination a:first-child {
   border-top-left-radius: 5px;
@@ -1521,6 +1521,11 @@ CSS Pagination:
 </style>
 </head>
 <body>
+<p>Next/Previous buttons:</p>
+<div class="pagination">
+  <a href="#">❮</a>
+  <a href="#">❯</a>
+</div>
 <h2>Centered Pagination</h2>
 <div class="center">
   <div class="pagination">
@@ -1535,3 +1540,4 @@ CSS Pagination:
   </div>
 </div>
 </body>
+
