@@ -1510,7 +1510,6 @@ CSS Pagination:
   border: 1px solid #4CAF50;
 }
 .pagination a:first-child {
-
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
@@ -1531,7 +1530,6 @@ CSS Pagination:
   <a href="#">3</a>
   <a href="#">4</a>
   <a href="#">5</a>
-
   <a href="#">6</a>
   <a href="#">&raquo;</a>
   </div>
