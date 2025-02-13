@@ -1474,7 +1474,7 @@ SVG as the Mask Layer;
   <mask id="svgmask1">
     <polygon fill="#ffffff" points="200 0, 400 400, 0 400"></polygon>
   </mask>
-  <image xmsne:xlink="http://www.w3.org/1999/xlink" xlink:href="img_5terre.jpg" mask="url(#svgmask1)"</image>
+  <image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img_5terre.jpg" mask="url(#svgmask1)"</image>
 </svg>
 /*circles*/
 <svg width="600" height="400">
