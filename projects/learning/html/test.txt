@@ -1541,3 +1541,26 @@ CSS Pagination:
 </div>
 </body>
 
+Breadcrumbs:
+ul.breadcrumb {
+  list-style: none;
+  padding: 8px 16px;
+  background-color: #eee;
+}
+ul.breadcrumb li {display: inline;}
+ul.breadcrumb li+li:before {
+  content: "/\00a0";
+  color: black;
+  padding: 8px;
+}
+ul.breadcrumb li a {color: green;}
+</style>
+</head>
+<body>
+<h2>Breadcrumb Pagination</h2>
+<ul class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Pictures</a></li>
+  <li><a href="#">Summer 15</a></li>
+  <li>Italy</li>
+</ul>
