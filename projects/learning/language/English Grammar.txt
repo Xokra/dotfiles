@@ -43,7 +43,7 @@ species - species
 
 Irregular plural nouns: mutant plurals
 foot - feet
-women - women
+woman - women
 man - men
 tooth - teeth
 goose - geese
