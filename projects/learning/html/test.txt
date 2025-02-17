@@ -1566,13 +1566,13 @@ ul.breadcrumb li a {color: green;}
 </ul>
 
 ul.breadcrumb {
-padding: 8px 16px;
-list-style: none;
-background-color: #eee;
+  list-style: none;
+  padding: 8px 16px;
+  background-color: #eee;
 }
 ul.breacrumb li {display: inline;}
 ul.breadcrumb li+li:before {
-padding: 8px;
-color: black;
-content: "/\00a0";
+  content: "/\00a0";
+  color: black;
+  padding: 8px;
 }
