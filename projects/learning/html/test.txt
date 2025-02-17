@@ -1574,3 +1574,23 @@ div {
   column-width: 300px;
 }
 h2 {column-span: all;}
+
+
+CSS User-Interface:
+Resize;
+div {
+  border: 1px solid black;
+  resize: horizontal vertical both;
+  overflow: auto;
+}
+textarea {
+  resize: none;
+}
+
+Outline Offset; space between the border and the outline.
+div {
+  margin: 20px;
+  border: 1px solid black;
+  outline: 4px solid red;
+  outline-offset: 15px;
+}
