@@ -46,6 +46,7 @@ bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
+# bindkey -v
 
 # History
 HISTSIZE=5000

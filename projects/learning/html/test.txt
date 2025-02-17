@@ -1564,3 +1564,15 @@ ul.breadcrumb li a {color: green;}
   <li><a href="#">Summer 15</a></li>
   <li>Italy</li>
 </ul>
+
+ul.breadcrumb {
+padding: 8px 16px;
+list-style: none;
+background-color: #eee;
+}
+ul.breacrumb li {display: inline;}
+ul.breadcrumb li+li:before {
+padding: 8px;
+color: black;
+content: "/\00a0";
+}
