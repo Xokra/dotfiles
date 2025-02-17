@@ -1565,14 +1565,12 @@ ul.breadcrumb li a {color: green;}
   <li>Italy</li>
 </ul>
 
-ul.breadcrumb {
-  list-style: none;
-  padding: 8px 16px;
-  background-color: #eee;
+
+CSS Multiple Columns:
+div {
+  column-count: 3;
+  column-gap: 40px;
+  column-rule:1px solid lightblue;
+  column-width: 300px;
 }
-ul.breacrumb li {display: inline;}
-ul.breadcrumb li+li:before {
-  content: "/\00a0";
-  color: black;
-  padding: 8px;
-}
+h2 {column-span: all;}
