@@ -1627,6 +1627,9 @@ border-bottom: 2px solid var(--blue);
 
 
 CSS @property:
+@property --something {
+  syntax: "<color>" "<number>" "<length>";
+}
 @property --startColor {
  syntax: "<color>";
  initial-value: #EADED8;
