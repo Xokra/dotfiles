@@ -1658,3 +1658,14 @@ CSS @property:
 #grad1 {
   height: 200px;
 }
+
+
+CSS MQ Examples:
+@media only screen and (orientation: landscape) {
+  body {
+    background-color: lightblue;
+  }
+}
+@media screen and (max-width: 900px) and (min-width: 600px) {
+something
+}
