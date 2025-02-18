@@ -1594,3 +1594,33 @@ div {
   outline: 4px solid red;
   outline-offset: 15px;
 }
+
+
+CSS Variables:
+:root {
+  --blue: #1e90ff;
+  --white: #fff;
+}
+.container {
+  --fontsize: 25px;
+}
+body {
+background-color: var(--blue);
+}
+h2 {
+border-bottom: 2px solid var(--blue);
+}
+.container {
+  color: var(--blue);
+  background-color: var(--white);
+  padding: 15px;
+  font-size: var(--fontsize);
+}
+@media screen and (mind-width: 450px) {
+.container {
+  --fontsize: 50px;
+}
+:root {
+  --blue: lightblue;
+}
+}
