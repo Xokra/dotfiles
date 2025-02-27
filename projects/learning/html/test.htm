@@ -1,144 +1,68 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Passive House</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding: 2em;
-      }
-
-      .cube {
-        font-size: 4em;
-        width: 2em;
-        height: 2em;
-        margin: 1.5em auto;
-        transform-style: preserve-3d;
-        transform: perspective(5cm) rotateX(-15deg) rotateY(30deg);
-        position: relative;
-        pointer-events: none; /* Makes the cube untargetable */
-      }
-
-      .side {
-        position: absolute;
-        width: 2em;
-        height: 2em;
-        background: rgba(100, 100, 100, 0.3);
-        border: 1px solid red;
-        text-align: center;
-        line-height: 2em;
-      }
-
-      .front {
-        transform: translateZ(1em);
-      }
-      .back {
-        transform: rotateY(-180deg) translateZ(1em);
-      }
-      .right {
-        transform: rotateY(90deg) translateZ(1em);
-      }
-      .left {
-        transform: rotateY(-90deg) translateZ(1em);
-      }
-      .top {
-        transform: rotateX(90deg) translateZ(1em);
-      }
-      .bottom {
-        transform: rotateX(-90deg) translateZ(1em);
-      }
-
-      .controls {
-        margin-top: 2em;
-      }
-
-      .control {
-        margin-bottom: 1em;
-      }
-
-      .value {
-        margin-left: 10px;
-        font-weight: bold;
-      }
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
     </style>
-  </head>
-  <body>
-    <h1>The perspective() Function</h1>
-    <h2>Interactive Cube Transformation</h2>
-
-    <div class="cube" id="cube">
-      <div class="side front">1</div>
-      <div class="side back">6</div>
-      <div class="side right">4</div>
-      <div class="side left">3</div>
-      <div class="side top">5</div>
-      <div class="side bottom">2</div>
-    </div>
-
-    <div class="controls">
-      <div class="control">
-        <label for="perspective">Perspective (cm):</label>
-        <input
-          type="range"
-          id="perspective"
-          min="1"
-          max="10"
-          step="0.1"
-          value="5"
-        />
-        <span class="value" id="perspectiveValue">5</span>
-      </div>
-      <div class="control">
-        <label for="rotateX">Rotate X (deg):</label>
-        <input
-          type="range"
-          id="rotateX"
-          min="-180"
-          max="180"
-          step="1"
-          value="-15"
-        />
-        <span class="value" id="rotateXValue">-15</span>
-      </div>
-      <div class="control">
-        <label for="rotateY">Rotate Y (deg):</label>
-        <input
-          type="range"
-          id="rotateY"
-          min="-180"
-          max="180"
-          step="1"
-          value="30"
-        />
-        <span class="value" id="rotateYValue">30</span>
-      </div>
-    </div>
-
+</head>
+<body>
     <script>
-      const cube = document.getElementById("cube");
-      const perspectiveInput = document.getElementById("perspective");
-      const rotateXInput = document.getElementById("rotateX");
-      const rotateYInput = document.getElementById("rotateY");
+        let scene, camera, renderer, controls;
 
-      const perspectiveValue = document.getElementById("perspectiveValue");
-      const rotateXValue = document.getElementById("rotateXValue");
-      const rotateYValue = document.getElementById("rotateYValue");
 
-      function updateCubeTransform() {
-        const perspective = perspectiveInput.value;
-        const rotateX = rotateXInput.value;
-        const rotateY = rotateYInput.value;
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
 
-        cube.style.transform = `perspective(${perspective}cm) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // Add Lighting
+            const light = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(light);
 
-        perspectiveValue.textContent = perspective;
-        rotateXValue.textContent = rotateX;
-        rotateYValue.textContent = rotateY;
-      }
+            // Add a Floor
+            const floorGeometry = new THREE.PlaneGeometry(50, 50);
+            const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
 
-      perspectiveInput.addEventListener("input", updateCubeTransform);
-      rotateXInput.addEventListener("input", updateCubeTransform);
-      rotateYInput.addEventListener("input", updateCubeTransform);
+
+            // Add House Walls (Example Box)
+            const wallGeometry = new THREE.BoxGeometry(10, 5, 10);
+            const wallMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, wireframe: true });
+            const house = new THREE.Mesh(wallGeometry, wallMaterial);
+            house.position.y = 2.5;
+            scene.add(house);
+
+            camera.position.set(15, 10, 15);
+            camera.lookAt(0, 2.5, 0);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            renderer.render(scene, camera);
+
+        }
+
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        init();
     </script>
-  </body>
+</body>
 </html>
+
