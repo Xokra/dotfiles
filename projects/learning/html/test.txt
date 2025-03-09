@@ -1680,3 +1680,47 @@ CSS Flex Container:
   align-items: center flex-start flex-end stretch baseline normal;
   align-content: center stretch flex-start flex-end space-around space-between space-evenly;
 }
+
+
+CSS Flex Items:
+"order" property;
+<div class="flex-container">
+  <div style-"order: 3">1</div>
+  <div style="order: 2">2</div>
+  <div style="order: 4">3</div>
+  <div style="order: 1">4</div>
+</div>
+"flex-grow" property;
+<div class="flex-container">
+  <div style="flex-grow: 1">1</div>
+  <div style="flex-grow: 1">2</div>
+  <div style="flex-grow: 8">3</div>
+</div>
+"flex-shrink" property;
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex-shrink: 0">3</div>
+</div>
+"flex-basis" property;
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex-basis: 200px">3</div>
+  <div>4</div>
+</div>
+"flex" property, shorthand for 'flex-grow','flex-shrink','flex-basis';
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex: 0 0 200px">3</div>
+  <div>4</div>
+</div>
+"align-self" property;
+<div class="flex-container">
+  <div>1</div>
+  <div style="align-self: flex-start">2</div>
+
+  <div style="align-self: flex-end">3</div>
+  <div>4</div>
+</div>
