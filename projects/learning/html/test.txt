@@ -1720,7 +1720,21 @@ CSS Flex Items:
 <div class="flex-container">
   <div>1</div>
   <div style="align-self: flex-start">2</div>
-
   <div style="align-self: flex-end">3</div>
   <div>4</div>
 </div>
+
+
+CSS Grid Columns, Rows and Gaps:
+.container {
+  display: grid;
+  column-gap: 50px;
+  row-gap: 100px;
+  gap: 50px 100px;/*for column-gap and row-gap*/
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-column: 1 / span 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-row: 1 / span 2;
+}
