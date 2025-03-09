@@ -1728,6 +1728,7 @@ CSS Flex Items:
 CSS Grid Columns, Rows and Gaps:
 .container {
   display: grid;
+  grid-template-columns: auto auto auto;
   column-gap: 50px;
   row-gap: 100px;
   gap: 50px 100px;/*for column-gap and row-gap*/
@@ -1737,4 +1738,16 @@ CSS Grid Columns, Rows and Gaps:
   grid-row-start: 1;
   grid-row-end: 3;
   grid-row: 1 / span 2;
+}
+
+
+CSS Grid Container:
+.grid-container {
+  display: grid;
+  grid-template-columns: 80px 200px auto 40px;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-rows: 80px 200px;
+  justify-content: space-evenly space-around space-between center start end;
+  align-content: space-evenly space-around space-between center start end;
+  place-content: /*shorthand property for the 'align-content' and 'justify-content'*/
 }
