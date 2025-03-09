@@ -956,7 +956,7 @@ li.dropdown {
 }
 .dropdown-content a {
   display: block;
-   text-align: left;
+  text-align: left;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
@@ -1668,4 +1668,15 @@ CSS MQ Examples:
 }
 @media screen and (max-width: 900px) and (min-width: 600px) {
 something
+}
+
+
+CSS Flex Container:
+.flex-container {
+  display: flex;
+  flex-direction: row column row-reverse column-reverse;
+  flex-wrap: nowrap wrap wrap-reverse;
+  justify-content: center flex-start flex-end space-around space-between space-evenly;
+  align-items: center flex-start flex-end stretch baseline normal;
+  align-content: center stretch flex-start flex-end space-around space-between space-evenly;
 }
