@@ -8,6 +8,7 @@ alert(5+6);
 console.log(5+6);/*for debugging purposes*/
 <button onclick="window.print()">Print this page</button>
 
+
 JS Data Types:
 JavaScript Arrays;
 const cars = ["Saab", "Volvo", "BMW"];
@@ -16,3 +17,14 @@ const person = {firstName: "John", lastName: "Doe", age:50, eyeColor:"blue"};
 The typeof Operator;
 typeof "John" //Returns "string"
 typeof 0 // Returns "number"
+
+
+JS Functions:
+<p id="demo"></p>
+<script>
+let text = "The temperature is " + toCelcius(77) + "Celsius.";
+document.getElementById("demo").innerHTML = text;
+function toCelcius(fahrenheit) {
+  return (5/9) * (fahrenheit-32);
+}
+</script>
