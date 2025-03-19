@@ -76,3 +76,9 @@ alias la='lazygit'
 # alias tx='tmux new-session -A -s main \; run-shell "/home/zed/.tmux/plugins/tmux-resurrect/scripts/restore.sh" || tmux new-session -s main'
 alias tx='echo "Running tmux" && tmux new-session -A -s main \; run-shell "/home/zed/.tmux/plugins/tmux-resurrect/scripts/restore.sh" || echo "Restore failed" && tmux new-session -s main'
 # alias tx='tmux'
+
+
+# Start battery monitor if not already running
+if ! pgrep -f "battery-monitor.sh" > /dev/null; then
+  nohup ~/battery-monitor.sh > /dev/null 2>&1 &
+fi
