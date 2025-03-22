@@ -28,3 +28,54 @@ function toCelcius(fahrenheit) {
   return (5/9) * (fahrenheit-32);
 }
 </script>
+
+
+JS Objects:
+Object Properties;
+car properties like weight and color: car.weight = 850kg, car.color = white.
+
+Object Methods;
+car has methods like start and stop: car.start(), car.drive(), car.brake(), car.stop().
+
+Using the new Keyword.
+const person = new object();
+person.firstName = "John";
+person.lastName = "Doe";
+person.age = 50;
+person.eyeColor = "blue";
+
+Object Properties;
+Property Value
+firstName John
+lastName Doe
+age 50
+eyeColor blue
+fullName function() {return this.firstName + " " + this.lastName}
+const person = {
+  firstName : "John",
+  lastName  : "Doe",
+  id        : 5566,
+  fullName  : function() {
+    return this.firstName + " " + this.lastName;
+  }
+};
+
+Objects are containers for Propertios and Methods.
+Propertios are named Values.
+Methods are Functions stored as Properties.
+Properties can be primitive values, functions, or even other objects.
+
+7 types of primitive data types:
+string, number, boolean, null, undefined, symbol, bigint.
+
+JavaScript Objects are Mutable:
+//Create an Object
+const preson = {
+  firstName : "John",
+  lastName: "Doe",
+  age:50, eyeColor:"blue"
+}
+// Try to create a copy
+const x = person;
+// This will change age in person:
+x.age = 10;
