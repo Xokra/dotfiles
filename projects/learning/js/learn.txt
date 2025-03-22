@@ -79,3 +79,45 @@ const preson = {
 const x = person;
 // This will change age in person:
 x.age = 10;
+
+
+JS Object Properties:
+Accessing JavaScript Properties;
+let age = person.age;
+let age = person["age"];
+let age = person[x];
+<script>
+const person = {
+  firstName: "John",
+  lastName : "Doe",
+  age      : 50
+};
+let x = "firstName";
+let y = "age";
+document.getElementById("demo").innerHTML = person[x] + " is " + person[y] + " years old.";
+</script>
+
+Deleting Properties;
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50,
+  eyeColor: "blue"
+};
+delete person.age;
+
+Nested Objects;
+<script>
+const myObj = {
+  name: "John",
+  age: 30,
+  myCars: {
+    car1: "Ford",
+    car2: "BMW",
+    car3: "Fiat"
+  }
+}
+let p1= "myCars";
+let p2 = "car2";
+document.getElementById("demo").innerHTML = myObj[p1][p2];
+</script>
