@@ -60,8 +60,8 @@ const person = {
   }
 };
 
-Objects are containers for Propertios and Methods.
-Propertios are named Values.
+Objects are containers for Properties and Methods.
+Properties are named Values.
 Methods are Functions stored as Properties.
 Properties can be primitive values, functions, or even other objects.
 
@@ -121,3 +121,85 @@ let p1= "myCars";
 let p2 = "car2";
 document.getElementById("demo").innerHTML = myObj[p1][p2];
 </script>
+
+
+JS Object Methods:
+Accesing Object Methods;
+fullName property with (), will execute as a function:
+name = person.fullName();
+
+fullName property without (), will return the function definition:
+name = person.fullName;
+
+Adding a Method to an Object;
+person.name = function () {
+  return this.firstName + " " + this.lastName;
+};
+
+Using JavaScript Methods;
+person.name = function () {
+  return (this.firstName + " " + this.lastName).toUpperCase();
+};
+
+
+JS Object Display:
+Displaying Object Properties;
+// Create an Object
+const person = {
+  name: "John",
+  age: 30,
+  city: "New York"
+};
+// Display Preperties
+document.getElementById("demo").innerHTML = 
+person.name + "," + person.age + "," + person.city;
+// it will show: John, 30, New York
+
+Displaying Properties in a Loop:
+// Create an Object
+const person = {
+  name: "John",
+  age : 30,
+  city: "New York"
+};
+// Build a Text
+let text = "";
+for (let x in person) {
+  text += person[x] + " ";
+};
+// Display the Text
+document.getElementById("demo").innerHTML = text;
+// it will show: John 30 New York
+
+Using Object.values():
+// Create an Object
+const person = {
+  name: "John",
+  age: 30,
+  city: "New York"
+};
+// Create an Array
+const myArray = Object.values(person);
+// Display the Array
+document.getElementById("demo").innerHTML = myArray;
+// it will show: John,30,New York
+
+Using Object.entries():
+const fruits = {Bananas: 300, Oranges:200, Apples:500};
+let text = "";
+for(let [fruit,value] of Object.entries(fruits)) {
+  text += fruit + ": " + value + "<br>";
+}
+
+Using Json.stringify():
+// Create an Object
+const person = {
+  name: "John",
+  age: 30,
+  city: "New York"
+};
+// Stringify Object
+let myString = JSON.stringify(person);
+// Display String
+document.getElementById("demo").innerHTML = myString;
+// it will show: {"name";"John","age":50,"city":"New York"}
