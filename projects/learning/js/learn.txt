@@ -70,7 +70,7 @@ string, number, boolean, null, undefined, symbol, bigint.
 
 JavaScript Objects are Mutable:
 //Create an Object
-const preson = {
+const person = {
   firstName : "John",
   lastName: "Doe",
   age:50, eyeColor:"blue"
@@ -125,11 +125,17 @@ document.getElementById("demo").innerHTML = myObj[p1][p2];
 
 JS Object Methods:
 Accesing Object Methods;
-fullName property with (), will execute as a function:
-name = person.fullName();
-
-fullName property without (), will return the function definition:
-name = person.fullName;
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  id: 5566,
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+};
+document.getElementById("demo").innerHTML= person.fullName();
+name = person.fullName(); will execute as a function. // it will show: John Doe
+name = person.fullName; will return the function definition. // it will show : function() {return this.firstName + " " + this.lastName;}
 
 Adding a Method to an Object;
 person.name = function () {
@@ -143,26 +149,18 @@ person.name = function () {
 
 
 JS Object Display:
-Displaying Object Properties;
 // Create an Object
 const person = {
   name: "John",
   age: 30,
   city: "New York"
 };
-// Display Preperties
+Displaying Object Properties;
 document.getElementById("demo").innerHTML = 
 person.name + "," + person.age + "," + person.city;
 // it will show: John, 30, New York
 
 Displaying Properties in a Loop:
-// Create an Object
-const person = {
-  name: "John",
-  age : 30,
-  city: "New York"
-};
-// Build a Text
 let text = "";
 for (let x in person) {
   text += person[x] + " ";
@@ -172,13 +170,6 @@ document.getElementById("demo").innerHTML = text;
 // it will show: John 30 New York
 
 Using Object.values():
-// Create an Object
-const person = {
-  name: "John",
-  age: 30,
-  city: "New York"
-};
-// Create an Array
 const myArray = Object.values(person);
 // Display the Array
 document.getElementById("demo").innerHTML = myArray;
@@ -190,16 +181,39 @@ let text = "";
 for(let [fruit,value] of Object.entries(fruits)) {
   text += fruit + ": " + value + "<br>";
 }
+//it will show:
+Bananas: 300
+Oranges: 200
+Apples: 500
 
 Using Json.stringify():
-// Create an Object
-const person = {
-  name: "John",
-  age: 30,
-  city: "New York"
-};
 // Stringify Object
 let myString = JSON.stringify(person);
 // Display String
 document.getElementById("demo").innerHTML = myString;
-// it will show: {"name";"John","age":50,"city":"New York"}
+// it will show: {"name":"John","age":50,"city":"New York"}
+
+
+JS Object Contructors:
+function Person(first, last, age, eye) {
+  this.firstName = first;
+  this.lastName = last;
+  this.age = age;
+  this.eyeColor = eye;
+  this.fullName = function() {
+    return this.firstName + " " + this.lastName
+  };
+}
+const myFather = new Person("John", "Doe", 50, "blue"0;)
+const myMother = new Person("Sally", "Rally", 48, "green");
+// Add a Name Method, will be added to 'myMother'. Not to any other 'Person Objects'.
+myMother.changeName = function (name) {
+  this.lastName = name;
+}
+// add to 'Person Object'
+Person.prototype.changeName = function (name) {
+  this.lastName = name;
+}
+// Change Name
+myMother.changeName("Doe");
+//
