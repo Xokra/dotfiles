@@ -1,0 +1,1760 @@
+paragraph:
+
+<p>
+<hr>horizontal rule
+<br>line break
+<pre>preformatted text, poem like
+
+style attribute:
+<'any element' style="background-color:blue;color:blue;font-family:courier;font-size:60px or 200%;text-align:right">
+
+formatting:
+<b>bold text
+<strong>Important text(it is the same like <b> but with strong importance)
+<i>italic text
+<em>Emphasized text
+<mark>mark text
+<small>small text
+<del>deleted text
+<ins>inserted text
+<sub>subscript text
+<sup>superscript text
+
+quotation:
+
+<blockquote cite="...">a section that is quoted from another source.
+<q>insert quotation marks around the quotation
+<abbr title="...">description of the abbreviation
+<address>contact information of the author/owner. add line break before and after the address element,renders in italic
+<cite>the title of a creative work, usually renders in italic.
+<bdo>bi-directional override, override the current text direction
+
+color:
+html support 140 standart color names
+it can change the, background-color, text color, and border color(style="border:2px solid blue;")
+color value: rgb, hex, hsl
+rgb: has 16.777.216 possible colors
+rgb(255,255,255)
+shade of gray often defined using equal values for all three parameters
+hex the same
+hsl:
+hue 0 is red, 120 is green,240 is blue
+saturation 0 is shades of gray and 100% is full color
+lightness 0 is black and 100% is white
+for shade of gray usually the hue and saturation set to 0, and the lightness to get from darker to lighter shades
+
+CSS: cascading style sheets
+css can be use in three ways:
+inline, by using the style attribute inside HTML elements
+internal, by using the <style> element in the <head> section
+external, by using the <link> element to an external CSS file, example;
+
+<link rel="stylesheet" href="style.css">
+css border use border around the text
+example,style="border:2px solid black"
+padding property is the space between the text and the border
+margin property is the space outside the border
+example, style="border:2px solid white;padding:20px;margin:60px"
+
+link:
+<a href="...">
+target attribute, example: target="\_self;\_blank;\_parent;top"
+absolute url vs relative url(a link to a page within the same website)
+image as link, example: <a href="..."><img src="..." alt="..."></a>
+email as link, example: <a href="mailto:blabla@bla.com">...</a>
+button as link, example: <button onclick="document.location='...'">
+link title, example: <a href="..." title="for hover the link">
+link colors; you can make buttons out of links with style
+
+<style>
+a:link{unvisited}
+a:visited{visited}
+a:hover{}
+a:active{}
+bookmark link; 
+<h2 id="04">chapter 4</h2>
+<a href="#04">jump to chapter 4</a>
+
+images:
+<img src="..." alt="..." style="float:right;width:2px;height:2px">
+image map:
+<img src="..." alt=".." usemap="#something" href="..">
+<map name="something">
+<area shape="rect" coords="9,9,20,20">
+rect coords from point to point
+circle from circle and radius
+poly from dot to dot
+image map and javascript; use javascript to add click notification
+<map name="something">
+<area shape="rect" coords="9,9,20,20" alt=".." href="something.html" onclick="myFunction()">
+<script>
+function myFunction() {
+alert("You clicked the image!");
+}
+</script>
+
+background-image:
+
+<style>
+p {
+background-image:url('something.jpg');
+background-repeat:no-repeat;
+background-size:cover(or use 100% 100% for stretch);
+background-attachment:fixed;
+}
+<picture>
+<source media="(min-width:450px)" srcset="something.jpg">
+<source media="(min-width:600px)" srcset="and.jgp">
+<img src="then.jpg">
+</picture>
+
+favicon:
+<head>
+<title>something</title>
+<link rel="icon" type="image/x-icon" href="something.jpg">
+
+title:
+for bookmark and search engine
+
+table:
+<table>
+<tr>
+<th>bla</th>
+<th>bla</th>
+</tr>
+<tr>
+<td>now</td>
+<td>when</td>
+</tr>
+</table>
+table border,example;
+<style>
+table, td, th {
+border:2px solid black;
+border-collapse:collapse;
+border-radius:20px;
+}
+border-style;
+dotted, dashed, solid, double, groove, ridge, inset, outset, none, hidden
+border size:
+<table style="width:100%">
+border heading: to make the heading horizontal.
+<table>
+<tr>
+<th>
+<td>
+<td>
+</tr>
+</table>
+colspan and rowspan;
+<table>
+<tr>
+<th colspan="2">
+table style:
+<style>
+th:nth-child(even){
+background-color:blue;
+}
+colgroup:
+<table>
+<colgroup>
+<col span="2" style="visibility: collapse">
+
+list:
+unordered list:
+<ul style="list-style-type:disc/circle/square/none">
+<li>test</li>
+<li>now</li>
+</ul>
+horizontal unordered list:
+<style>
+ul {
+background-color:#111;
+padding:0;
+margin:0;
+list-style-type:none;
+overflow:hidden;
+}
+li a {
+display:block;
+text-align:center;
+color:white;
+float:left
+padding:18px;
+}
+li:hover{
+background-color:#333;
+}
+ordered list:
+<ol type="1,A,a,I,i">
+<li>etc</li>
+description list:
+<dl>
+<dt>coffee</dt>
+<dd>americano</dd>
+<dd>capucino</dd>
+
+block & inline:
+block level element always start in a new line, take the full width, and always begins and end with a margin, block level example element are <p> and <div>
+inline level element not start with a new line, and just take the width as it needs. inline level element example are <span>
+<div> element is a container for other html element, and is not require any attributes but class, id, and style are common
+<span> element is a container for text or document, and is not require any attributes but class, id and style are common
+
+Div:
+center a div with margin attribute,example;
+<style>
+div{
+margin:auto;
+}
+horizontal div, example;
+<style>
+.mycontainer {
+width:100%;
+overflow:auto;
+}
+.mycontainer > div {
+float:left;
+width:33%;
+}
+display:inline-block,example;
+div{
+display:inline-block;
+width:33%;  
+}
+flex, example;
+<style>
+.mycontainer {
+display:flex;
+}
+.mycontainer > div {
+width:33%;
+}
+grid, example;
+<style>
+.mycontainer{
+display:grid;
+grid-template-collumns: 33% 33% 33%;
+}
+
+class:
+"." then the name of the class, then put the class attribute in any elements you wish,
+class can be use in multiple elements
+and can put more than one class in an element
+
+id:
+"#" then the name of the id, then put the id in any elements you wish,
+the difference between class and id is class can be used with multiple elements while id only can be use in one element in a website
+
+iframe:
+is an element to open a webpage inside a webpage, example;
+<iframe src="test.html" style="width:400px;height:500px;" title="the project" name="target">
+<a href="google.com" target="target">google.com</a>
+
+Javascript:
+<p id="demo">something</p>
+document.getElementById("demo").innerHTML="Hello Javascrip";
+document.getElementById("demo").style.color="blue";
+document.getElementById("demo").style.backgroundColor="white";
+document.getElementById("demo").style.fontSize="20px";
+<noscript>Sorry, your browser does not support JavaScript!</noscript>
+
+File Paths:
+for good practices, use relative url.
+
+Head:
+<title>,<style>,<meta>,<link>,<script>,<base>
+<title> for Search Engine Optimizer
+<style> for CSS
+<meta>:
+<meta chrset="utf-8">
+<meta name="keyword" content="HTML,CSS,STYLE">
+<meta name="description" content="free web document tutorial">
+<meta name="author" content="van gogh">
+<meta http-equiv="refresh" content="30">
+<meta name="viewport" content="width:device-width,initial-scale=1.0">
+
+Layout:
+<header>,<nav>,<section>,<article>,<aside>,<footer>
+Layout Techniques:
+CSS Frameworks, tailwind, bootstrap, w3.css
+float layout, common to do entire web with float property, but the disadvantage that the float property tied to the document flow, which may harm the flexibility.
+flex layout, ensure that elements behave predictably when the page layout accomodate different screen sizes and different display devices.
+grid layout, offer a grid-based layout system, with rows and columns, making it easier to design web pages without having to use floats and positioning
+
+Responsive:
+Setting Viewport; <meta name="viewport" content="width=device-width, initial-scale=1.0">
+Responsive Images; width="100%", max-width="100%",<picture>
+Responsive Text; font-size="1vw"
+Media Querie; 
+<style>
+.left, .right {
+width:20%;
+float:left;
+}
+.main {
+width:60%;
+float:left;
+}
+@media screen and (max-width: 800px){
+.left, .main, . right {
+width:100%
+}
+}
+</style>
+
+Responsive Framework; w3.css, bootstrap, tailwind.
+
+Computer Code:
+<kbd> for computer input, example "ctrl + s"
+<samp> for computer output, example "File is not found"
+<code> for computer code, example "x+y"
+<var> for variable, it is in italic, example <p>this is <var>x</var> + <var>y</var>
+
+Semantics:
+
+<section> contain;
+- chapter
+- introduction
+- news item
+- contact information
+<article> contain;
+- forum post
+- blog post
+- user comments
+- product cards
+- newspaper articles
+<header> contain;
+- one or more heading(h1-h6)
+- logo or icon
+- authorship information
+<footer>
+- authorship information
+- copyright information
+- contact information
+- sitemap
+- back to top link
+- related documents
+<nav> navigation link, for screen reader for the disabled
+<aside> for explaination
+<figure> contain; illustrations, diagrams, photos, code-listing.
+example;
+<figure>
+<img>
+<figcaption></figcaption>
+</figure>
+<figcaption> caption of the figure
+
+Style Guide:
+
+- always declare document type, example; <!DOCTYPE html>
+- always use lowercase HTML elements
+- always close HTML elements
+- always use lowercase attributes
+- always quote attribute value
+- define alt,width,height for <img> element
+- spaceless equal sign
+- avoid long code blocks
+- add line break for large or logical code block, add two spaces of indentation -<title> for SEO
+- ommit <body> can produce error in older browser, ommit <html> and <body> can crash DOM & XML software
+- always use closing slash(/) if you want to use XML or XHTML to access your webpage
+- add "lang" attribute in <html> element
+- add "charset" attribute in <meta> element
+- set viewport
+- commenting
+- CSS guide
+- <script src="MyScript.js">
+- javascript is case sensitive for the ID
+- always use lowercase filename
+- file extension
+- .html and .htm are the same
+- servers can automatically add default filename at the end if it is not defined, server can configure more than one 'default' filename
+
+Entities:
+non-breaking space; &nbsp ,&#160
+less than; &lt, &#60
+greater than; &gt, &#62
+Combine Diacritical Mark
+a&#768
+a&#769
+a&#770
+a&#771
+
+Symbol:
+there are Mathematical Symbol, Greek Symbol, and others
+
+Emojis:
+from the UTF-8 charset
+
+Charset:
+ASCII is the first character encoding standart for the web, it has 128 different characters
+ANSI is the original Window character set, it has 256 different characters;
+
+- it is the same with ASCII for the first 127 characters
+- special characters from 128 to 159
+- same with UTF-8 from 160 to 255
+  ISO-8859-1 is the default character set for HTML 4;
+- it is the same with ASCII for the first 127 characters
+- does not use the character from 128 to 159
+- same with UTF-8 and ANSI from 160 to 255
+  UTF-8;
+- it is the same with ASCII for the first 127 characters
+- does not use the character from 128 to 159
+- same with ANSI and 8859 from 160 to 255
+- more from 256 to 10000 characters
+
+Uniform Resource Locators:
+Uniform Resource Locators compose with "name" (www.w3schools.com) or Internet Protocol addreses (e.g. 192.68.20.50).
+Uniform Resource Locators used to addres documents or data on the web.
+Web address sytax rules;
+scheme://prefix.domain:port/path/filename
+Scheme: the 'type' of internet services, usually http or https
+Prefix: the domain prefix, usually www
+Port: the port number of a server, for http usually 80
+Path: path of the server, if ommited it is the root of the directory of the site
+Filename: the name of the document or resource
+Different Scheme:
+HTTP, Hypertext Transfer Protocol, common web, non-encrypted
+HTTPS, Secure Hypertext Transfer Protocol, secure web, encrypted
+FTP, downloading and uploading file
+File,
+URL can only be sent over the internet using the ASCII character set, if it use outside the ASCII character set, it has to be converted
+URL replace non-ASCII character with a "%" followed by hexidecimal digit
+URL cannot contain spaces, URL encoding normally replace spaces with (+) or %20
+
+HTML vs XHTML:
+XHTML stands for Extensible Hypertext Markup Language;
+XHTML is a stricter, more XML base version of HTML
+The Most Important differences from HTML
+
+<!DOCTYPE> is mandatory
+
+the xmlns attribute in <html> element are mandatory
+
+<html>, <head>, <title>, and <body> are mandatory
+elements must always properly nested
+elements must always be closed, <p></p>
+empty element must always be closed, <br/>,<hr/>,<img/>
+elements must always be in lowercase
+attribute name must always in lowercase
+attribute values must always be quoted
+attribute minimization is forbidden, example;
+<input type="checkbox" name="vehicle" value="car" checked="checked" />
+<input type="text" name="lastname" disabled="disabled" />
+
+FORM:
+
+<form> element is a container for different types of input elements, such as:
+<input type="text">
+<input type="radio">
+<input type="checkbox">
+<input type="submit">
+<input type="button">
+<label> element is useful for screen-reader users, when the user clicks the text within the <label> element, it toggles the radio/checkbox
+the 'for' attribute of the <label> tag should be equal to the id attribute of the <input> element to bind them together.
+the 'name' attribute for <input> has to have the same value as 'for' attribute from the <label> element or the value of the input field will not be sent at all
+<form>
+<label for="fname">First Name</label><br>
+<input type="text" id="fname" name="fname" value="john"><br><br>
+<input type="submit" value="Submit">
+</form>
+
+Form Attributes:
+list of all <form> attributes;
+accept-charset,action,autocomplete,enctype,method,name,novalidate,rel,target.
+
+<form action="/action_page.php">
+<form action="/action_page.php" target="_blank">
+<form action="/action_page.php" method="post" (or 'get')
+<form action="/action_page.php" autocomplete="on">
+<form action="/action_page.php" novalidate>
+
+Form Elements:
+<input>
+<label>
+<select id="a" name="a" size="3" multiple>
+
+<option value="cars" selected>
+<textarea name="a" rows="30" cols="20" style="width:100px;height:200px">something</textarea>
+<button type="button" onclick="alert("bakekok")">Click Me!</button>
+<fieldset>
+<legend>Personalia:</legend>
+datalist;
+<input list="browsers" name="browser">
+<datalist id="browsers">
+<option value="a">
+output;
+<form action=""
+oninput="x.value=parseINT(a.value)+parseINT(b.value)">
+0
+<input type="range" id="a" name="a" value="50">
+100 +
+<input type="number" id="b" name="b" value="50">
+=
+<output name="x" for="a b"></output>
+<br><br>
+<input type="submit" value="Submit">
+</form>
+
+Input Types:
+-text
+-password
+-submit
+-reset
+-radio
+-checkbox
+-button
+-color
+-date
+-datetime-local
+-email
+-images
+-file
+-hidden
+-month
+-number
+Input Restriction:
+checked,disabled,max,max-length,min,pattern,readonly,required,size,step,value
+another input types:
+-range
+-search
+-tel
+-time
+-url
+-week
+
+Input Attributes:
+-value
+-readonly
+-disable
+-size
+-max-length
+-min max
+-multiple
+-pattern
+-placeholder
+-require
+-step
+-autofocus
+-width & height in image
+-list
+-autocomplete
+
+Input Form\* Attributes:
+form = specifies the form the <input> element belongs to. must be equal to the id attribute of the <form> elemnt it belongs to
+formaction = specifies the URL of the file that will process the input when the form is submitted
+formenctype = specifies how the form-data should be encoded when submitted
+formmethod = overrides the 'method' atribute of the <form> element, input types:submit and image.
+formtarget = overrides the 'target' attribute of the <form> element.
+formnovalidate = overrides the 'novalidate' attribute of the <form> element
+
+Canvas:
+canvas used to draw graphics, on the fly, via Javascript.
+good for:games, animations, real-time graphics
+
+SVG:
+stands for Scalable Vector Graphics
+good for: logos, icons,illustrations that need to stay sharp at any size
+better than regular images(jpg/png)when you need graphics that can resize without getting blurry
+
+CSS:
+
+CSS Background:
+background-repeat:repeat-x
+background shorthand:
+background: #ffffff url("img_tree.png") no-repeat right top;
+
+CSS Border:
+width can be set as a specific size (in px, pt, cm, em, etc) or thin, medium, or thick:
+border-width: 20px 5px; /_ 20px top and bottom, 5px on the sides _/
+border-width: 25px 10px 4px 35px; /_ 25px top, 10px right, 4px bottom and 35px left _/
+border-color: red green blue yellow; /_ red top, green right, blue bottom and yellow left _/
+border-top-style: dotted;
+border-right-style: solid;
+border-bottom-style: dotted;
+border-left-style: solid;
+(mix)border-style: dotted dashed solid double;
+this properties can be used with border-width and border-color
+Border Shorthand: border-left: 6px solid red;
+
+Margin:
+margin: 25px 50px 75px, top 25px, right and left 50px, bottom 75px
+margin-left:100px
+margin-left:inherit(it will inherited from the parent element)
+
+Padding:
+p {
+width: 300px;
+padding: 25px;
+}
+the total width will be 350px
+but with:
+p {
+width: 300px;
+padding: 25px;
+box-sizing: border-box;
+}
+the width will keep at 300px
+
+Outline:
+outline is a line drawn outside the element's border
+pretty much the same properties used by 'border'
+outline offset is a space between an outline and the border, example;
+outline-offset: 15px
+
+Text:
+Text Alignment;
+text-align: center, left, right, justify
+text-align-last: right, left, justify
+text direction;
+p {
+direction: rtl;
+unicode-bidi: bidi-override:
+}
+vertical-align: baseline, text-top, text-bottom, sub, super
+Text Decoration;
+text-decoration-line: overline line-through underline
+it is not recommended to underline text that is not a link, as this often confunses the reader
+text-decoration-color: red blue green purple
+text-decoration-style: solid double dotted dashed wavy
+text-decoration-thickness: 5px auto 25%
+text-decoration: underline red double 5px;
+text-decoration:none(to remove the underline from links)
+Text Tranformation;
+text-transform: uppercase lowercase capitalize
+Text Spacing;
+text-indent: 20px;
+letter-spacing: 5px;
+line-height: 1.8;
+word-spacing: -2px;
+white-space: nowrap;
+Text Shadow;
+text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+CSS Fonts;
+Font Web Safe;
+
+- Arial(sans-serif)
+- Verdana(sans-serif)
+- Tahoma(sans-serif)
+- Trebuchet MS(sans-serif)
+- Times New Roman (serif)
+- Georgia (serif)
+- Garamond (serif)
+- Courier New (monospace)
+- Brush Script MT(cursive)
+Font Style;
+font-style: normal italic oblique
+font-weight: normal bold
+font-variant: normal small-caps
+Font Size;
+The default text size in browsers is 16px. So, the default size of 1em is 16px.
+font-size: 2.5em; /_ 40px/16=2.5em _/
+Font Google;
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+<style>
+h1.a {font-family: "Audiowide", sans-serif;}
+h1.b {font-family: "Sofia", sans-serif;}
+h1.c {font-family: "Trirong", serif;}
+</style>
+</head>
+Request multiple font effects:
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
+<style>
+body {
+  font-family: "Sofia", sans-serif;
+  font-size: 30px;
+}
+</style>
+</head>
+<body>
+
+<h1 class="font-effect-neon">Neon Effect</h1>
+<h1 class="font-effect-outline">Outline Effect</h1>
+<h1 class="font-effect-emboss">Emboss Effect</h1>
+<h1 class="font-effect-shadow-multiple">Multiple Shadow Effect</h1>
+
+</body>
+Font Pairings;
+font pairing rules:
+1. Complement, without being too similar or too different
+2. Use Font Superfamilies, example 'Lucida' superfamily
+3. Contrast is King, example combining serif with sans serif is well known combination
+4. Choose Only One Boss
+popular font pairings:
+- Georgia and Verdana
+- Helvetica and Garamond
+popular google font pairings:
+- Merriweather and Open Sans
+- Ubuntu and Lora
+- Abril Fatface and Poppins
+- Cinzel and Fauna One
+- Fjalla One and Libre Baskerville
+- Space Mono and Muli
+- Spectral and Rubik
+- Oswald and Noto Sans
+Font Shorthand;
+'font' property is a shorthand property for:
+- font-style
+- font-variant
+- font-weight
+- font-size/line-hight
+- font-family
+Note: the font-size and font-family are required. if one of the other values is missing, their default value are used.
+font: 20px Arial, sans-serif;
+font: italic small-caps bold 12px/30px Georgia, serif;
+
+CSS Icons;
+-Font Awesome Icons;
+-Bootstrap Icons;
+-Google Icons;
+
+CSS Links;
+different types of cursors:
+<span style="cursor: auto">auto</span><br>
+<span style="cursor: crosshair">crosshair</span><br>
+<span style="cursor: default">default</span><br>
+<span style="cursor: help">help</span><br>
+<span style="cursor: move">move</span><br>
+<span style="cursor: pointer">pointer</span><br>
+<span style="cursor: progress">progress</span><br>
+<span style="cursor: text">text</span><br>
+<span style="cursor: wait">wait</span>
+<span style="cursor: e-resize">e-resize</span><br>
+<span style="cursor: w-resize">w-resize</span><br>
+<span style="cursor: n-resize">n-resize</span><br>
+<span style="cursor: s-resize">s-resize</span><br>
+<span style="cursor: ne-resize">ne-resize</span><br>
+<span style="cursor: sw-resize">sw-resize</span><br>
+<span style="cursor: nw-resize">nw-resize</span><br>
+<span style="cursor: se-resize">se-resize</span><br>
+
+CSS Lists:
+ul{
+list-style-image: url('sqpurple.gif');
+list-style-position: outside or inside;
+}
+list shorthand;
+list-style: square inside url("sqpurple.gif");
+
+CSS Tables:
+td {
+vertical align: top center bottom;
+}
+table responsive;
+
+<div style="overflow-x:auto;">
+
+CSS Display:
+inline,Displays an element as an inline element
+block,Displays an element as a block element
+contents,Makes the container disappear, making the child elements children of the element the next level up in the DOM
+flex,Displays an element as a block-level flex container
+grid,Displays an element as a block-level grid container
+inline-block,Displays an element as an inline-level block container. The element itself is formatted as an inline element, but you can apply height and width values
+inline-flex,Displays an element as an inline-level flex container
+inline-grid,Displays an element as an inline-level grid container
+inline-table,The element is displayed as an inline-level table
+list-item,Let the element behave like a <li> element
+run-in,Displays an element as either block or inline, depending on context
+table,Let the element behave like a <table> element
+table-caption,Let the element behave like a <caption> element
+table-column-group,Let the element behave like a <colgroup> element
+table-header-group,Let the element behave like a <thead> element
+table-footer-group,Let the element behave like a <tfoot> element
+table-row-group,Let the element behave like a <tbody> element
+table-cell,Let the element behave like a <td> element
+table-column,Let the element behave like a <col> element
+table-row,Let the element behave like a <tr> element
+initial,Sets this property to its default value
+inherit,Inherits this property from its parent element
+none,The element is completely removed
+visibility: hidden
+
+CSS Position:
+
+- static
+- relative
+- fixed
+- absolute
+- sticky
+
+CSS Max-Width:
+it can have a responsive div
+
+CSS Z-Index:
+z-index: 1;
+it is a stack order priority
+
+CSS Overflow:
+
+- visible
+- hidden
+- scroll
+- auto
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+CSS Float:
+float: inherit;
+Clear;
+
+- none
+- left
+- right
+- both
+- inherit
+  The cleafix Hack;
+  .clearfix {
+  overflow: auto;
+  }
+  Modern clearfix hack;
+  .clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+  }
+
+CSS Align:
+left and right align - using position;
+.right {
+position : absolute;
+right: 0px;
+width: 300px;
+border: 3px solid red;
+padding: 10px;
+}
+center an image;
+img {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 40%;
+}
+center vertically - using padding;
+.center {
+padding: 70px 0;
+border: 3px solid green;
+text-align: center;
+}
+center vertically - using line-height;
+.center {
+line-height: 200px;
+height: 200px;
+border: 3px solid green;
+text-align: center;
+}
+
+/_ If the text has multiple lines, add the following: _/
+.center p {
+line-height: 1.5;
+display: inline-block;
+vertical-align: middle;
+}
+center vertically - using position & transform;
+.center {
+height: 200px;
+position: relative;
+border: 3px solid green;
+}
+center with tranform;
+.center p {
+margin: 0;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+center vertically - using flexbox;
+.center {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 200px;
+border: 3px solid green;
+}
+
+CSS Combinators:
+
+- 'div p {}'descendant combinator (space), "in the div, even there is another element with it like <section>"
+- 'div > p {}'child combinator (>) "in the div, but outside other specific element like <section>"
+- 'div + p {}'next sibling combinator (+) "first element after the div"
+- 'div ~ p {}'subsequest-sibling combinator (~) "after the div"
+
+CSS Pseudo-classes:
+first child;
+p i:first-child {}
+p:first-child i {}
+
+CSS Pseudo-element:
+::first-line, can only be applied to block-level elements,properties example;
+
+- font properties
+- color properties
+- background properties
+- text-decoration
+- text-transform
+- line-height
+- vertical-align
+- clear
+- word-spacing
+- letter-spacing
+  ::first-letter, properties example
+- font properties
+- color properties
+- background properties
+- text-decoration
+- text-transform
+- line-height
+- vertical-align (only if "float" is "none")
+- clear
+- float
+- border properties
+- margin properties
+- padding properties
+  ::before {}
+  ::after {}
+  ::marker {}
+  ::selection {
+  color;background;cursor;outline;
+  }
+
+CSS Navigation Bar:
+IE does not suppert 'sticky' positioning. safari requires '-webkit-sticky', you must also specify at least one of the 'top','right','bottom' or 'left' for sticky positioning to work
+ul{
+position: -webkit-sticky; (for safari)
+position: sticky;
+}
+
+CSS Dropdown:
+
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: anything;
+}
+li {
+  float: left;
+}
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+li.dropdown {
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  display: block;
+  text-align: left;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+}
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {display: block;}
+</style>
+</head>
+<ul>
+  <li><a href="#home">Home</a></li>
+  <li><a href="#news">News</a></li>
+  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </li>
+</ul>
+
+CSS Image Sprites:
+An image sprite is a collection of images put into a single image
+#home {
+width:
+height:
+background: url(img_navsprites.fig) 0 0;
+}
+
+CSS Attribute Selectors:
+a[target] {}, selects all <a> elements with a target attribute
+a[target="\_blank"] {}, selects all <a> elements with a target="\_blank" attribute
+[title~="flower"] {}, contains a space-seperated list of word
+[class|="top"] {}, only the word 'top' alone or followed by a hyphen(-)
+[class^]="top"] {}, starts with "top"
+[class$="test"] {}, ends with "test"
+[class\*="te"] {}, contain "te"
+
+CSS Forms:
+Animate Search Input;
+input[type-text] {
+-webkit-transition: 0.4s;
+transition: width 0.4s ease-in-out;
+}
+input[type=text]:focus {
+width: 100%;
+}
+Styling Textareas:
+textarea {
+resize: none vertical horizontal;
+}
+
+CSS Counters:
+counter-reset - creates or resets a counter
+counter-increment - icrements a counter value
+content - inserts generated content
+counter() or counters() function - adds the value of a counter to an element
+body {
+counter-reset: section;
+}
+h1 {
+counter-reset: subsection;
+}
+h1::before {
+counter-increment: section;
+content: "Section " counter(section) ". ";
+}
+h2::before {
+counter-increment: subsection;
+content: counter(section) "." counter(subsection) " ";
+}
+or
+li::before {
+counter-increment: section;
+content : counters(section,".") " ";
+}
+
+CSS Units:
+Absolute lengths;
+cm = centimeters
+mm = millimeters
+in = inches (1in = 96px = 2.54cm)
+px \* = pxels (1px = 1/96th of 1in)
+pt = points (1pt = 1/72 of 1in)
+pc = picas (1pc = 12 pt)
+Relative Lengths;
+em, ex, ch, rem, vw, vh, vmin, vmax, %
+
+CSS Specificity:
+Hierarchy Priority;
+-Inline style = <h1 style="color: pink;">
+-Id selectors = #navbar
+-Classes and pseudo-classes = .test, :hover
+-Attributes = [type="text"]
+-Elements and Pseudo-elements = h1; ::before, ::after
+Equal secificity: the latest rule wins
+ID selectors have a higher specificity than attribute selectors:
+div#myDiv {background-color: green;}
+#myDiv {background-color: yellow;}
+div[id=myDiv] {background-color: blue;}
+
+CSS !Important
+
+CSS Math Functions:
+calc();
+width: calc(100% - 100px)
+max();
+width: max(50%, 300px)
+min();
+width: min(50%, 300px)
+
+CSS ADVANCED
+
+CSS Border Images:
+border-image: url(border.png) 30 round;
+border-image: url(border.png) 30 stretch;
+
+CSS Background:
+background-size: contain
+background: url(img_tree.gif) left top no-repeat, url(img_flwr.gif) right bottom no-repeat, url(paper.gif) left top repeat;
+background-size: 50px, 130px, auto;
+background-origin: 'border-box' 'padding-box'(default) 'content-box'
+background-clip: 'border-box'(default) 'padding-box' 'content-box'
+
+CSS Color Keywords:
+background-color: transparent, currentcolor, inherit
+border: currentcolor, inherit
+
+CSS Gradients:
+Linear Gradients;
+background-image: linear-gradient(to right, red, yellow);
+to right(90deg)
+to left(-90deg)
+to top(0deg)
+to bottom(180deg)
+background-image: repeating-linear-gradient(red, yellow 10%, green 20%);
+Radial Gradient;
+ellipse(default), circle
+background-image: radial-gradient(circle, red, yellow, green);
+different size keywords;
+closest-side
+fathest-side
+closest-corner
+farthest-corner
+background-image: repeating-radial-gradient(red, yellow 10%, green 15%);
+Conic Gradients;
+background-image: conic-gradient([from angle] [at position,] color [degree], color [degree], ...);
+repeating-conic-gradient
+
+CSS Text Effects:
+
+- text-overflow: clip ellipsis;
+  .test:hover {
+  overflow:visible;
+  }
+- word-wrap: break-word;
+- word-break: keep-all break-all(readability is not priority);
+- writing-mode: horizontal-tb vertical-rl;
+
+CSS Web Fonts:
+@font-face {
+font-family: myFirstFont;
+src: url(sansation_light.woff);
+}
+div {
+font-family: myFirstFont;
+}
+Font Formats;
+
+- TrueType Fonts(TTF)
+- OpenType Fonts(OTF)
+- The Web Open Font Format (WOFF)
+- The Web Open Font Format (WOFF 2.0)
+- SVG Fonts/Shapes
+- Embedded OpenType Fonts (EOT)
+
+CSS 2D Transforms:
+translate (50px,50px)
+rotate (20deg)
+scaleX(2)
+scaleY(0.5)
+scale(2,0.5)
+skewY(20deg)
+skewX(-20deg)
+skew(-20deg,20deg)
+matrix(scaleX(),skewY(),skewX(),scaleY(),transaletX(),translateY())
+transform: matrix(1, -0.3, 0, 1, 0, 0);
+
+CSS 3D Transforms:
+rotateX ()
+rotateY ()
+rotateZ ()
+
+CSS Animations:
+@keyframes example {
+from {background-color: red;}
+to {background-color: yellow;}
+}
+or
+{
+0% {background-color:red; left:0px; top:0px;}
+25% {background-color:yellow; left:200px; top:0px;}
+50% {background-color:blue; left:200px; top:200px;}
+75% {background-color:green; left:0px; top:200px;}
+100% {background-color:red; left:0px; top:0px;}
+}
+div {
+width: 100px;
+height: 100px;
+background: red;
+position: relative;
+animation-name: example;
+animation-duration: 5s;
+animation-timing-function: linear;
+animation-delay: 2s;
+animation-iteration-count: infinite;
+animation-direction: normal reverse alternate-reverse alternate;
+animation-fill-mode: forwards backwards;
+}
+div {
+animation: example 5s linear 2s infinite alternate backwards;
+}
+
+CSS Tooltip:
+.tooltip {
+display: inline-block;
+position: relative;
+border-bottom: 1px dotted black;
+}
+.tooltip .tooltiptext {
+visibility: hidden;
+width 120px;
+background-color: black;
+color: #fff;
+text-align: center;
+padding: 5px 0;
+border-radius: 6px;
+
+/_ Position the tooltip_/
+position: absolute;
+z-index: 1;
+/_ for right and left_/
+top: -5px;/_same as the padding_/
+left: 105%;/_right tooltip_/
+right: 105%; /_left tooltip_/
+/_for top & bottom_/
+margin-left: -60px; /_use half of the width (120/2=60), to center the tooltip _/
+left: 50%;
+bottom: 100%;/_top tooltip_/
+top: 100%;/\*bottom tooltip/
+
+/_fade in tooltips (Animation)_/
+opacity: 0;
+transition: opacity 1s;
+}
+
+/_tooltip arrow_/
+.tooltip .tooltiptext::after {
+content: "";
+position: absolute;
+margin-left: -5px;
+border-width: 5px;/_should be the same value as margin-left to keep the arrow centered_/
+border-style: solid;
+/_bottom & top arrow_/
+left: 50%;
+top: 100%;/_at the bottom of the tooltip_/
+border-color: black transparent transparent transparent;/_at the bottom of the tooltip_/
+bottom: 100%;/_at the top of the tooltip_/
+border-color: transparent transparent black transparent;/_at the top of the tooltip_/
+/_left & right arrow_/
+top: 50%;
+right: 100%; /_to the left of the tooltip_/
+border-color: transparent black transparent transparent;
+left: 100% /_to the right of the tooltip_/
+border-color: transparent transparent transparent black;
+}
+.tooltip:hover .tooltiptext {
+visibility: visible;
+/_fade in tooltips_/
+opacity: 1;
+}
+
+CSS Image-Styling:
+responsive images;
+img {
+max-width: 100%;
+height: auto;
+}
+
+polaroid images/cards;
+div.polaroid {
+width: 80%;
+background-color: white;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+img {width: 100%}
+div.container {
+text-align: center;
+padding: 10px 20px;
+}
+
+image text:
+.container {
+position: relative;
+}
+.top(left or right) or bottom(left or right) {
+position: absolute;
+font-size: 20px;
+/_for top left/right_/
+top: 8px;
+left: 12px;/_if it is topleft_/
+right: 12px;/_if it is topright_/
+/_for bottom left/right_/
+bottom: 8px;
+left: 12px;/_if it is bottomleft_/
+right: 12px;/_if it is bottomright_/
+/_for center_/
+top: 50%;
+left: 50%;
+transform: translate(-50%,-50%);
+}
+img {
+width: 100%;
+height: auto;
+opacity: 0.5;
+}
+
+image hover overlay:
+there are;
+-fade in text
+-fade in a box
+-slide in(top,bottom,left,right)
+.container {
+position: relative;
+width: 50%
+}
+.image {
+display: block;
+width: 100%;
+height: auto;
+/_only fade in a box_/
+opacity: 1;
+transition: 0.5 ease;
+backface-visibility: hidden;
+}
+.overlay /_all except fade in box_/ {
+position: absolute;
+right: 0;
+background-color: #008CBA
+transition: .5s ease;
+overflow: hidden; /_none for fade in text_/
+width: 100%; /_except slide in left and right is 0_/
+height: 100%; /_except slide in top and bottom is 0_/
+bottom: 0; /_except slide in top is 100%_/
+left: 0: /_except slide in right is 100%_/  
+}
+.container:hover .overlay {
+width: 100%;/_only slide in right and left_/
+height: 100%;/_only slide in top and bottom_/
+bottom: 0;/_only slide in top_/
+left: 0;/_only slide in right_/
+opacity: 1;/_only fade in text_/
+}
+/_only fade in a box_/
+.middle {
+position: absolute;
+opacity: 0;
+transition: .5s ease;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+-ms-transform: translate(-50%, -50%);
+}
+.container:hover .image {
+opacity: 0.3;
+}
+.container:hover .middle {
+opacity: 1;
+}
+/_here for everything_/
+.text {
+color: white;
+font-size: 20px;
+/_only slide in_/
+white-space: nowrap;
+overflow: hidden;
+/_all except fade in a box_/
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+-ms-transform: translate(-50%, -50%);
+/_only fade in a box_/
+background-color: #4CAF50;
+padding: 16px 32px;
+}
+
+<div class="container">
+  <image src="img_avatar.png" alt="Avatar" class="image" style="width:100%">
+  <div class="middle/overlay">
+    <div class="text">John Deo</div>
+  </div>
+</div>
+
+Flip an Image:
+img:hover {
+transform: scaleX(-1);
+}
+
+CSS Image Centering:
+
+1. Using margin:auto
+   img {
+   display: block;
+   margin: auto;
+   }
+2. Using display: flex
+   img {
+   display: flex;
+   justify-content: center /_centers the image horizontally in the div container_/
+   align-items: center /_centers the image verticaly in the div container_/
+   }
+
+CSS Image Filters:
+img {
+filter: blur(2px);
+filter: brightness(150%);
+filter: contrast(150%);
+filter: drop-shadow(8px 8px 10px gray);
+filter: grayscale(60% or 0.4);
+filter: hue-rotate(200deg);
+filter: invert(70% or 0.3);
+filter: opacity(80% or 0.3);
+filter: saturate(0 - 200%);
+filter: sepia(60% or 0.4);
+}
+
+CSS Image Shapes:
+img {
+float: left;
+clip-path: circle(40%);
+clip-path: circle(40% at right);
+shape-outside: circle(45%);
+clip-path: ellipse(40% 50%);
+clip-path: ellipse(40% 50% at right);
+shape-outside: ellipse(45% 50%);
+clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+CSS Object-Fit:
+img {
+width: 200px;
+height: 300px;
+object-fit: cover;/_ clip to fit_/
+object-fit: contain;/_ resized to fit within the given dimension_/
+object-fit: fill;/_ will be stretched or squized to fit_/
+object-fit: none;/_ not resized_/
+object-fit: scale-down;/_ scaled down to the smallest version of 'none' or 'contain'_/
+}
+
+CSS Object-Position:
+img {
+width: 200px;
+height: 300px;
+object-fit: cover;
+object-position: 15% 100%;
+}
+
+CSS Masking:
+Image as the Mask Layer;
+.mask1 {
+-webkit-mask-image: url(w3logo.png);
+mask-image: url(w3logo.png);
+mask-repeat: no-repeat;
+}
+Gradients as the Mask Layer;
+/_linear gradient_/
+.mask1 {
+-webkit-mask-image: linear-gradient(black, transparent);
+mask-image: linear-gradient(black, transparent);
+}
+/_radial-gradient_/
+.mask2 {
+-webkit-mask-image: radial-gradient(circle, black 50%, rgba(0, 0, 0, 0.5) 50%);
+mask-image: radial-gradient(circle, black 50%, rgba(0, 0, 0, 0.5) 50%);
+}
+.mask3 {
+-webkit-mask-image: radial-gradient(ellipse, black 50%, rgba(0, 0, 0, 0.5) 50%);
+mask-image: radial-gradient(ellipse, black 50%, rgba(0, 0, 0, 0.5) 50%);
+}
+SVG as the Mask Layer;
+/_triangle_/
+<svg width="600" height="400">
+<mask id="svgmask1">
+<polygon fill="#ffffff" points="200 0, 400 400, 0 400"></polygon>
+</mask>
+<image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img_5terre.jpg" mask="url(#svgmask1)"</image>
+</svg>
+/_circles_/
+<svg width="600" height="400">
+<mask id="svgmask3">
+<circle fill="#ffffff" cx="75" cy="75" r="75"></circle>
+<circle fill="#ffffff" cx="80" cy="260" r="75"></circle>
+<circle fill="#ffffff" cx="270" cy="160" r="75"></circle>
+</mask>
+<image xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="img_5terre.jpg" mask="url(#svgmask3)"></image>
+</svg>
+
+CSS Pagination:
+.center {
+text-align: center;
+}
+.pagination {
+display: inline-block;
+}
+.pagination a {
+float: left;
+color: black;
+border: 1px solid #ddd;
+border-radius: 2.65px;
+padding: 6px 17px;
+margin: 0 4px;
+text-decoration: none;
+transition: background-color .3s;
+}
+.pagination a.active {
+border: 1px solid #4CAF50;
+background-color: #4Caf87;
+color: white;
+}
+.pagination a:first-child {
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+}
+.pagination a:last-child {
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
+}
+.pagination a:hover:not(.active) {background-color: #dcdcdc;}
+</style>
+
+</head>
+<body>
+<p>Next/Previous buttons:</p>
+<div class="pagination">
+  <a href="#">❮</a>
+  <a href="#">❯</a>
+</div>
+<h2>Centered Pagination</h2>
+<div class="center">
+  <div class="pagination">
+  <a href="#">&laquo;</a>
+  <a href="#">1</a>
+  <a href="#" class="active">2</a>
+  <a href="#">3</a>
+  <a href="#">4</a>
+  <a href="#">5</a>
+  <a href="#">6</a>
+  <a href="#">&raquo;</a>
+  </div>
+</div>
+</body>
+
+Breadcrumbs:
+ul.breadcrumb {
+list-style: none;
+padding: 8px 16px;
+background-color: #eee;
+}
+ul.breadcrumb li {display: inline;}
+ul.breadcrumb li+li:before {
+content: "/\00a0";
+color: black;
+padding: 8px;
+}
+ul.breadcrumb li a {color: green;}
+</style>
+
+</head>
+<body>
+<h2>Breadcrumb Pagination</h2>
+<ul class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Pictures</a></li>
+  <li><a href="#">Summer 15</a></li>
+  <li>Italy</li>
+</ul>
+
+CSS Multiple Columns:
+div {
+column-count: 3;
+column-gap: 40px;
+column-rule:1px solid lightblue;
+column-width: 300px;
+}
+h2 {column-span: all;}
+
+CSS Variables:
+:root {
+--blue: #1e90ff;
+--white: #fff;
+}
+.container {
+--fontsize: 25px;
+}
+body {
+background-color: var(--blue);
+}
+h2 {
+border-bottom: 2px solid var(--blue);
+}
+.container {
+color: var(--blue);
+background-color: var(--white);
+padding: 15px;
+font-size: var(--fontsize);
+}
+@media screen and (mind-width: 450px) {
+.container {
+--fontsize: 50px;
+}
+:root {
+--blue: lightblue;
+}
+}
+
+CSS @property:
+@property --something {
+syntax: "<color>" "<number>" "<length>";
+}
+@property --startColor {
+syntax: "<color>";
+initial-value: #EADED8;
+inherits: false;
+}
+@property --endColor {
+syntax: "<color";
+initial-value: #BC70A4;
+inherits: false;
+}
+.ex1 {
+background: linear-gradient(var(--startColor), var(--endColor));
+animation: gradient 3s linear infinite;
+}
+@keyframes gradient {
+0%,
+100% {
+--startColor: #EADEDB;
+--endColor: #BC70A4;
+}
+50% {
+--startColor: #BC70A4;
+--endColor: #BFD641;
+}
+}
+#grad1 {
+height: 200px;
+}
+
+CSS MQ Examples:
+@media only screen and (orientation: landscape) {
+body {
+background-color: lightblue;
+}
+}
+@media screen and (max-width: 900px) and (min-width: 600px) {
+something
+}
+
+CSS Flex Container:
+.flex-container {
+display: flex;
+flex-direction: row column row-reverse column-reverse;
+flex-wrap: nowrap wrap wrap-reverse;
+justify-content: center flex-start flex-end space-around space-between space-evenly;
+align-items: center flex-start flex-end stretch baseline normal;
+align-content: center stretch flex-start flex-end space-around space-between space-evenly;
+}
+
+CSS Flex Items:
+"order" property;
+
+<div class="flex-container">
+  <div style-"order: 3">1</div>
+  <div style="order: 2">2</div>
+  <div style="order: 4">3</div>
+  <div style="order: 1">4</div>
+</div>
+"flex-grow" property;
+<div class="flex-container">
+  <div style="flex-grow: 1">1</div>
+  <div style="flex-grow: 1">2</div>
+  <div style="flex-grow: 8">3</div>
+</div>
+"flex-shrink" property;
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex-shrink: 0">3</div>
+</div>
+"flex-basis" property;
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex-basis: 200px">3</div>
+  <div>4</div>
+</div>
+"flex" property, shorthand for 'flex-grow','flex-shrink','flex-basis';
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div style="flex: 0 0 200px">3</div>
+  <div>4</div>
+</div>
+"align-self" property;
+<div class="flex-container">
+  <div>1</div>
+  <div style="align-self: flex-start">2</div>
+  <div style="align-self: flex-end">3</div>
+  <div>4</div>
+</div>
+
+CSS Grid Columns, Rows and Gaps:
+.container {
+display: grid;
+grid-template-columns: auto auto auto;
+column-gap: 50px;
+row-gap: 100px;
+gap: 50px 100px;/_for column-gap and row-gap_/
+grid-column-start: 1;
+grid-column-end: 3;
+grid-column: 1 / span 2;
+grid-row-start: 1;
+grid-row-end: 3;
+grid-row: 1 / span 2;
+}
+
+CSS Grid Container:
+.grid-container {
+display: grid;
+grid-template-columns: 80px 200px auto 40px;
+grid-template-columns: 1fr 2fr 1fr 1fr;
+grid-template-rows: 80px 200px;
+justify-content: space-evenly space-around space-between center start end;
+align-content: space-evenly space-around space-between center start end;
+place-content: /_shorthand property for the 'align-content' and 'justify-content'_/
+}
+
+CSS Grid Items:
+
+<style>
+.item1 {
+  grid-row-start: 1;
+  grid-columns-start: 2;
+  grid-row-end: 3;
+  grid-column-end: 2;
+}
+is the same as;
+.item1 {
+  grid-area: 1 / 2 / 3 / 2;
+}
+another example;
+.item1 { grid-area: header;}
+.item2 { grid-area: menu; }
+.item3 { grid-area: main; }
+.item4 { grid-area: right; }
+.item5 { grid-area: footer; }
+.grid-container {
+  grid-template-areas: 
+  'header header header header header header'
+  'menu main main main main right'
+  'menu footer footer footer footer footer';
+}
+/* place in row 1 column 3 */
+.item1 {grid-area: 1 / 3;}
+/* place in row 2 column 3 */
+.item2 {grid-area: 2 / 3;}
+/* place in row 1 column 1 */
+.item3 {grid-area: 1 / 1;}
+/* place in row 1 column 2 */
+.item4 {grid-area: 1 / 2;}
+/* place in row 2 column 1 */
+.item5 {grid-area: 2 / 1;}
+/* place in row 2 column 2 */
+.item6 {grid-area: 2 / 2;}
+@media only screen and (max-width: 500px) {
+  .item1 {grid-area: 1 / span 3;}
+  .item2 {grid-area: 3 / 3;}
+  .item3 {grid-area: 2 / 1;}
+  .item4 {grid-area: 2 / 2 / span 2;}
+  .item5 {grid-area: 3 / 1;}
+  .item6 {grid-area: 2 / 3;}
+}
+</style>
