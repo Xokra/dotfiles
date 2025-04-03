@@ -236,6 +236,7 @@ fruits.pop();  removes the last element from an array
 fruits.push("Kiwi"); adds a new element to an array at the end
 
 fruits.shift();  removes the first array element and 'shifts' all other elements to a lower index
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
 document.getElementById("demo1").innerHTML = fruits.shift(); it will show 'Banana'.
 document.getElementById("demo1").innerHTML = fruits;  it will show Banana, Orange, Apple, Mango
 fruits.shift();
@@ -261,7 +262,7 @@ fruits.copyWithin(2, 0, 2);  copy to index 2, the elements from index 0 to 2
 it will show 'Banana, Orange, Banana, Orange, Kiwi, Papaya'
 
 const myArr = [[1,2],[3,4],[5,6]];
-const newArr = myArr.flat();  creates a new array with sub-array elements concatenated to a specified depth
+const newArr = myArr.flat(); removing inner array, create new array withoutmodifying the original 
 it will show '1,2,3,4,5,6'
 
 const myArr = [1, 2 ,3 ,4 ,5 ,6];
@@ -286,6 +287,30 @@ document.getElementById("dome1").innerHTML = citrus; it will show 'Orange,Lemon'
 const fruits = ["Banana", "Orange", "Apple", "Mango"];
 document.getElementById("dome1").innerHTML =  fruits.toString(); returns an array as a comma separated string
 it will show 'Banana,Orange,Apple,Mango'
-
-
 </script>
+
+JS Array Search:
+
+<script>
+const fruits = ["Apple", "Orange", "Apple", "Mango"];
+fruits.indexOf("Apple") + 1; it will show '1'
+
+fruits.lastIndexOf("Apple") + 1; it will show '3'
+
+fruits.includes("Mango"); will show 'true'
+
+const numbers = [4, 9, 16, 25, 29];
+let first = numbers.find(myFunction);
+function myFunction(value, index, array) {
+  return value > 18;
+}
+document.getElementById("demo").innerHTML = first; it will show '25'
+
+numbers.findIndex(myFunction); it will show '3'
+
+const temp = [27, 28, 30, 40, 42, 35, 30];
+let high = temp.findLast(x => x > 40);
+document.getElementById("demo").innerHTML = high; it will show '42'
+
+let pos = temp.findLastIndex(x => x > 40);
+document.getElementById("demo").innerHTML = pos; it will show '4'
