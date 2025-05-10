@@ -1105,7 +1105,7 @@ ellipse(default), circle
 background-image: radial-gradient(circle, red, yellow, green);
 different size keywords;
 closest-side
-fathest-side
+farthest-side
 closest-corner
 farthest-corner
 background-image: repeating-radial-gradient(red, yellow 10%, green 15%);
