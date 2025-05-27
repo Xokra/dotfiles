@@ -219,6 +219,10 @@ this.lastName = name;
 }
 // Change Name
 myMother.changeName("Doe");
+// Add property to first object
+myFather.nationality = "English";
+// add a new Property
+Person.prototype.nationality = "English";
 
 JS String Methods:
 JavaScript String Length;
@@ -226,7 +230,7 @@ let text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 let length = text.length; //property returns the length of a string.
 
 JavaScript String Characters:
-there are 4 methodl for extracting string chacacters:
+there are 4 methods for extracting string chacacters:
 
 - The at(position) method; text.at(2)
 - The charAt(position) method; text.charAt(2)
@@ -236,7 +240,7 @@ there are 4 methodl for extracting string chacacters:
 Extracting String Parts:
 there are 3 methods for extracting a part of a string:
 
-- slice(start, end); text.slice(7, 13) or text.slice(-12), extracts a part of a string and returns the exatrected part in a new string
+- slice(start, end); text.slice(7, 13) or text.slice(-12), extracts a part of a string and returns the extracted part in a new string
 - substring(start, end); similar to slice() but start and end values less than 0 are treated as 0.
 - substr(start,length)
 
@@ -274,7 +278,7 @@ let result = text.repeat(2); it will show Hello world! Hello world!.
 Replacing String Content:
 let text = "Please visit Microsoft!";
 let newText = text.replace("Microsoft", "W3Schools");
-// it will show Please visit W3Schoodls.
+// it will show Please visit W3Schools.
 let newText = text.replace(/MICROSOFT/i, "W3Schools"); replace case insensitive
 let newText = text.replace(/Microsoft/g, "W3Schools"); replace all matches(global match)
 text = text.replaceAll("Cats", "Dogs");
@@ -290,7 +294,7 @@ const words = data.split(",");
 JS String Search:
 JavaScript String indexOf():
 let text = "Please locate where 'locate' occurs!";
-let index = text.indexOf("locate"); returns the index (position) of the first occurence of a string in a string, or it returns -1 if the string is not fonud:
+let index = text.indexOf("locate"); returns the index (position) of the first occurence of a string in a string, or it returns -1 if the string is not found:
 it will show 7
 let index = texi. indexOf("locate", 15); it will show 21
 
@@ -309,7 +313,7 @@ indexOf() and search() they accept the same arguments. These are the differences
 - The indexOf() method cannot take powerful search values (regular expressions).
 
 JavaScript String match():
-returns an array containing the results of matichng a string against a string(or a regular expression)
+returns an array containing the results of matching a string against a string(or a regular expression)
 let text = " The rain in SPAIN stays mainly in the plain";
 text.match("ain");
 text.match(/ain/);
@@ -337,6 +341,100 @@ text.endsWith("Doe"); true
 let text = "Hello World, welcome to the universe.";
 text.endsWith("world", 11); true, check if the 11 first characters of a string ends with "world":
 
+JS Number Methods:
+toString(); returns a number as a string
+let x = 123;
+x.toString(); it will show 123
+(123).toString();it will show 123
+(100 + 23).toString();it will show 123
+
+toExponential(); returns a strong, with a number rounded and written using exponential notation.
+let x = 9.656;
+x.toExponential(); it will show 9.656e+0
+x.toExponential(2); it will show 9.66e+0
+x.toExponential(4); it will show 9.6560e+0
+x.toExponential(6); it will show 9.656000e+0
+
+toFixed(); returns a string, with the number written with a specified number of decimals.(perfect for working with money).
+let x = 9.656;
+x.toFixed(0); it will show 10
+x.toFixed(2); it will show 9.66
+x.toFixed(4); it will show 9.6560
+x.toFixed(6); it will show 9.656000
+
+toPrecision(); returns a strong, with a number written with a specified length:
+let x = 9.656;
+x.toPrecision(); it will show 9.656
+x.toPrecision(2); it will show 9.7
+x.toPrecision(4); it will show 9.656
+x.toPrecision(6); it will show 9.65600
+
+valueOf(); return a number as a number.
+let x = 123;
+x.valueOf();
+(123).valueOf();
+(100 + 23).valueOf();
+all will show 123
+
+Converting variables to Numbers:
+Number()
+Number(true); it will show 1
+Number(false); it will show 0
+Number("10"); it will show 10
+Number(" 10"); it will show 10
+Number("10 "); it will show 10
+Number(" 10 "); it will show 10
+Number("10.33"); it will show 10.33
+Number("10,33"); it will show NaN
+Number("10 33"); it will show NaN
+Number("John"); it will show NaN
+Number(new Date("1970-01-01")); it will show 0
+Number(new Date("1970-01-02")); it will show 86400000
+The number of milliseconds between 1970-01-02 and 1970-01-01 is 86400000
+
+parseInt() parses a string and returns a whole number
+parseInt("-10"); -10
+parseInt("-10.33"); -10
+parseInt("10"); 10
+parseInt("10.33"); 10
+parseInt("10 20 30"); 10
+parseInt("10 years");10
+parseInt("years 10"); NaN
+
+parseFloat() parses a string and returns a number
+parseFloat("10"); 10
+parseFloat("10.33"); 10.33
+parseFloat("10 20 30"); 10
+parseFloat("10 years"); 10
+parseFloat("years 10"); NaN
+
+Number Object Methods:
+Number.isInteger; returns true if the argument is an integer
+Number.isInteger(10); it will show True
+Number.isInteger(10.5); it will show false
+
+Number.isSafeInteger(); returns true if the argument is a safe integer
+Number.isSafeInteger(10); true
+Number.isSafeInteger(12345678901234567890); false
+Safe integers are all integers from -(253 - 1) to +(253 - 1).
+This is safe: 9007199254740991. This is not safe: 9007199254740992.
+
+Number.parseFloat(); converts a string to a number
+Number.parseFloat("10"); 10
+Number.parseFloat("10.33"); 10.33
+Number.parseFloat("10 20 30"); 10
+Number.parseFloat("10 years"); 10
+Number.parseFloat("years 10"); NaN
+
+Number.parseInt(); converts a string to a whole number
+Number.parseInt("-10"); -10
+Number.parseInt("-10.33"); -10
+Number.parseInt("10"); 10
+Number.parseInt("10.33"); 10
+Number.parseInt("10 20 30"); 10
+Number.parseInt("10 years");10
+Number.parseInt("years 10"); NaN
+
 JS Array Method:
 
 <script>
@@ -346,7 +444,7 @@ fruits.toString;  convert an array to a string
 
 fruits.at(2);  get the third element the same as fruits[2], but fruits[] can't do -(minus) from the end so it used fruits.at(-1)
 
-fruits.join(" _ "); join all array eleemnts into a string result; Banana _ Orange _ Apple _ Mango
+fruits.join(" _ "); join all array elements into a string result; Banana _ Orange _ Apple _ Mango
 
 fruits.pop();  removes the last element from an array
 
@@ -365,12 +463,16 @@ document.getElementById("demo1").innerHTML = fruits; it will show Banana, Orange
 fruits.unshift("Lemon");
 document.getElementById("demo2").innerHTML = fruits; it will show Lemon, Banana, Orange, Apple, Mango.
 
+Changing Elements:
 fruits[0] = "Kiwi";  change the first index of the array
 
 fruits[fruits.length] = "Kiwi";  easy way to append a new element to an array
 
+delete fruits[0];
+
 const myGirls = ["Cecilie", "Lone"];
 const myBoys = ["Emil", "Tobias", "Linus"];
+const arr3 = ["Robin", "Morgan"];
 const myChildren = myGirls.concat(myBoys, arr3);  merging existing arrays
 
 const fruits = ["Banana", "Orange", "Apple", "Mango", "Kiwi", "Papaya"];
@@ -447,10 +549,15 @@ fruits.toReversed(); reverse an array without altering the original array.
 fruits.sort().reverse(); reverse alphabethically
 
 Numeric Sort:
+
 const arr = [40, 100, 1, 5, 25, 10];
 Ascending sort:
+arr.sort(function(a, b){return a - b});
+same as
 arr.sort((a, b) => a - b); it will show '1, 5 ,10, 25, 40, 100'
 Descending sort
+arr.sort(function(a, b){return b - a});
+same as
 arr.sort((a, b) => b - a); it will show '100, 40, 25, 10, 5, 1'
 
 
@@ -458,6 +565,8 @@ Random:
 const arr = [40, 100, 1, 5, 25, 10];
 function myFunction() {
   arr.sort(function(){return 0.5 - Math.random()});
+    //same as
+  arr.sort(() => 0.5 - Math.random());
   document.getElementById("demo").innerHTML = arr;
 }
 
@@ -475,23 +584,48 @@ const min = Math.min(...arr);
 const max = Math.max(...arr);
 
 interview-safe & huge arrays:
-function findMinMax(arr) {
-    let min = Infinite, max = -Infinite;
-    with for:
-    for (let num of arr) {
-        if (min < num) min = num;
-        if (max > num) max = num;
+findMin:
+//with while loop
+function findMin(arr) {
+  if (arr.length === 0) return undefined;
+  let i = arr.length;
+  let min = Infinity;
+  while (i--) {
+    if (arr[i] < min) {
+      min = arr[i];
     }
-
-    with while:
-    let i = 0;
-    while (i < arr.length) {
-      if (arr[i] < min) min = arr[i];
-      if (arr[i] > max) max = arr[i];
-      i++;
-    }
-
-    return {min, max};
+  }
+  return min;
 }
-
+//with for loop
+function findMin(arr) {
+    if (arr.length === 0) return undefined; // Handle empty arrays
+    let min = Infinity;
+    for (let i = arr.length; i--; ) {
+        if (arr[i] < min) min = arr[i];
+    }
+    return min;
+}
+findMax:
+//with while loop
+function findMax(arr) {
+  if (arr.length === 0) return undefined; // Handle empty arrays
+  let len = arr.length;
+  let max = -Infinity;
+  while (len--) {
+    if (arr[len] > max) {
+      max = arr[len];
+    }
+  }
+  return max;
+}
+//with for loop
+function findMax(arr) {
+    if (arr.length === 0) return undefined; // Handle empty arrays
+    let max = -Infinity; // Initialize with first element (saves one iteration)
+    for (let i = arr.length; i--; ) {
+        if (arr[i] > max) max = arr[i];
+    }
+    return max;
+}
 </script>
