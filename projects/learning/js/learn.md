@@ -610,11 +610,11 @@ findMax:
 //with while loop
 function findMax(arr) {
   if (arr.length === 0) return undefined; // Handle empty arrays
-  let len = arr.length;
+  let i = arr.length;
   let max = -Infinity;
-  while (len--) {
-    if (arr[len] > max) {
-      max = arr[len];
+  while (i--) {
+    if (arr[i] > max) {
+      max = arr[i];
     }
   }
   return max;
