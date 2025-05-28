@@ -628,4 +628,38 @@ function findMax(arr) {
     }
     return max;
 }
+
+Sorting Object Arrays:
+const cars = [
+  {type:"Volvo", year:2016},
+  {type:"Saab", year:2001},
+  {type:"BMW", year:2010}
+];
+//sorting cars on age
+cars.sort(function(a, b){return a.year - b.year});
+//or
+cars.sort((a, b) => a.year - b.year);
+displayCars();
+//sorting car object on type
+function myFunction() {
+  cars.sort(function(a, b){
+    let x = a.type.toLowerCase();
+    let y = b.type.toLowerCase();
+    if (x < y) {return -1;}
+    if (x > y) {return 1;}
+    return 0;
+  });
+}
+function displayCars() {
+  document.getElementById("demo").innerHTML =
+  cars[0].type + " " + cars[0].year + "<br>" +
+  cars[1].type + " " + cars[1].year + "<br>" +
+  cars[2].type + " " + cars[2].year;
+//or
+let html = "";
+    for (let i = 0; i < cars.length; i++) {
+      html += `${cars[i].type} ${cars[i].year}<br>`;
+    }
+    document.getElementById("demo").innerHTML = html;
+}
 </script>
