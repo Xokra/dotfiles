@@ -663,3 +663,21 @@ let html = "";
     document.getElementById("demo").innerHTML = html;
 }
 </script>
+
+JS Array Iteration:
+forEach() calls a function(a callback function) once for each array element.
+const numbers = [45, 4, 9, 16, 25];
+let txt = "";
+numbers.forEach(myFunction);
+function myFunction(value, index, array) {
+txt += value + "<br>";
+}
+map()creates a new array by performing a function on each array element.
+const numbers1 = [45, 4, 9, 16, 25];
+const numbers2 = numbers1.map(myFunction);
+function myFunction(value, index, array) {
+return value _ 2;
+}
+flatMap() first maps all elements of an array and then creates a new array by flattening the array.
+const myArr = [1, 2, 3, 4, 5, 6];
+const newArr = myArr.flatMap((x) => x _ 2);
