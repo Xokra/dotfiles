@@ -673,13 +673,97 @@ numbers.forEach(myFunction);
 function myFunction(value, index, array) {
 txt += value + "<br>";
 }
+
 map()creates a new array by performing a function on each array element.
 const numbers1 = [45, 4, 9, 16, 25];
 const numbers2 = numbers1.map(myFunction);
 function myFunction(value, index, array) {
 return value * 2;
 }
+
 flatMap() first maps all elements of an array and then creates a new array by flattening the array.
 const myArr = [1, 2, 3, 4, 5, 6];
 const newArr = myArr.flatMap((x) => x * 2);
+filter() creates a new array with array elements that pass a test.
+const numbers = [45, 4, 9, 16, 25];
+const over18 = numbers.filter(myFunction);
+function myFunction(value,index,array) {
+  return value > 18;
+}
 
+reduce() runs a function on each array element to produce a single value.
+const numbers = [45, 4, 9, 16, 25];
+let sum = numbers.reduce(myFunction, 100);
+function myFunction(total, value) {
+  return total + value;
+}
+
+reduceRight() runs a function on each array element to produce a single value from right to left
+const numbers = [45, 4, 9, 16, 25];
+let sum = numbers.reduceRight(myFunction);
+function myFunction(total, value, index, array) {
+  return total + value;
+}
+
+every() checks if all array values pass a test.
+const numbers = [45, 4, 9, 16, 25];
+let allOver18 = numbers.every(myFunction);
+function myFunction(value, index, array) {
+  return value > 18;
+}
+
+some() checks if some array values pass a test.
+const numbers = [45, 4, 9, 16, 25];
+let someOver18 = numbers.some(myFunction);
+function myFunction(value, index, array) {
+  return value > 18;
+}
+
+Array.from() returns an Array object from any object with a length property or any iterable object.
+<script>
+const myArr = Array.from("ABCDEFG");
+document.getElementById("demo").innerHTML = myArr;
+</script>
+it will show A,B,C,D,E,F,G
+
+Array.keys() returns an Array Iterator object with the keys of an array.
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+const keys = fruits.keys();
+for (let x of keys) {
+  text += x + "<br>";
+}
+it will show:
+0
+1
+2
+3
+
+entries() returns an Array Iterator object with key/value pairs:
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+const f = fruits.entries();
+for (let x of f) {
+  document.getElementById("demo").innerHTML += x;
+}
+it will show
+0,Banana
+1,Orange
+2,Apple
+3,Mango
+
+with() as a safe way to update elements in an array without altering the original array.
+const months = ["Januar", "Februar", "Mar", "April"];
+const myMonths = months.with(2, "March");
+it will show 'Januar, Februar,March,April'
+
+spead (...) expands an array into individual elements.
+const q1 = ["Jan", "Feb", "Mar"];
+const q2 = ["Apr", "May", "Jun"];
+const q3 = ["Jul", "Aug", "Sep"];
+const q4 = ["Oct", "Nov", "Des"];
+const year = [...q1, ...q2, ...q3, ...q4];
+
+rest operator(...) allows us to destruct an array and collect the leftovers:
+let a,b, rest;
+const arr1 = [1,2,3,4,5,6,7,8];
+[a,b, ...rest] = arr1;
+it will show '3,4,5,6,7,8'
