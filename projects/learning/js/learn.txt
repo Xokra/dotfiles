@@ -755,7 +755,7 @@ const months = ["Januar", "Februar", "Mar", "April"];
 const myMonths = months.with(2, "March");
 it will show 'Januar, Februar,March,April'
 
-spead (...) expands an array into individual elements.
+spread (...) expands an array into individual elements.
 const q1 = ["Jan", "Feb", "Mar"];
 const q2 = ["Apr", "May", "Jun"];
 const q3 = ["Jul", "Aug", "Sep"];
@@ -767,3 +767,57 @@ let a,b, rest;
 const arr1 = [1,2,3,4,5,6,7,8];
 [a,b, ...rest] = arr1;
 it will show '3,4,5,6,7,8'
+
+
+JS Date Get Methods:
+getFullYear() returns the year of a date as a four digit number:
+const d = new Date("2021-03-25");
+d.getFullYear();//it will show '2021'
+
+getMonth() returns the month of a date as a number(0-11).
+const d = new Date("2021-03-25");
+d.getMonth();//it will show '3'
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const d = new Date("2021-03-25");
+let month = months[d.getMonth()];//it will show 'March'
+
+getDate() returns the day of a date as a number(1-31):
+const d = new Date("2021-03-25");
+d.getDate();//it will show '25'
+
+getHours() returns the hours of a date as a number(0-23):
+const d = new Date();
+d.getHours();//it will show what ever hours you have now
+
+getMinutes() returns the minutes of a date as a number (0-59):
+const d = new Date();
+d.getMinutes();//it will show what ever minutes you have
+
+getSeconds() returns the seconds of a date as a number (0-59):
+const d = new Date();
+d.getSeconds();//it will show you what ever seconds you have
+
+getMilliseconds() returns the milliseconds of a date as a number (0-999):
+const d = new Date();
+d.getMilliseconds();// it will show you what ever milliseconds you have
+
+getDay() returns the weekday of adate as a number(0-6):
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const d = new Date();
+let day = days[d.getDay()];// it will show what ever day you have 'thursday'
+
+getTime() returns the number of milliseconds since January 1, 1970:
+const d = new Date("1970-01-01");
+d.getTime();//it will show something '0'
+const d = new Date("2021-03-25");
+d.getTime();// it will show '1616630400000'
+
+Date.now() returns the number of milliseconds since January 1, 1970. but it is a static method of the Date object:
+const minute = 1000 * 60;
+const hour = minute * 60;
+const day = hour * 24;
+const year = day * 365;
+let years = Math.round(Date.now() / year);
+
+getTimezoneOffset() returns the difference (in minutes) between local time and UTC time:
+let diff = d.getTimezoneOffset();
