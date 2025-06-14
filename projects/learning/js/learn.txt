@@ -6,6 +6,7 @@ window.alert(5+6);/_alert box_/
 or
 alert(5+6);
 
+
 JS Data Types:
 JavaScript Arrays;
 const cars = ["Saab", "Volvo", "BMW"];
@@ -15,8 +16,8 @@ The typeof Operator;
 typeof "John" //Returns "string"
 typeof 0 // Returns "number"
 
-JS Functions:
 
+JS Functions:
 <p id="demo"></p>
 <script>
 let text = "The temperature is " + toCelcius(77) + "Celsius.";
@@ -25,6 +26,7 @@ function toCelcius(fahrenheit) {
   return (5/9) * (fahrenheit-32);
 }
 </script>
+
 
 JS Objects:
 Object Properties;
@@ -127,7 +129,6 @@ document.getElementById("demo").innerHTML = myObj[p1][p2];
 
 JS Object Methods:
 Accesing Object Methods;
-
 <script>
 const person = {
 firstName: "John",
@@ -151,6 +152,7 @@ Using JavaScript Methods;
 person.name = function () {
 return (this.firstName + " " + this.lastName).toUpperCase();
 };
+
 
 JS Object Display:
 // Create an Object
@@ -197,6 +199,7 @@ let myString = JSON.stringify(person);
 document.getElementById("demo").innerHTML = myString;
 // it will show: {"name":"John","age":50,"city":"New York"}
 
+
 JS Object Constructors:
 function Person(first, last, age, eye) {
 this.firstName = first;
@@ -223,6 +226,7 @@ myMother.changeName("Doe");
 myFather.nationality = "English";
 // add a new Property
 Person.prototype.nationality = "English";
+
 
 JS String Methods:
 JavaScript String Length;
@@ -291,6 +295,7 @@ const data = "apple,banana,cherry,date";
 const words = data.split(",");
 // it will show ['apple', 'banana', 'cherry', 'date']
 
+
 JS String Search:
 JavaScript String indexOf():
 let text = "Please locate where 'locate' occurs!";
@@ -340,6 +345,7 @@ let text / "John Deo";
 text.endsWith("Doe"); true
 let text = "Hello World, welcome to the universe.";
 text.endsWith("world", 11); true, check if the 11 first characters of a string ends with "world":
+
 
 JS Number Methods:
 toString(); returns a number as a string
@@ -435,8 +441,8 @@ Number.parseInt("10 20 30"); 10
 Number.parseInt("10 years");10
 Number.parseInt("years 10"); NaN
 
-JS Array Method:
 
+JS Array Method:
 <script>
 fruits.length; length size of an array
 
@@ -508,8 +514,8 @@ document.getElementById("dome1").innerHTML =  fruits.toString(); returns an arra
 it will show 'Banana,Orange,Apple,Mango'
 </script>
 
-JS Array Search:
 
+JS Array Search:
 <script>
 const fruits = ["Apple", "Orange", "Apple", "Mango"];
 fruits.indexOf("Apple") + 1; it will show '1'
@@ -535,9 +541,8 @@ let pos = temp.findLastIndex(x => x > 40);
 document.getElementById("demo").innerHTML = pos; it will show '4'
 </script>
 
-JS Array Sort:
 
-<script>
+JS Array Sort:
 fruits.sort(); sort array alphabetically
 
 fruits.reverse(); reverse the elements in an array
@@ -549,7 +554,6 @@ fruits.toReversed(); reverse an array without altering the original array.
 fruits.sort().reverse(); reverse alphabethically
 
 Numeric Sort:
-
 const arr = [40, 100, 1, 5, 25, 10];
 Ascending sort:
 arr.sort(function(a, b){return a - b});
@@ -559,7 +563,6 @@ Descending sort
 arr.sort(function(a, b){return b - a});
 same as
 arr.sort((a, b) => b - a); it will show '100, 40, 25, 10, 5, 1'
-
 
 Random:
 const arr = [40, 100, 1, 5, 25, 10];
@@ -684,6 +687,7 @@ return value * 2;
 flatMap() first maps all elements of an array and then creates a new array by flattening the array.
 const myArr = [1, 2, 3, 4, 5, 6];
 const newArr = myArr.flatMap((x) => x * 2);
+
 filter() creates a new array with array elements that pass a test.
 const numbers = [45, 4, 9, 16, 25];
 const over18 = numbers.filter(myFunction);
@@ -852,3 +856,94 @@ d.setMinutes(30);
 setMilliseconds() set the milliseconds (0-999)
 
 setTime() set the time(milliseconds since January 1, 1970)
+
+
+JS Comparisons:
+The Nullish Coalescing Operator (??);
+the '??' operator returns the first argument if it is not nullish (null or undefinded).
+let name = null;
+let text = "missing";
+let result = name ?? text;
+document.getElementById("demo").innerHTML = "The name is " + result; 
+//it will show 'missing'
+
+The Optional Chaining Operator (?.);
+the '?.' operator returns undefined if an object is undefined or null(instead of throwing an error).
+const car = {type:"Fiat", model:"500", color:"white"};
+let name = car?.name;
+document.getElementById("demo").innerHTML = name;
+//it will show 'undefined'
+
+
+JS Set Methods:
+//create a set
+const letters = new Set(["a","b","c"]);
+// Add values to the set
+letters.add("a");
+letters.add("b");
+letters.add("c");
+letters.add("c");
+letters.add("c");
+letters.add("c");
+letters.add("c");
+letters.add("c");
+//display the size
+document.getElementById("demo").innerHTML = "The set has " + letters.size + " Values.";
+// it will show 'the set has 3 values'
+
+has() method returns true if a set contains a spesific value;
+answer = letters.has("d");
+document.getElementById("demo").innerHTML = "The answer is " + answer;
+// it will show 'the answer in false'
+
+forEach() method invokes a function ofr each Set element;
+let text = "";
+letters.forEach (function(value) {
+  text += value + "<br>";
+})
+document.getElementById("demo").innerHTML = text;
+//it will show:
+// a
+// b
+// c
+
+value() mothed returns an Iterator object with the values in a Set:
+//get all values
+const myIterator = letters.values();
+//list all values
+let text = "";
+for (const x of myIterator) } {
+  text += x + "<br>";
+}
+//it will show:
+//a 
+//b
+//c
+
+keys() method returns an Iterator object with the values in a Set:
+NOTE, a set has no koys, so 'keys()' returns the same as 'values()'. this makes Sets compatible with Maps
+//create an iterator
+const myIterator = letters.keys();
+//list all Elements
+let text = "";
+for ( const x of myIterator) {
+  text += x + "<br>"
+}
+//it will show:
+//a 
+//b
+//c
+
+entries() method returns an Iterator with[value,value] pairs from a Set:
+//get all Entries
+const myIterator = letters.entries();
+//list all Entries
+let text = "";
+for ( const entry of myIterator) {
+  text += entry + "<br>"
+}
+//it will show:
+//a,a
+//b,b
+//c,c
+
