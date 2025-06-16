@@ -127,6 +127,7 @@ let p2 = "car2";
 document.getElementById("demo").innerHTML = myObj[p1][p2];
 </script>
 
+
 JS Object Methods:
 Accesing Object Methods;
 <script>
@@ -896,7 +897,7 @@ answer = letters.has("d");
 document.getElementById("demo").innerHTML = "The answer is " + answer;
 // it will show 'the answer in false'
 
-forEach() method invokes a function ofr each Set element;
+forEach() method invokes a function for each Set element;
 let text = "";
 letters.forEach (function(value) {
   text += value + "<br>";
@@ -907,7 +908,7 @@ document.getElementById("demo").innerHTML = text;
 // b
 // c
 
-value() mothed returns an Iterator object with the values in a Set:
+value() method returns an Iterator object with the values in a Set:
 //get all values
 const myIterator = letters.values();
 //list all values
@@ -947,3 +948,113 @@ for ( const entry of myIterator) {
 //b,b
 //c,c
 
+
+
+JS Map Methods:
+new Map() method create a map by passing an array to the 'new Map()' constructor:
+const fruits = new Map([
+  ["apples", 500],
+  ["bananas", 300],
+  ["oranges", 200]
+])
+
+.get() you get the value of a key in a map with the get() method
+document.getElementById("demo").innerHTML = fruits.get("apples");
+//it will show '500'
+
+.set() you can add elements to a map with the set() method:
+//create a map
+const fruits = new Map();
+//set map values
+fruits.set("apples",500);
+fruits.set("bananas",300);
+fruits.set("oranges",200);
+// change existing map
+fruits.set("apples",200);
+//now the apple are '200'
+
+.size property returns the number of elements in a map:
+fruits.size;
+//it will show '3'
+
+.delete() method removes a map element:
+fruits.delete("apples");
+
+.clear() method removes all the elements from a map:
+fruits.clear();
+
+.has() method returns true if a key exists in a map:
+fruits.has("apples");
+
+.forEach() method invokes a callback for each key/value pair in a map:
+let text = "";
+fruits.forEach(function(value, key) {
+  text += key + ' = ' + value + "<br>"
+})
+// it will show
+// apples = 500
+// bananas = 300
+// oranges = 200
+
+.entries() method returns an iterator object with the [key,values] in a map:
+//list all entries
+let text = "";
+for (const x of fruits.entries()) {
+  text += x + "<br>";
+}
+// it will show
+// apples = 500
+// bananas = 300
+// oranges = 200
+
+.keys() method returns an iterator object with the keys in a map:
+let text = "";
+for (const x of fruits.keys()) {
+  text += x + "<br>";
+}
+//it will show:
+//apples
+//bananas
+//oranges
+
+.values() method returns an iterator object with the values in a map:
+let text = "";
+for (const x of fruits.values()) {
+  text += x + "<br>";
+}
+//it will show
+//500
+//300
+//200
+
+Map.groupBy() groups elements of an object according to string values returned from a callback function.
+//creates an array
+const fruits = [
+  {name:"apples", quantity:300},
+  {name:"bananas", quantity:500},
+  {name:"oranges", quantity:200},
+  {name:"kiwi", quantity:150},
+]
+//callback function to select low volumes
+function myCallback({ quantity }) {
+  return quantity > 200 ? "ok" : "low";
+}
+//group by ok and low
+const result = Map.groupBy(fruits,myCallback);
+//display results
+let text ="These fruits are Ok: <br>";
+for (let x of result.get("ok)) {
+  text+= x.name + " " + x.quantity + "<br>";
+}
+text+= "<br> These fruits are low: <br>";
+for (let x of result.get("low")) {
+  text += x.name + " " + x.quantity + "<br>";
+}
+document.getElementById("demo").innerHTML = text;
+//it will show
+These fruits are Ok:
+apples 300
+bananas 500
+These fruits are low:
+oranges 200
+kiwi 150
