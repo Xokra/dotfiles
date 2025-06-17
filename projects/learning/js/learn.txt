@@ -1043,7 +1043,7 @@ function myCallback({ quantity }) {
 const result = Map.groupBy(fruits,myCallback);
 //display results
 let text ="These fruits are Ok: <br>";
-for (let x of result.get("ok)) {
+for (let x of result.get("ok")) {
   text+= x.name + " " + x.quantity + "<br>";
 }
 text+= "<br> These fruits are low: <br>";
@@ -1058,3 +1058,170 @@ bananas 500
 These fruits are low:
 oranges 200
 kiwi 150
+
+
+JS Destructuring:
+destructuring assignment syntax unpack object properties into variables, it also unpack arrays and any other iterables:
+//create an Object
+const person = {
+ firstName: "John",
+ lastName: "Doe",
+ age: 50
+};
+//Destructuring
+let {firstName, lastName} = person;
+//display primitive value
+document.getElementById("demo").innerHTML = firstName + " " = lastName;
+
+Object Default Values
+//destructuring
+let {firstName, lastName, country = "US"} = person;
+
+Object Property Alias
+//destructuring
+let {lastName : name} = person;
+document.getElementById("demo").innerHTML = name;
+//it will show 'Doe'
+
+String Destructuring
+let name = "W3Schools";
+let [a1, a2, a3, a4, a5] = name;
+document.getElementById("demo").innerHTML = a1;
+//it will show 'W'
+
+Array Destructuring
+const fruits = ["Bananas", "Oranges", "Apples", "Mangos"];
+let [fruit1, fruit2] = fruits;
+document.getElementById("demo").innerHTML = fruit1 + " " + fruit2;
+//it will show 'Bananas Oranges'
+
+Skipping Array Values
+let [fruit1,,,fruit2] = fruits;
+document.getElementById("demo").innerHTML = fruit1 + " " + fruit2;
+//it will show "Bananas Mangos"
+
+Array Position Values
+let {[0]:fruit1 ,[1]:fruit2} = fruits;
+document.getElementById("demo").innerHTML = fruit1 + " " + fruit2;
+//it will show 'Bananas Oranges'
+
+The Rest Property
+const numbers = [10, 20, 30, 40, 50, 60, 70];
+const [a,b, ...rest] = numbers
+document.getElementById("demo").innerHTML =
+"<p>a is " + a +
+"<p>b is " + b +
+"<p>the rest is " + rest;
+//it will show
+a is 10
+b is 20
+the rest is 30,40,50,60,70
+
+Swapping JavaScript Variables
+let firstName = "John";
+let lastName = "Doe";
+[firstName, lastName] = [lastName, firstName];
+// it will show 'Doe John'
+
+
+JS RegExp:
+Regular Expression Modifiers
+modifier - description
+'i' perform case-insensitive mathching
+let text = "Visit W3Schools";
+let result = text.match(/w3schools/i)
+//it will show 'W3Schools'
+
+'g' perform a global match (find all)
+let text = "Is this all there is?";
+let result = text.match(/is/g);
+//it will show 'is,is'
+
+'m' perform multiline matching
+let text = "\nIs th\nis it?";
+let result = text.match(/^is/m);
+//it will show 'is'
+
+'d' perform start and end matching
+let text = "aaaabb"; 
+let result = text.match(/(aa)(bb)/d);
+//it will show 'aabb,aa,bb'
+
+Regular Expression Patterns
+Brackets are used to find a range of characters:
+expression - description
+[abc] find any of the chacaters the backets
+let text = "Is this all there is?";
+let result = text.match(/[h]/g);
+//it will show 'h,h'
+
+[0-9] find any of the digits between the brackets
+let text = "123456789";
+let result = text.match(/[1-4]/g);
+//it will show '1,2,3,4'
+
+(x|y) find any of the alternatives separated with | 
+let text = "re, green, red, green, gren, gr, blue, yellow";
+let result = text.match(/(red|green)/g);
+//it will show 'green.red,green'
+
+Metacharacters are the characters with a special meaning:
+Metacharacter - Description
+\d find a digit
+let text = "Give 100%!";
+let result = text.match(/\d/g);
+//it will show '1,0,0'
+
+\s find a whitespace character
+let text = "Is this all there is?";
+let result = text.match(/\s/g);
+//it will show ', , ,'
+
+\b find a mtach at the beginning of a word "\bWORD", 
+let text = "HELLO, LOOK AT YOU!"; 
+let result = text.search(/\bLO/);
+//it will show '7'
+or at the end of a word "WORD\b"
+let result = text.search(/LO\b/);
+//it will show '3'
+
+\uxxxx find the unicode character specified by the hexadecimal number xxxx
+let text = "Visit W3Schools. Hello World!"; 
+let result = text.match(/\u0057/g);
+//it wil show 'W,W'
+
+Quantifiers define quantities:
+Quantifier - Description
+n+ matches any string that contains at least one n
+let text = "Hellooo World! Hello W3Schools!"; 
+let result = text.match(/o+/g);
+//it will show 'ooo,o,o,oo'
+
+n* matches any string that contains zero or more occurrences of n
+let text = "Hellooo World! Hello W3Schools!"; 
+let result = text.match(/lo*/g);
+//it will show 'l,looo,l,l,lo,l'
+
+n? matches any string that contains zero or one occurrences of n
+let text = "1, 100 or 1000?";
+let result = text.match(/10?/g);
+//it will show '1,10,10'
+
+Using test()
+it searches a string for a pattern, and returns true or false, depending on the result
+<p id="p01">The best things in life are free!</p>
+<p id="demo"></p>
+<script>
+let text = document.getElementById("p01").innerHTML;
+const pattern = /e/;
+document.getElementById("demo").innerHTML = pattern.test(text);
+</script>
+//it will show 'true'
+
+Using exec()
+it searches a string for a specified pattern, and returns the found text as an object.
+const obj = /e/.exec("The best things in life are free!");
+document.getElementById("demo").innerHTML =
+"Found " + obj[0] + " in position " + obj.index + " in the text: " + obj.input;
+//it will show
+//Found e in position 2 in the text: The best things in life are free!

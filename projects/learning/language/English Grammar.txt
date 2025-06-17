@@ -29,6 +29,15 @@ end with single 'f' generally plural are 'ves' but not all, different with doubl
 leaf - leaves
 loaf - loaves
 calf - calves
+knife - knives
+half - halves
+life - lives
+self - selves
+wive - wives
+sheaf - sheaves
+thief - thieves
+elf - elves
+shelf - shelves
 
 Irregular plural : -en plurals
 child - children
@@ -40,6 +49,24 @@ sheep - sheep
 bison - bison
 fish - fish (fishes only used for individual species of fishes)
 species - species
+deer - deer
+moose - moose
+swine - swine
+shrimp - shrimp
+trout - trout
+salmon - salmon
+cod - cod
+pike - pike
+
+others:
+aicraft
+spacecraft
+hovercraft
+offspring
+series
+species
+news
+means
 
 Irregular plural nouns: mutant plurals
 foot - feet
