@@ -5,7 +5,9 @@
 eval "$(zoxide init --cmd cd zsh)"
 
 export TERM=xterm-256color
-export PATH=~/bin:$PATH
+# export PATH=~/bin:$PATH
+export PATH=~/.local/bin:~/bin:$PATH
+
 
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -74,11 +76,15 @@ alias vi='nvim'
 alias c='clear'
 alias la='lazygit'
 # alias tx='tmux new-session -A -s main \; run-shell "/home/zed/.tmux/plugins/tmux-resurrect/scripts/restore.sh" || tmux new-session -s main'
-alias tx='echo "Running tmux" && tmux new-session -A -s main \; run-shell "/home/zed/.tmux/plugins/tmux-resurrect/scripts/restore.sh" || echo "Restore failed" && tmux new-session -s main'
+# alias tx='echo "Running tmux" && tmux new-session -A -s main \; run-shell "/home/zed/.tmux/plugins/tmux-resurrect/scripts/restore.sh" || echo "Restore failed" && tmux new-session -s main'
+# alias tx='tmux new-session -A -s main'
+# alias tx='tmux new-session -A -s main \; run-shell "~/.tmux/plugins/tmux-resurrect/scripts/restore.sh"'
+alias tx='~/.local/bin/tx'
+
 # alias tx='tmux'
 
 
 # Start battery monitor if not already running
-if ! pgrep -f "battery-monitor.sh" > /dev/null; then
-  nohup ~/battery-monitor.sh > /dev/null 2>&1 &
-fi
+# if ! pgrep -f "battery-monitor.sh" > /dev/null; then
+#   nohup ~/battery-monitor.sh > /dev/null 2>&1 &
+# fi

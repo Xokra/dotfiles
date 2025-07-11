@@ -1071,7 +1071,7 @@ const person = {
 //Destructuring
 let {firstName, lastName} = person;
 //display primitive value
-document.getElementById("demo").innerHTML = firstName + " " = lastName;
+document.getElementById("demo").innerHTML = firstName + " " + lastName;
 
 Object Default Values
 //destructuring
@@ -1127,7 +1127,7 @@ let lastName = "Doe";
 JS RegExp:
 Regular Expression Modifiers
 modifier - description
-'i' perform case-insensitive mathching
+'i' perform case-insensitive matching
 let text = "Visit W3Schools";
 let result = text.match(/w3schools/i)
 //it will show 'W3Schools'
@@ -1150,7 +1150,7 @@ let result = text.match(/(aa)(bb)/d);
 Regular Expression Patterns
 Brackets are used to find a range of characters:
 expression - description
-[abc] find any of the chacaters the backets
+[abc] find any of the characters the backets
 let text = "Is this all there is?";
 let result = text.match(/[h]/g);
 //it will show 'h,h'
@@ -1225,3 +1225,182 @@ document.getElementById("demo").innerHTML =
 "Found " + obj[0] + " in position " + obj.index + " in the text: " + obj.input;
 //it will show
 //Found e in position 2 in the text: The best things in life are free!
+
+
+JS Regexp from Gemini
+Part 1: Essential Regex Toolkit
+1. Literal Characters
+characters: any regular letter, number or symbol (e.g, a, B , 7, - , =).
+const regex = /cat/;
+const text = "A fat cat sat.";
+console.log(text.match(regex));
+//output ["cat", index: 6, input: "A fat cat sat.", groups: undefined]
+
+2. The Escape Character \(Backslash)
+when placed before a special regex metacharacter, it "escapes" that metacharacter, making it match its literal self.
+when placed before a regular character, it often forms a special sequence (like '\d' for digit)
+example (escaping a dot '.'):
+const regex = /www\.example\.com/; // '\.' matches a literal dot
+const text = "Visit www.example.com today.";
+console.log(text.match(regex));
+// output: ["www.example.com", index: 6, input: "Visit www.example.com today.", groups: undefined]
+
+3.Common Metacharacters that NEED Escaping(if you want them to be literal)
+- '.'(Dot) matches any single character except a newline character '\n'
+context/usage: use it as a wildcard for "any character here".
+const regex = /c.t/; // matches 'cat', 'cot', 'c@t', etc.
+const text = "Is it a cat, a cot or a cut?";
+console.log(text.match(regex));
+// output: ["cat", index: 9, input: "Is it a cat, a cot, or a cut?", groups: undefined]
+
+- '*'(Asterisk) matches zero or more occurrences of the preceding character or group.(it's a quantifier).
+context/usage: makes the preceding element optional and repeatable
+// Output: ["ac", index: 0, input: "ac, abc, abbc, abbbc", groups: undefined]
+// Note: With 'g' flag, it would match "ac", "abc", "abbc", "abbbc"
+
+- '+'(Plus sign) matches one or more occurrences of the preceding character or group.(it's a quantifier).
+context/usage: makes the preceding element mandatory (at least once) and repeatable.
+const regex = =ab+c/; // 'a' followed by one or more 'b's, followed by 'c'
+const text = "ac, abc, abbc";
+console.log(text.match(regex));
+//output: ["abc", index: 4, input: "ac, abc, abbc", groups: undefined]
+
+- '?'(Question Mark) matches zero or one occurrence of the preceding character or group.(it's a quantifier). also used for non-greedy matching
+context/usage: makes the preceding element optional
+const regex = /colou?r/; //matches "color" or "colour"
+const text = "My favorite color is blue, and I love the colour red.";
+console.log(text.match(regex));
+//output: ["color", index: 13, input: "My Favorite color is blue and I love the colour red.", groups: undefined]
+// with 'g' flag: ["color","colour"]
+
+- '^'(Caret) matches the beginning of the string. (or the beginning of a line if 'm' flag is used).
+context/usage: for patterns that must start at the very beginning.
+const regex = /^Start/;
+const text = "Start here. Not here. No Start.";
+console.log(regex.text(text)); //output: true
+console.log(regex.test("No Start here")); //output: false
+
+- '$'(Dollar Sign) matches the end of the string.(or the end of a line if 'm' flag is used)
+context/usage: for patterns that must end at the very end.
+const regex = /End$/;
+const text = "This is the End";
+console.log(regex.text(text)); // output: true
+console.log(regex.test("End of the line"));//output: false
+
+- '()'(Parentheses) create capturing group. the matched content inside the parentheses is "captured" and can be accessed separately in the match result array. They also group parts of the regex together for quantifiers or alternation.
+context/usage: extracting specific data, applying quantifiers to multiple characters.
+const regex = /red|blue) car/;
+const text = "I have a blue car.";
+const match = text.match(regex);
+console.log(match);
+//output: ["blue car", "blue", index: 0, input "I have a blue car.", groups: undefined]
+//match[0] is "blue car" (full match)
+//match[1] is "blue" (captured group)
+
+- '[]'(Square Brackets) defines a character set(or character class). Matches any single character within the brackets.
+context/usage: matching one of several possible characters.
+const regex = /[aeiou]/g; // matches any single vowel, globally
+const text = "Hello world";
+console.log(text.match(regex));
+//output: ["e", "o", "o"]
+
+- '{}'(Curly Braces/Quantifiers) specify the exact number or range of occurrences for the preceding element.
+  {n}: exactly 'n' times.
+  {n,}: 'n' or more times
+  {n,m}: between n and m times (inclusive).
+context/usage: precise control over repetition.
+const regex = /\d{3}-\d{2,4}/; // 3 digits, then '-', then 2 to 4 digits
+const text = "Phone: 123-4567";
+console.log(text.match(regex));
+//output: ["123-4567", index: 7, input: "Phone: 123-4567", groups: undefined]
+
+- '\'(backslash - as part of special sequences) as seen above, it's used for escaping. it also forms specila sequences for common character types:
+  \d: matches any digit(0-9).
+  \w: matches any word character(alphanumeric 'a-zA-Z0-9' and underscore '_').
+  \s: matches any whitespace character (space, tax \t, newline \n, carriage return \r, form feed \f, vertical tax \v).
+  \D: matches any non-digit
+  \W: matches any non-word character.
+  \S: matches any non-whitespace character.
+context/usage: convenient shortcuts.
+
+4. Flags
+- 'g'(Global) finds all matches in the string, rather than stopping after the first one
+context/usage: when you need to extract all occurrences of a pattern
+const regex = /cat/g;
+const text = "A cat sat on another cat.";
+console.log(text.match(regex));
+//output: ["cat","cat"]
+
+- 'i'(Case-Insensitive) perform a case-insensitive match.
+context/usage: when you don't care about the casing of the characters
+const regex = /apple/gi; //'g' and 'i'
+const text = "Apple, apple, APPLE!";
+console.log(text.match(regex));
+//output: ["Apple", "apple", "APPLE"]
+
+- 'm'(Multiline) changes the behavior of '^' and '$' achors to match the start/end of each line, not just the start/end of entire string.
+context/usage: pasrsing smulti-line text(e.g., log files, configuration files).
+const regex = /^Line/gm; // ^ matches of line with 'm'
+const text = "LIne 1/nThis is not Line 2/nLine 3";
+console.log(text.match(regex));
+// output: ["Line", "Line"]
+
+- 'd'(indices) provides start and end indices for the full match and for each capturing group. The result object will have an 'indices' property
+context/usage: when you need precise location information(e.g., for highlighing text)
+const regex = /(quick) (brown)/d;
+const text = "The quick brown fox.";
+const match / text.match(regex);
+console.log(match.indices);
+//output: [[4, 15], [4,9], [10,15]]
+// [4, 15] for "quick brown"
+// [4,9] for "quick"
+//[10, 15] for "brown"
+
+Part 2: Powerful Patterns(Learn & Understand)
+- '(?: )' (Non-Capturing Group) groups a part of the regex like () but does not capture its content into the 'match' result array.
+context/usage: use when you need to group for applying a quantifier or '|'(OR), but you don't need to extract that specific sub-match.
+const regex = /(?:cat|dog)s/; // groups "cat" or "dog", then matches "s"
+const text = "I like cats and dogs.";
+const match text.match(regex);
+console.log(match);
+//output: ["cats", index: 7, input: "I like cats and dogs.", groups: undefined]
+//notice there's no match[1] for "cat" or "dog" as it's non-capturing
+
+- '?'(after a quantifier: '*?','+?','??','{n,}?','{n,m}?')(Non-Greedy/Lazy Quantifier)
+meaning: makes the preceding quantifier 'non-greedy'(or "lazy"). Instead of matching the longest possible string. it matches the shortest possible string.
+context/usage: crucial when dealing with patterns that have repeating delimiters (like HTML tags, quotes).
+const greedyRegex = /".*"/; // Grredy: matches from first " to last "
+const slazy regex = /".*?"/; //Lazy: matches first " to next "
+const text = 'This has "first quote" and then "second quote".';
+console.log("Greedy:", text.match(greedyRegex));
+//output: ["\"first quote\" and then \"second quote"\"", ...]
+console.log("lazy:",  text.match(lazyRegex));
+//output: [\"first quote\"",...]
+
+- '(?= )'(Positive Lookahead) matches a position where the pattern inside '(?=...)' immediately follows, but does not include the lookahead pattern in the actual match.
+context/usage: validating passwords(e.g., must contain a number), finding words followed by a specific context.
+const regex = /\w+(?= dollars)/g; // match a word if it's followed by " dollars"
+const text = "I have 50 dollars and 20 euros.";
+console.log(text.match(regex));
+//output: ["50"] (it matches "50", but " dollars" is only asserted, not matched)
+
+- '(?! )'(Negative Lookahead) matches a position where the pattern inside '(?!...)' does not immediately follow.
+context/usage: excluding specific patterns
+const regex = /word(?!s)/g; //Match "word" only if it's NOT followed by "s"
+const text = "This is a word, and these are words.";
+console.log(text.match(regex));
+//output: ["word"] (Only the first "word" is matched)
+
+- '(?<= )'(Positive Lookbehind) matches a position where the pattern inside '(?<=...)' immediately precedes, but does not include the lookbehind pattern in the actual match.
+context/usage: finding text that is preceded by a specific context.
+const regex = /(?<=\$)\d+/g; // match digits that are preceded by '$'
+const text = "Price: $100, Cost: €50.";
+console.log(text.match(regex));
+//output: ["100"] (Matches "100", but "$" is only asserted)
+
+- '(?<! )'(Negative Lookbehind) matches a position where the pattern inside '(?<!...)' does not immediately precede.
+context/usage: excluding text that is preceded by a specific context
+const regex = /(?<!\$)\d+/g; // match digits that are not precedded by '$'
+const text = "Price: $100, Cost: 50.";
+console.log(text.match(regex));
+//output: ["50"]
