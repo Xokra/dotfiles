@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Function to check if tmux server is running
+tmux_running() {
+    tmux list-sessions &>/dev/null
+}
+
+# Function to restore session
+restore_session() {
+    if [ -f ~/.tmux/resurrect/last ]; then
+        echo "Restoring previous session..."
+        ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh
+        sleep 2  # Give it time to restore
+    else
+        echo "No previous session found"
+    fi
+}
+
+# Main logic
+if tmux_running; then
+    if tmux has-session -t main 2>/dev/null; then
+        echo "Attaching to existing session 'main'"
+        tmux attach-session -t main
+    else
+        echo "Creating new session 'main'"
+        tmux new-session -d -s main
+        restore_session
+        tmux attach-session -t main
+    fi
+else
+    echo "Starting tmux server and creating session 'main'"
+    tmux new-session -d -s main
+    restore_session
+    tmux attach-session -t main
+fi
