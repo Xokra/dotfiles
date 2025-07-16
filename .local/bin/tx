@@ -5,31 +5,56 @@ tmux_running() {
     tmux list-sessions &>/dev/null
 }
 
-# Function to restore session
-restore_session() {
-    if [ -f ~/.tmux/resurrect/last ]; then
-        echo "Restoring previous session..."
-        ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh
-        sleep 2  # Give it time to restore
-    else
-        echo "No previous session found"
-    fi
+# Function to get the last active session
+get_last_active_session() {
+    # Get sessions sorted by activity time (most recent first)
+    tmux list-sessions -F "#{session_last_attached} #{session_name}" | \
+    sort -rn | \
+    head -n 1 | \
+    awk '{print $2}'
 }
 
-# Main logic
+# Main logic for automatic restoration
 if tmux_running; then
-    if tmux has-session -t main 2>/dev/null; then
-        echo "Attaching to existing session 'main'"
-        tmux attach-session -t main
+    # Tmux server is running, get the last active session
+
+    last_session=$(get_last_active_session)
+    
+    if [ -n "$last_session" ]; then
+        echo "Attaching to last active session: $last_session"
+        tmux attach-session -t "$last_session"
     else
-        echo "Creating new session 'main'"
-        tmux new-session -d -s main
-        restore_session
-        tmux attach-session -t main
+        # Fallback to first available session
+        existing_session=$(tmux list-sessions -F "#{session_name}" | head -n 1)
+        echo "Attaching to session: $existing_session"
+        tmux attach-session -t "$existing_session"
     fi
 else
-    echo "Starting tmux server and creating session 'main'"
-    tmux new-session -d -s main
-    restore_session
-    tmux attach-session -t main
+    # No tmux server running - start and restore
+    echo "Starting tmux and restoring last session..."
+    
+    # Start tmux server with a temporary session
+    tmux new-session -d -s temp
+    
+    # Let continuum automatically restore (it runs on server start)
+    sleep 3
+    
+    # Check if continuum restored any sessions
+    restored_sessions=$(tmux list-sessions -F "#{session_name}" | grep -v "^temp$")
+    
+    if [ -n "$restored_sessions" ]; then
+        # Sessions were restored! Get the last active one
+        tmux kill-session -t temp
+        
+
+        # Get the last active session from the restored ones
+        last_session=$(get_last_active_session)
+        echo "Restored sessions. Attaching to last active: $last_session"
+        tmux attach-session -t "$last_session"
+    else
+        # No sessions were restored, rename temp to main and use it
+        tmux rename-session -t temp main
+
+        tmux attach-session -t main
+    fi
 fi

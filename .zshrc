@@ -11,7 +11,7 @@
 # ====================================
 export TERM=xterm-256color
 
-export PATH=~/.local/bin:~/bin:$PATH
+export PATH=~/.local/bin:$PATH
 umask 022
 
 # ====================================
@@ -136,9 +136,7 @@ function fzf() {
 # KEYBINDINGS
 # ====================================
 bindkey -e
-
 bindkey '^p' history-search-backward
-
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 
