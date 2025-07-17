@@ -49,6 +49,7 @@ detect_platform() {
             else
                 echo "linux"
             fi
+
             ;;
         Darwin*)
             echo "mac"
@@ -96,7 +97,6 @@ recognize_platform() {
             error "Unsupported platform: $platform"
             exit 1
             ;;
-
     esac
     
     echo "$platform"
@@ -109,13 +109,13 @@ make_bin_executable() {
     
 
     if [ -d "$DOTFILES_DIR/.local/bin" ]; then
-
         chmod +x "$DOTFILES_DIR/.local/bin/"*
         log "Made all scripts in $DOTFILES_DIR/.local/bin executable"
     else
         warn "Directory $DOTFILES_DIR/.local/bin not found"
     fi
 }
+
 
 # Step 3 & 4: WSL-specific logic
 handle_wsl_specific() {
@@ -176,12 +176,12 @@ handle_wsl_specific() {
 get_alacritty_target() {
     local platform="$1"
     
-
     case "$platform" in
         wsl)
             local windows_user=$(get_windows_username)
             echo "/mnt/c/Users/$windows_user/AppData/Roaming/Alacritty"
             ;;
+
         mac|arch|linux)
             echo "$HOME/.config/alacritty"
             ;;
@@ -213,26 +213,138 @@ handle_alacritty_config() {
     # Create dotfiles alacritty directory
     mkdir -p "$DOTFILES_DIR/.config/alacritty"
     
-    # Create target directory
-    mkdir -p "$target_dir"
+    # For WSL, check if Windows drive is accessible
+    if [ "$platform" = "wsl" ]; then
+        local windows_user=$(get_windows_username)
+        local windows_appdata="/mnt/c/Users/$windows_user/AppData"
+        
+        # Check if Windows user directory exists
+        if [ ! -d "/mnt/c/Users/$windows_user" ]; then
+            error "Windows user directory not found: /mnt/c/Users/$windows_user"
+            error "Make sure Windows drive is mounted and user exists"
+            return 1
+
+        fi
+        
+
+        # Create AppData structure if it doesn't exist
+        if [ ! -d "$windows_appdata" ]; then
+            warn "AppData directory not found, creating: $windows_appdata"
+            mkdir -p "$windows_appdata"
+        fi
+
+        
+        # Create Roaming directory if it doesn't exist
+        if [ ! -d "$windows_appdata/Roaming" ]; then
+            log "Creating Roaming directory: $windows_appdata/Roaming"
+            mkdir -p "$windows_appdata/Roaming"
+        fi
+        
+        # Create Alacritty directory
+        if [ ! -d "$target_dir" ]; then
+            log "Creating Alacritty directory: $target_dir"
+            mkdir -p "$target_dir"
+        else
+            log "Alacritty directory already exists: $target_dir"
+        fi
+    else
+        # For non-WSL platforms, create target directory normally
+        mkdir -p "$target_dir"
+    fi
     
     # If target config exists but dotfiles config doesn't, move it to dotfiles first
     if [ -f "$target_config" ] && [ ! -f "$dotfiles_config" ]; then
         log "Moving existing Alacritty config to dotfiles..."
+
         cp "$target_config" "$dotfiles_config"
         backup_file "$target_config"
     fi
-
     
     # Always copy from dotfiles to target (dotfiles is the source of truth)
     if [ -f "$dotfiles_config" ]; then
         log "Copying Alacritty config from dotfiles to $platform..."
+
         cp "$dotfiles_config" "$target_config"
         log "Alacritty config copied successfully"
+        
+        # For WSL, also provide installation hint
+        if [ "$platform" = "wsl" ]; then
+            info "Alacritty config ready for Windows. Install Alacritty on Windows if not already installed:"
+            echo "  - Download from: https://github.com/alacritty/alacritty/releases"
+            echo "  - Or use winget: winget install Alacritty.Alacritty"
+        fi
+
     else
         warn "No Alacritty config found in dotfiles at $dotfiles_config"
+        
+        # Create a basic config file as a starting point
+        if [ "$platform" = "wsl" ]; then
+            log "Creating basic Alacritty config as starting point..."
+            cat > "$dotfiles_config" << 'EOF'
+#C:\Users\dixie\AppData\Roaming\Alacritty
+#mkdir -p /mnt/c/Users/dixie/AppData/Roaming/Alacritty
+#vi /mnt/c/Users/dixie/AppData/Roaming/Alacritty/alacritty.toml
+[window]
+opacity = 0.97
+startup_mode = "Maximized"
+decorations = "None"
+
+[shell]
+program = "wsl.exe ~ -d Ubuntu-24.04"
+
+[font]
+normal.family = "MesloLGLDZ Nerd Font"
+size = 10.5
+
+[colors]
+# Primary colors
+[colors.primary]
+background = '#011423'
+foreground = '#CBE0F0'
+
+# Cursor colors
+[colors.cursor]
+text = "#011423"
+cursor = "#47FF9C"
+
+# Normal colors
+[colors.normal]
+black = "#214969"
+red = "#E52E2E"
+green = "#44FFB1"
+yellow = "#FFE073"
+blue = "#0FC5ED"
+magenta = "#a277ff"
+cyan = "#24EAF7"
+white = "#24EAF7"
+
+# Bright colors
+[colors.bright]
+black = "#21717D"
+red = "#E52E2E"
+green = "#44FFB1"
+yellow = "#FFE073"
+blue = "#A277FF"
+magenta = "#a277ff"
+cyan = "#24EAF7"
+white = "#24EAF7"
+
+# [keyboard]
+# bindings = [
+#   { key = "Backspace", mods = "Control", chars = "" }
+# ]
+
+EOF
+            
+            # Copy the new config to target
+            cp "$dotfiles_config" "$target_config"
+
+            log "Created and copied basic Alacritty config"
+        fi
     fi
+
 }
+
 
 # Step 5: Run smart-stow based on platform
 run_smart_stow() {
@@ -348,6 +460,7 @@ source_additional_configs() {
 
     done
 }
+
 
 # Main execution function
 main() {
