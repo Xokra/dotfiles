@@ -11,8 +11,7 @@ Copy and paste these commands on your current system:
 ### 1. Backup Everything
 
 ```bash
-cd ~/dotfiles
-./cross-platform-inventory.sh
+cross-platform-backup.sh
 ```
 
 ### 2. Push Backups and Dotfiles
@@ -29,29 +28,6 @@ git push origin main
 
 ## POSTBOOT: Fresh System Setup
 
-### One Command Setup
-
-Copy and paste this on your brand new system:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Xokra/dotfiles/main/.local/bin/cross-platform-master-backup.sh | bash
-```
-
-### Configure Git (Only Manual Step)
-
-```bash
-
-git config --global user.name "Your Name"
-
-git config --global user.email "your_email@example.com"
-```
-
-**✅ POSTBOOT COMPLETE**
-
----
-
-## Manual Setup (If Automated Fails)
-
 ### WSL Setup
 
 ```powershell
@@ -64,6 +40,8 @@ winget install --id Google.Chrome; winget install --id Mozilla.Firefox; winget i
 wsl --set-default-version 2
 
 ```
+
+### Choose which wsl system on Microsoft Store.
 
 ```bash
 # Inside WSL
@@ -134,12 +112,5 @@ mkdir ~/dotfiles
 cd ~/dotfiles
 
 git clone git@github.com:Xokra/dotfiles.git .
-chmod +x .local/bin/*
-./cross-platform-setup-dotfiles.sh
-```
-
-### Final Steps
-
-```bash
-source ~/.zshrc
+~/dotfiles/.local/bin/setup-dotfiles.sh
 ```
