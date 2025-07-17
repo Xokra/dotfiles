@@ -1,746 +1,611 @@
 #!/bin/bash
 
 # Cross-Platform System Backup Script
-# Supports Windows (WSL), macOS, and Linux (including Arch)
-# Creates comprehensive backup of installed packages, configurations, and dependencies
+# Supports: WSL (Ubuntu), macOS, Arch Linux (i3)
+# Author: Auto-generated backup solution
 
-set -e  # Exit on error
-
+set -euo pipefail
 
 # Configuration
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OUTPUT_DIR="$HOME/system-backup"
-DATE=$(date +"%Y%m%d_%H%M%S")
-BACKUP_DIR="$OUTPUT_DIR/backup_$DATE"
-
-
-# Create output directory
-mkdir -p "$BACKUP_DIR"
+MAIN_BACKUP_DIR="system-backups"
+BACKUP_DIR="$MAIN_BACKUP_DIR/backup-$(date +%Y%m%d_%H%M%S)"
+RESTORE_SCRIPT="restore-system.sh"
+PACKAGE_LIST="packages.txt"
+PLATFORM_INFO="platform-info.txt"
 
 # Colors for output
 RED='\033[0;31m'
-
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m'
+NC='\033[0m' # No Color
+
 
 # Logging functions
-log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
-log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
-log_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
 
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Platform detection function
+detect_platform() {
+
+    # Check for WSL first (multiple detection methods)
+
+    if [[ -n "${WSL_DISTRO_NAME:-}" ]] || [[ -n "${WSL_INTEROP:-}" ]]; then
+        echo "wsl"
+    elif [[ -f /proc/version ]] && grep -qi "microsoft\|wsl" /proc/version 2>/dev/null; then
+        echo "wsl"
+    elif [[ -f /proc/sys/kernel/osrelease ]] && grep -qi "microsoft\|wsl" /proc/sys/kernel/osrelease 2>/dev/null; then
+        echo "wsl"
+    # Check for macOS
+    elif [[ $(uname) == "Darwin" ]]; then
+        echo "mac"
+    # Check for Arch Linux
+    elif [[ -f /etc/arch-release ]]; then
+        echo "arch"
+    # Fallback: check if it's Ubuntu/Debian (likely WSL if other methods failed)
+    elif [[ -f /etc/os-release ]] && grep -qi "ubuntu\|debian" /etc/os-release 2>/dev/null && command -v apt >/dev/null 2>&1; then
+        echo "wsl"
+    else
+
+        echo "unknown"
+    fi
+}
+
+# Get system information
+get_system_info() {
+    local platform=$1
+    local info_file=$2
+    
+    echo "# System Information - $(date)" > "$info_file"
+    echo "PLATFORM=$platform" >> "$info_file"
+
+    echo "HOSTNAME=$(hostname)" >> "$info_file"
+    echo "USER=$(whoami)" >> "$info_file"
+
+    echo "KERNEL=$(uname -r)" >> "$info_file"
+    echo "ARCH=$(uname -m)" >> "$info_file"
+    
+    case $platform in
+        "wsl")
+            echo "OS_VERSION=$(lsb_release -d 2>/dev/null | cut -f2)" >> "$info_file"
+            ;;
+        "mac")
+            echo "OS_VERSION=$(sw_vers -productVersion)" >> "$info_file"
+            ;;
+        "arch")
+            echo "OS_VERSION=$(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)" >> "$info_file"
+            ;;
+    esac
+
+}
+
+
+# Discover packages based on platform
+discover_packages() {
+    local platform=$1
+    local package_file=$2
+    
+    log_info "Discovering packages for platform: $platform"
+    
+    case $platform in
+
+        "wsl")
+            log_info "Getting APT packages..."
+            # Get manually installed packages only
+            apt-mark showmanual > "$package_file.apt" 2>/dev/null || {
+                log_warning "apt-mark showmanual failed, using alternative method"
+                apt list --installed 2>/dev/null | grep -v "WARNING" | cut -d'/' -f1 | tail -n +2 > "$package_file.apt"
+            }
+            
+            # Get snap packages if available
+            if command -v snap >/dev/null 2>&1; then
+                log_info "Getting Snap packages..."
+
+                snap list | tail -n +2 | awk '{print $1}' > "$package_file.snap" 2>/dev/null || touch "$package_file.snap"
+            else
+                touch "$package_file.snap"
+            fi
+            ;;
+            
+        "mac")
+
+            log_info "Getting Homebrew packages..."
+            if command -v brew >/dev/null 2>&1; then
+                # Get formulae and casks separately
+                brew list --formula > "$package_file.brew" 2>/dev/null || touch "$package_file.brew"
+
+                brew list --cask > "$package_file.cask" 2>/dev/null || touch "$package_file.cask"
+            else
+                log_warning "Homebrew not found"
+                touch "$package_file.brew"
+                touch "$package_file.cask"
+            fi
+            
+            # Get Mac App Store apps if mas is installed
+            if command -v mas >/dev/null 2>&1; then
+                log_info "Getting Mac App Store apps..."
+                mas list > "$package_file.mas" 2>/dev/null || touch "$package_file.mas"
+            else
+
+                touch "$package_file.mas"
+
+            fi
+            ;;
+            
+        "arch")
+            log_info "Getting Pacman packages..."
+            # Get explicitly installed packages only
+
+            pacman -Qe | cut -d' ' -f1 > "$package_file.pacman"
+            
+
+            # Get AUR packages if yay is available
+            if command -v yay >/dev/null 2>&1; then
+                log_info "Getting AUR packages..."
+                yay -Qm | cut -d' ' -f1 > "$package_file.aur" 2>/dev/null || touch "$package_file.aur"
+            else
+                touch "$package_file.aur"
+            fi
+            ;;
+            
+        *)
+            log_error "Unsupported platform: $platform"
+            return 1
+
+            ;;
+    esac
+    
+    log_success "Package discovery completed"
+}
+
+# Generate the restore script
+generate_restore_script() {
+    local platform=$1
+    local restore_script=$2
+    
+    log_info "Generating restore script..."
+    
+    cat > "$restore_script" << 'EOF'
+#!/bin/bash
+
+# Cross-Platform System Restore Script
+# Generated by cross-platform backup solution
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+
+BLUE='\033[0;34m'
+
+NC='\033[0m'
+
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+
+}
+
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+
+}
+
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
 
 # Platform detection
 detect_platform() {
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        if grep -q Microsoft /proc/version 2>/dev/null; then
-            echo "wsl"
-        elif [ -f /etc/arch-release ]; then
-            echo "arch"
-        elif [ -f /etc/debian_version ]; then
-            echo "debian"
-        elif [ -f /etc/redhat-release ]; then
-            echo "redhat"
-        else
-            echo "linux"
-        fi
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "macos"
+
+    # Check for WSL first (multiple detection methods)
+
+    if [[ -n "${WSL_DISTRO_NAME:-}" ]] || [[ -n "${WSL_INTEROP:-}" ]]; then
+        echo "wsl"
+    elif [[ -f /proc/version ]] && grep -qi "microsoft\|wsl" /proc/version 2>/dev/null; then
+        echo "wsl"
+    elif [[ -f /proc/sys/kernel/osrelease ]] && grep -qi "microsoft\|wsl" /proc/sys/kernel/osrelease 2>/dev/null; then
+
+        echo "wsl"
+    # Check for macOS
+    elif [[ $(uname) == "Darwin" ]]; then
+        echo "mac"
+    # Check for Arch Linux
+    elif [[ -f /etc/arch-release ]]; then
+        echo "arch"
+    # Fallback: check if it's Ubuntu/Debian (likely WSL if other methods failed)
+    elif [[ -f /etc/os-release ]] && grep -qi "ubuntu\|debian" /etc/os-release 2>/dev/null && command -v apt >/dev/null 2>&1; then
+        echo "wsl"
     else
+
         echo "unknown"
     fi
 }
 
-# Distribution detection for Linux
-detect_distro() {
-    if [ -f /etc/os-release ]; then
-        . /etc/os-release
-        echo "$ID"
-    elif [ -f /etc/lsb-release ]; then
-        . /etc/lsb-release
-        echo "$DISTRIB_ID" | tr '[:upper:]' '[:lower:]'
-
-    else
-        echo "unknown"
-    fi
-}
-
-PLATFORM=$(detect_platform)
-DISTRO=$(detect_distro)
-
-
-log_info "Starting cross-platform system backup..."
-log_info "Platform: $PLATFORM"
-log_info "Distribution: $DISTRO"
-
-log_info "Output directory: $BACKUP_DIR"
-
-# System Information
-
-collect_system_info() {
-    log_info "Collecting system information..."
+# Package name translation map (only for packages with different names)
+declare -A PACKAGE_MAP=(
+    # Web browsers
+    ["google-chrome-stable"]="google-chrome:chromium:google-chrome"
+    ["chromium-browser"]="chromium:chromium:chromium"
     
-    {
-        echo "=== System Information ==="
-        echo "Date: $(date)"
-        echo "Platform: $PLATFORM"
-        echo "Distribution: $DISTRO"
-        echo "Kernel: $(uname -r)"
-        echo "Architecture: $(uname -m)"
-        echo "Hostname: $(hostname)"
-        echo "User: $(whoami)"
-        echo "Home: $HOME"
-        echo "Shell: $SHELL"
-        echo "OS Type: $OSTYPE"
-        
-        if [[ "$PLATFORM" == "macos" ]]; then
-            echo "macOS Version: $(sw_vers -productVersion)"
-        fi
+    # Development tools
+    ["nodejs"]="nodejs:node:nodejs"
+    ["python3"]="python3:python@3.11:python"
 
-        
-        echo ""
-    } > "$BACKUP_DIR/system_info.txt"
-}
-
-# Package Manager Backup Functions
-backup_apt_packages() {
-
-    if command -v apt &> /dev/null; then
-        log_info "Backing up APT packages..."
-        
-        apt list --installed 2>/dev/null | grep -v "WARNING" > "$BACKUP_DIR/apt_packages.txt"
-        
-        {
-            echo "#!/bin/bash"
-            echo "# APT package reinstall script"
-
-            echo "# Generated on $(date)"
-            echo ""
-            echo "sudo apt update"
-            echo "sudo apt install -y \\"
-
-            apt list --installed 2>/dev/null | grep -v "WARNING" | cut -d'/' -f1 | grep -v "^$" | sort | sed 's/$/  \\/' | sed '$s/ \\$//'
-        } > "$BACKUP_DIR/install_apt_packages.sh"
-        
-        chmod +x "$BACKUP_DIR/install_apt_packages.sh"
-    fi
-}
-
-backup_pacman_packages() {
-
-    if command -v pacman &> /dev/null; then
-        log_info "Backing up Pacman packages..."
-
-        
-        pacman -Q > "$BACKUP_DIR/pacman_packages.txt"
-        pacman -Qm > "$BACKUP_DIR/pacman_aur_packages.txt" 2>/dev/null || true
-
-        
-        {
-
-            echo "#!/bin/bash"
-            echo "# Pacman package reinstall script"
-
-            echo "# Generated on $(date)"
-            echo ""
-            echo "# Official repository packages"
-            echo "sudo pacman -S --needed \\"
-            pacman -Qn | awk '{print $1}' | sort | sed 's/$/  \\/' | sed '$s/ \\$//'
-
-            echo ""
-            echo "# AUR packages (install manually with yay/paru)"
-            echo "# yay -S \\"
-            pacman -Qm | awk '{print $1}' | sort | sed 's/^/# /' | sed 's/$/  \\/' | sed '$s/ \\$//'
-        } > "$BACKUP_DIR/install_pacman_packages.sh"
-        
-        chmod +x "$BACKUP_DIR/install_pacman_packages.sh"
-    fi
-}
-
-backup_homebrew_packages() {
-    if command -v brew &> /dev/null; then
-        log_info "Backing up Homebrew packages..."
-        
-        brew list --formula > "$BACKUP_DIR/homebrew_formulas.txt"
-        brew list --cask > "$BACKUP_DIR/homebrew_casks.txt"
-        brew bundle dump --file="$BACKUP_DIR/Brewfile" --force
-        
-        {
-            echo "#!/bin/bash"
-            echo "# Homebrew package reinstall script"
-            echo "# Generated on $(date)"
-            echo ""
-            echo "# Install Homebrew if not present"
-            echo 'if ! command -v brew &> /dev/null; then'
-            echo '    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-            echo 'fi'
-            echo ""
-            echo "# Install from Brewfile"
-            echo "brew bundle install --file=Brewfile"
-        } > "$BACKUP_DIR/install_homebrew_packages.sh"
-        
-        chmod +x "$BACKUP_DIR/install_homebrew_packages.sh"
-    fi
-}
-
-backup_yum_packages() {
-    if command -v yum &> /dev/null; then
-        log_info "Backing up YUM packages..."
-        
-        yum list installed > "$BACKUP_DIR/yum_packages.txt"
-        
-        {
-            echo "#!/bin/bash"
-            echo "# YUM package reinstall script"
-
-            echo "# Generated on $(date)"
-            echo ""
-            echo "sudo yum install -y \\"
-            yum list installed | tail -n +2 | awk '{print $1}' | cut -d'.' -f1 | sort | sed 's/$/  \\/' | sed '$s/ \\$//'
-        } > "$BACKUP_DIR/install_yum_packages.sh"
-        
-        chmod +x "$BACKUP_DIR/install_yum_packages.sh"
-    fi
-}
-
-# Language-specific package managers
-backup_language_packages() {
-    log_info "Backing up language-specific packages..."
+    ["python3-pip"]="python3-pip:python@3.11:python-pip"
     
-    # Python packages
+    # Text editors
 
-    if command -v pip &> /dev/null; then
-        log_info "Backing up Python (pip) packages..."
-        pip list --format=freeze > "$BACKUP_DIR/pip_packages.txt"
-        
-        {
+    ["code"]="code:visual-studio-code:code"
+    ["sublime-text"]="sublime-text:sublime-text:sublime-text-4"
+)
 
-            echo "#!/bin/bash"
-            echo "# Python pip packages reinstall script"
-            echo "pip install -r pip_packages.txt"
-        } > "$BACKUP_DIR/install_pip_packages.sh"
-        chmod +x "$BACKUP_DIR/install_pip_packages.sh"
-    fi
+# Get package name for current platform
+
+get_package_name() {
+    local original_name=$1
+    local platform=$2
     
-    if command -v pip3 &> /dev/null; then
-        log_info "Backing up Python3 (pip3) packages..."
-        pip3 list --format=freeze > "$BACKUP_DIR/pip3_packages.txt"
+    if [[ -n "${PACKAGE_MAP[$original_name]:-}" ]]; then
+        local alternatives="${PACKAGE_MAP[$original_name]}"
+        case $platform in
+            "wsl") echo "$alternatives" | cut -d':' -f1 ;;
+            "mac") echo "$alternatives" | cut -d':' -f2 ;;
 
-        
-        {
-            echo "#!/bin/bash"
-            echo "# Python3 pip3 packages reinstall script"
-            echo "pip3 install -r pip3_packages.txt"
-        } > "$BACKUP_DIR/install_pip3_packages.sh"
-        chmod +x "$BACKUP_DIR/install_pip3_packages.sh"
-    fi
-    
-    # Node.js packages
-    if command -v npm &> /dev/null; then
-        log_info "Backing up Node.js (npm) global packages..."
-        npm list -g --depth=0 --json > "$BACKUP_DIR/npm_global_packages.json"
-        npm list -g --depth=0 > "$BACKUP_DIR/npm_global_packages.txt"
-        
-        {
-            echo "#!/bin/bash"
-            echo "# NPM global packages reinstall script"
-            echo "# Install global packages:"
-            npm list -g --depth=0 --parseable --long 2>/dev/null | grep -v "$(npm config get prefix)" | cut -d: -f2 | grep -v "^$" | sort | sed 's/^/npm install -g /'
-        } > "$BACKUP_DIR/install_npm_packages.sh"
-        chmod +x "$BACKUP_DIR/install_npm_packages.sh"
-    fi
-    
-    # Ruby gems
-    if command -v gem &> /dev/null; then
-        log_info "Backing up Ruby gems..."
-        gem list > "$BACKUP_DIR/ruby_gems.txt"
-        
-        {
-
-            echo "#!/bin/bash"
-            echo "# Ruby gems reinstall script"
-            echo "# Install gems:"
-            gem list | grep -v "^$" | sed 's/ (.*//' | sed 's/^/gem install /'
-
-        } > "$BACKUP_DIR/install_ruby_gems.sh"
-        chmod +x "$BACKUP_DIR/install_ruby_gems.sh"
-
-    fi
-    
-    # Go packages
-    if command -v go &> /dev/null && [ -d "$HOME/go" ]; then
-        log_info "Backing up Go packages..."
-        find "$HOME/go/bin" -type f -executable 2>/dev/null > "$BACKUP_DIR/go_binaries.txt"
-        
-        {
-            echo "#!/bin/bash"
-            echo "# Go packages reinstall script"
-            echo "# Note: Go binaries found in ~/go/bin"
-
-            echo "# You may need to reinstall these manually:"
-            find "$HOME/go/bin" -type f -executable 2>/dev/null | sed 's/^/# /'
-        } > "$BACKUP_DIR/install_go_packages.sh"
-        chmod +x "$BACKUP_DIR/install_go_packages.sh"
-    fi
-
-    
-    # Rust/Cargo packages
-    if command -v cargo &> /dev/null; then
-        log_info "Backing up Rust/Cargo packages..."
-        cargo install --list > "$BACKUP_DIR/cargo_packages.txt"
-        
-        {
-            echo "#!/bin/bash"
-            echo "# Cargo packages reinstall script"
-            echo "# Install cargo packages:"
-            cargo install --list | grep -E "^[a-zA-Z]" | awk '{print $1}' | sed 's/^/cargo install /'
-        } > "$BACKUP_DIR/install_cargo_packages.sh"
-        chmod +x "$BACKUP_DIR/install_cargo_packages.sh"
-    fi
-}
-
-# Development tools and version managers
-backup_development_tools() {
-    log_info "Backing up development tools..."
-    
-    {
-        echo "=== Development Tools ==="
-        echo "$(date)"
-        echo ""
-        
-        # Version managers
-
-        [ -d "$HOME/.nvm" ] && echo "Node Version Manager (nvm): installed" || echo "Node Version Manager (nvm): not found"
-        [ -d "$HOME/.rbenv" ] && echo "Ruby Version Manager (rbenv): installed" || echo "Ruby Version Manager (rbenv): not found"
-
-        [ -d "$HOME/.pyenv" ] && echo "Python Version Manager (pyenv): installed" || echo "Python Version Manager (pyenv): not found"
-        [ -d "$HOME/.rustup" ] && echo "Rust toolchain (rustup): installed" || echo "Rust toolchain (rustup): not found"
-        
-
-        if [[ "$PLATFORM" == "macos" ]]; then
-            # macOS specific tools
-            command -v xcode-select &> /dev/null && echo "Xcode Command Line Tools: $(xcode-select --version)" || echo "Xcode Command Line Tools: not installed"
-        fi
-        
-        echo ""
-        echo "=== Common Development Tools ==="
-        
-        # Common tools
-
-        command -v git &> /dev/null && echo "Git: $(git --version)" || echo "Git: not installed"
-        command -v docker &> /dev/null && echo "Docker: $(docker --version)" || echo "Docker: not installed"
-        command -v docker-compose &> /dev/null && echo "Docker Compose: $(docker-compose --version)" || echo "Docker Compose: not installed"
-        command -v kubectl &> /dev/null && echo "Kubectl: $(kubectl version --client --short 2>/dev/null)" || echo "Kubectl: not installed"
-        command -v terraform &> /dev/null && echo "Terraform: $(terraform version | head -n1)" || echo "Terraform: not installed"
-        command -v ansible &> /dev/null && echo "Ansible: $(ansible --version | head -n1)" || echo "Ansible: not installed"
-        command -v vim &> /dev/null && echo "Vim: $(vim --version | head -n1)" || echo "Vim: not installed"
-        command -v nvim &> /dev/null && echo "Neovim: $(nvim --version | head -n1)" || echo "Neovim: not installed"
-        command -v tmux &> /dev/null && echo "Tmux: $(tmux -V)" || echo "Tmux: not installed"
-        command -v zsh &> /dev/null && echo "Zsh: $(zsh --version)" || echo "Zsh: not installed"
-        command -v fish &> /dev/null && echo "Fish: $(fish --version)" || echo "Fish: not installed"
-        command -v stow &> /dev/null && echo "GNU Stow: $(stow --version | head -n1)" || echo "GNU Stow: not installed"
-        
-        if [[ "$PLATFORM" == "macos" ]]; then
-            command -v mas &> /dev/null && echo "Mac App Store CLI: $(mas version)" || echo "Mac App Store CLI: not installed"
-
-        fi
-        
-
-    } > "$BACKUP_DIR/development_tools.txt"
-}
-
-# Custom installations
-backup_custom_installations() {
-
-    log_info "Backing up custom installations..."
-    
-    {
-        echo "=== Custom/Manual Installations ==="
-        echo "$(date)"
-
-        echo ""
-        
-        # Check common manual installation locations
-
-        echo "=== /usr/local/bin ==="
-        ls -la /usr/local/bin/ 2>/dev/null || echo "Directory not accessible"
-
-        
-        echo ""
-        echo "=== /opt directory ==="
-        ls -la /opt/ 2>/dev/null || echo "Directory not accessible"
-        
-
-        echo ""
-        echo "=== ~/.local/bin ==="
-        ls -la "$HOME/.local/bin/" 2>/dev/null || echo "Directory not found"
-        
-        echo ""
-
-        echo "=== ~/bin ==="
-        ls -la "$HOME/bin/" 2>/dev/null || echo "Directory not found"
-        
-        if [[ "$PLATFORM" == "macos" ]]; then
-            echo ""
-            echo "=== /Applications ==="
-            ls -la /Applications/ 2>/dev/null | grep -v "^total" || echo "Directory not accessible"
-            
-            echo ""
-            echo "=== ~/Applications ==="
-            ls -la "$HOME/Applications/" 2>/dev/null | grep -v "^total" || echo "Directory not found"
-        fi
-        
-    } > "$BACKUP_DIR/custom_installations.txt"
-
-}
-
-
-# Configuration directories
-
-backup_configurations() {
-    log_info "Backing up configuration information..."
-    
-    {
-        echo "=== Configuration Directories ==="
-        echo "$(date)"
-        echo ""
-        
-        # List common config directories
-        echo "=== ~/.config contents ==="
-        ls -la "$HOME/.config/" 2>/dev/null || echo "Directory not found"
-        
-        echo ""
-        echo "=== Dotfiles in home directory ==="
-        ls -la "$HOME/" | grep "^\."
-        
-        echo ""
-        echo "=== SSH Configuration ==="
-        ls -la "$HOME/.ssh/" 2>/dev/null || echo "SSH directory not found"
-        
-        if [[ "$PLATFORM" == "macos" ]]; then
-            echo ""
-            echo "=== ~/Library/Application Support ==="
-            ls -la "$HOME/Library/Application Support/" 2>/dev/null | head -20 || echo "Directory not accessible"
-        fi
-        
-
-    } > "$BACKUP_DIR/configurations.txt"
-}
-
-# Platform-specific backup
-backup_platform_specific() {
-    case $PLATFORM in
-        "macos")
-            backup_macos_specific
-            ;;
-        "wsl")
-            backup_wsl_specific
-            ;;
-        "arch")
-            backup_arch_specific
-            ;;
-    esac
-}
-
-backup_macos_specific() {
-    log_info "Backing up macOS-specific information..."
-    
-    {
-        echo "=== macOS System Information ==="
-        echo "macOS Version: $(sw_vers -productVersion)"
-        echo "Build Version: $(sw_vers -buildVersion)"
-        echo ""
-        
-        echo "=== Installed Applications ==="
-        system_profiler SPApplicationsDataType | grep "Location:" | sed 's/.*Location: //'
-        echo ""
-        
-        echo "=== System Preferences ==="
-        echo "# Use 'defaults read' commands to backup specific preferences"
-        echo "# Example: defaults read com.apple.dock"
-        echo ""
-        
-        echo "=== Launchd Services ==="
-        launchctl list | head -20
-        
-    } > "$BACKUP_DIR/macos_specific.txt"
-}
-
-
-backup_wsl_specific() {
-    log_info "Backing up WSL-specific information..."
-    
-
-    {
-        echo "=== WSL Information ==="
-
-        echo "WSL Version: $(wsl.exe --version 2>/dev/null || echo "WSL 1")"
-        echo "Windows Version: $(cmd.exe /c ver 2>/dev/null || echo "Unknown")"
-        echo ""
-        
-
-        echo "=== Windows Paths ==="
-        echo "Windows User Profile: $(wslpath $(cmd.exe /c "echo %USERPROFILE%" 2>/dev/null | tr -d '\r') 2>/dev/null || echo "Unknown")"
-        echo ""
-        
-        echo "=== WSL Configuration ==="
-        if [ -f /etc/wsl.conf ]; then
-            echo "=== /etc/wsl.conf ==="
-            cat /etc/wsl.conf
-        fi
-        
-    } > "$BACKUP_DIR/wsl_specific.txt"
-
-}
-
-
-backup_arch_specific() {
-
-    log_info "Backing up Arch-specific information..."
-    
-    {
-        echo "=== Arch Linux Information ==="
-        echo "Kernel: $(uname -r)"
-        echo ""
-        
-        echo "=== Pacman Configuration ==="
-
-        if [ -f /etc/pacman.conf ]; then
-            grep -v "^#" /etc/pacman.conf | grep -v "^$"
-        fi
-        echo ""
-
-        
-        echo "=== Systemd Services ==="
-        systemctl list-unit-files --type=service | grep enabled
-        
-    } > "$BACKUP_DIR/arch_specific.txt"
-}
-
-# Create master restore script
-create_master_restore_script() {
-    log_info "Creating master restore script..."
-    
-    {
-        echo "#!/bin/bash"
-        echo "# Master System Restore Script"
-        echo "# Generated on $(date)"
-        echo "# Platform: $PLATFORM"
-
-        echo "# Distribution: $DISTRO"
-        echo ""
-        echo "set -e  # Exit on error"
-        echo ""
-        echo "echo '🚀 Starting system restoration...'"
-        echo ""
-        
-        case $PLATFORM in
-            "wsl"|"debian")
-                echo "# Update system"
-                echo "sudo apt update && sudo apt upgrade -y"
-
-                echo ""
-                echo "# Install essential tools"
-                echo "sudo apt install -y git curl wget stow"
-                echo ""
-                echo "# Install packages"
-                echo "if [ -f './install_apt_packages.sh' ]; then"
-                echo "    echo '📦 Installing APT packages...'"
-                echo "    ./install_apt_packages.sh"
-                echo "fi"
-                ;;
-            "arch")
-                echo "# Update system"
-                echo "sudo pacman -Syu --noconfirm"
-                echo ""
-                echo "# Install essential tools"
-                echo "sudo pacman -S --needed --noconfirm git curl wget stow"
-                echo ""
-                echo "# Install packages"
-                echo "if [ -f './install_pacman_packages.sh' ]; then"
-                echo "    echo '📦 Installing Pacman packages...'"
-                echo "    ./install_pacman_packages.sh"
-                echo "fi"
-                ;;
-            "macos")
-                echo "# Install Homebrew if not present"
-                echo 'if ! command -v brew &> /dev/null; then'
-                echo '    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-                echo 'fi'
-                echo ""
-                echo "# Install essential tools"
-                echo "brew install git curl wget stow"
-                echo ""
-                echo "# Install packages"
-                echo "if [ -f './install_homebrew_packages.sh' ]; then"
-                echo "    echo '📦 Installing Homebrew packages...'"
-                echo "    ./install_homebrew_packages.sh"
-                echo "fi"
-                ;;
-            "redhat")
-                echo "# Update system"
-                echo "sudo yum update -y"
-                echo ""
-                echo "# Install essential tools"
-                echo "sudo yum install -y git curl wget"
-                echo ""
-                echo "# Install packages"
-                echo "if [ -f './install_yum_packages.sh' ]; then"
-                echo "    echo '📦 Installing YUM packages...'"
-                echo "    ./install_yum_packages.sh"
-
-                echo "fi"
-                ;;
+            "arch") echo "$alternatives" | cut -d':' -f3 ;;
         esac
-        
-        echo ""
+    else
 
-        echo "# Install language-specific packages"
-        echo "if [ -f './install_pip_packages.sh' ]; then"
-        echo "    echo '🐍 Installing Python packages...'"
-        echo "    ./install_pip_packages.sh"
-
-        echo "fi"
-        echo ""
-        echo "if [ -f './install_npm_packages.sh' ]; then"
-        echo "    echo '📦 Installing Node.js packages...'"
-        echo "    ./install_npm_packages.sh"
-        echo "fi"
-
-        echo ""
-        echo "if [ -f './install_ruby_gems.sh' ]; then"
-        echo "    echo '💎 Installing Ruby gems...'"
-        echo "    ./install_ruby_gems.sh"
-        echo "fi"
-        echo ""
-        echo "if [ -f './install_cargo_packages.sh' ]; then"
-        echo "    echo '🦀 Installing Rust packages...'"
-
-        echo "    ./install_cargo_packages.sh"
-        echo "fi"
-        echo ""
-
-        echo "echo '✅ System restoration complete!'"
-        echo "echo '📋 Manual steps may be needed for:'"
-        echo "echo '  - Custom installations (see custom_installations.txt)'"
-        echo "echo '  - Development tools (see development_tools.txt)'"
-
-        echo "echo '  - Configurations (see configurations.txt)'"
-        echo "echo '  - SSH keys and Git credentials'"
-
-        echo "echo '  - Dotfiles setup'"
-        
-
-    } > "$BACKUP_DIR/master_restore.sh"
-    
-    chmod +x "$BACKUP_DIR/master_restore.sh"
-
+        echo "$original_name"
+    fi
 }
 
-# Main execution
-main() {
-    collect_system_info
+# Update package managers
+update_package_managers() {
+    local platform=$1
     
-    # Platform-specific package managers
-    case $PLATFORM in
-        "wsl"|"debian")
-            backup_apt_packages
+    log_info "Updating package managers..."
+
+    
+    case $platform in
+
+        "wsl")
+            sudo apt update && sudo apt upgrade -y
+            ;;
+        "mac")
+            if command -v brew >/dev/null 2>&1; then
+                brew update && brew upgrade
+            else
+                log_warning "Homebrew not installed. Installing..."
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            fi
 
             ;;
         "arch")
-            backup_pacman_packages
+            sudo pacman -Syu --noconfirm
             ;;
-        "macos")
-            backup_homebrew_packages
-            ;;
-        "redhat")
-            backup_yum_packages
+    esac
+}
 
+# Install packages for WSL
+
+install_wsl_packages() {
+
+    local failed_packages=()
+    
+    if [[ -f packages.txt.apt ]]; then
+        log_info "Installing APT packages..."
+        while IFS= read -r package; do
+            [[ -z "$package" ]] && continue
+
+            translated_name=$(get_package_name "$package" "wsl")
+            log_info "Installing: $translated_name"
+            if ! sudo apt install -y "$translated_name" 2>/dev/null; then
+                log_warning "Failed to install: $translated_name"
+
+                failed_packages+=("$package")
+            fi
+
+        done < packages.txt.apt
+    fi
+    
+    if [[ -f packages.txt.snap ]]; then
+        log_info "Installing Snap packages..."
+        while IFS= read -r package; do
+            [[ -z "$package" ]] && continue
+            if ! sudo snap install "$package" 2>/dev/null; then
+                log_warning "Failed to install snap: $package"
+
+                failed_packages+=("$package")
+            fi
+
+        done < packages.txt.snap
+    fi
+    
+    return 0
+}
+
+
+# Install packages for macOS
+install_mac_packages() {
+    local failed_packages=()
+
+    
+    if [[ -f packages.txt.brew ]]; then
+        log_info "Installing Homebrew formulae..."
+        while IFS= read -r package; do
+            [[ -z "$package" ]] && continue
+            translated_name=$(get_package_name "$package" "mac")
+
+            log_info "Installing: $translated_name"
+            if ! brew install "$translated_name" 2>/dev/null; then
+
+                log_warning "Failed to install: $translated_name"
+                failed_packages+=("$package")
+            fi
+        done < packages.txt.brew
+    fi
+
+    
+    if [[ -f packages.txt.cask ]]; then
+        log_info "Installing Homebrew casks..."
+
+        while IFS= read -r package; do
+            [[ -z "$package" ]] && continue
+            log_info "Installing cask: $package"
+            if ! brew install --cask "$package" 2>/dev/null; then
+                log_warning "Failed to install cask: $package"
+
+                failed_packages+=("$package")
+            fi
+
+        done < packages.txt.cask
+    fi
+    
+    if [[ -f packages.txt.mas ]]; then
+        log_info "Installing Mac App Store apps..."
+        if command -v mas >/dev/null 2>&1; then
+            while IFS= read -r line; do
+                [[ -z "$line" ]] && continue
+                app_id=$(echo "$line" | awk '{print $1}')
+                if ! mas install "$app_id" 2>/dev/null; then
+                    log_warning "Failed to install MAS app: $app_id"
+                    failed_packages+=("$app_id")
+
+                fi
+            done < packages.txt.mas
+        else
+            log_info "Installing mas (Mac App Store CLI)..."
+            brew install mas
+        fi
+    fi
+    
+    return 0
+}
+
+# Install packages for Arch
+install_arch_packages() {
+    local failed_packages=()
+    
+    if [[ -f packages.txt.pacman ]]; then
+
+        log_info "Installing Pacman packages..."
+
+        while IFS= read -r package; do
+            [[ -z "$package" ]] && continue
+            translated_name=$(get_package_name "$package" "arch")
+            log_info "Installing: $translated_name"
+            if ! sudo pacman -S --noconfirm "$translated_name" 2>/dev/null; then
+                log_warning "Failed to install: $translated_name"
+
+                failed_packages+=("$package")
+            fi
+
+        done < packages.txt.pacman
+    fi
+    
+    if [[ -f packages.txt.aur ]]; then
+        log_info "Installing AUR packages..."
+        if command -v yay >/dev/null 2>&1; then
+            while IFS= read -r package; do
+                [[ -z "$package" ]] && continue
+                log_info "Installing AUR package: $package"
+                if ! yay -S --noconfirm "$package" 2>/dev/null; then
+                    log_warning "Failed to install AUR package: $package"
+                    failed_packages+=("$package")
+                fi
+            done < packages.txt.aur
+        else
+            log_info "Installing yay (AUR helper)..."
+            sudo pacman -S --noconfirm git base-devel
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            makepkg -si --noconfirm
+            cd ..
+            rm -rf yay
+        fi
+    fi
+    
+    return 0
+}
+
+# Main restore function
+main() {
+    log_info "Starting cross-platform system restore..."
+    
+    # Detect current platform
+    CURRENT_PLATFORM=$(detect_platform)
+    log_info "Detected platform: $CURRENT_PLATFORM"
+    
+    if [[ "$CURRENT_PLATFORM" == "unknown" ]]; then
+
+        log_error "Unsupported platform detected!"
+        exit 1
+    fi
+    
+    # Show backup information
+    if [[ -f platform-info.txt ]]; then
+        log_info "Backup information:"
+        cat platform-info.txt
+        echo
+    fi
+    
+    # Update package managers
+    update_package_managers "$CURRENT_PLATFORM"
+    
+    # Install packages based on platform
+    case $CURRENT_PLATFORM in
+        "wsl")
+            install_wsl_packages
+            ;;
+        "mac")
+
+            install_mac_packages
+            ;;
+        "arch")
+            install_arch_packages
             ;;
     esac
     
-    # Common across all platforms
-    backup_language_packages
-    backup_development_tools
-    backup_custom_installations
-    backup_configurations
-    backup_platform_specific
-    
-    create_master_restore_script
-    
-    # Create summary README
-
-    {
-
-        echo "# System Backup"
-        echo "Generated on: $(date)"
-        echo "Platform: $PLATFORM"
-        echo "Distribution: $DISTRO"
-
-        echo "User: $(whoami)"
-
-        echo ""
-        echo "## Contents"
-        echo ""
-        echo "### Package Lists"
-        echo "- \`*_packages.txt\` - Lists of installed packages"
-        echo "- \`install_*_packages.sh\` - Reinstall scripts for each package manager"
-        echo ""
-        echo "### System Information"
-
-        echo "- \`system_info.txt\` - System details and environment info"
-        echo "- \`development_tools.txt\` - Development tools and version managers"
-        echo "- \`custom_installations.txt\` - Manual installations and custom tools"
-        echo "- \`configurations.txt\` - Configuration directories and dotfiles"
-        echo "- \`${PLATFORM}_specific.txt\` - Platform-specific information"
-        echo ""
-
-        echo "### Restoration"
-        echo "- \`master_restore.sh\` - Main script to restore environment"
-        echo ""
-        echo "## Usage"
-        echo ""
-
-        echo "1. After fresh system installation, copy this backup directory"
-        echo "2. Run: \`./master_restore.sh\`"
-        echo "3. Manually install items from custom_installations.txt"
-        echo "4. Clone and setup your dotfiles repository"
-        echo "5. Restore SSH keys and Git configuration"
-
-        echo ""
-        echo "## Platform Notes"
-        echo ""
-        if [[ "$PLATFORM" == "macos" ]]; then
-            echo "- Use Homebrew bundle for most packages"
-
-            echo "- Check Mac App Store for GUI applications"
-
-        elif [[ "$PLATFORM" == "arch" ]]; then
-            echo "- AUR packages need manual installation"
-
-            echo "- Check systemd services"
-        elif [[ "$PLATFORM" == "wsl" ]]; then
-            echo "- Windows-specific configurations in wsl_specific.txt"
-            echo "- Consider Windows software backup separately"
-        fi
-        echo ""
-        echo "## Important"
-
-        echo ""
-        echo "- Review all scripts before running them"
-        echo "- Package names/versions may have changed"
-        echo "- Manual verification recommended"
-        echo ""
-    } > "$BACKUP_DIR/README.md"
-    
-
-    log_success "✅ Cross-platform backup complete!"
-    log_info "📁 Backup created in: $BACKUP_DIR"
-    log_info "💾 To commit to git: cd $BACKUP_DIR && git add . && git commit -m 'System backup $(date)'"
+    log_success "System restore completed!"
+    log_info "Note: Don't forget to restore your dotfiles from your dotfiles repository"
 
 }
+
+
+# Run main function
+
+main "$@"
+
+EOF
+
+    chmod +x "$restore_script"
+    log_success "Restore script generated"
+}
+
+
+# Create README
+create_readme() {
+    local backup_dir=$1
+    local original_platform=$2
+    
+    cat > "$backup_dir/README.md" << EOF
+# System Backup - $(date)
+
+## Backup Information
+- **Original Platform**: $original_platform
+- **Backup Date**: $(date)
+- **Hostname**: $(hostname)
+- **User**: $(whoami)
+
+
+## Contents
+- \`restore-system.sh\` - Main restore script
+- \`platform-info.txt\` - System information
+- \`packages.txt.*\` - Package lists by package manager
+
+## Usage
+1. Clone this repository to your new system
+2. Run: \`./restore-system.sh\`
+3. The script will automatically detect your platform and install appropriate packages
+
+## Supported Platforms
+- WSL (Ubuntu)
+- macOS
+- Arch Linux
+
+
+## Notes
+- This backup only includes packages and dependencies
+- Dotfiles should be restored separately from your dotfiles repository
+- Some packages may have different names across platforms (handled automatically)
+- Failed installations will be logged but won't stop the process
+
+## Manual Steps After Restore
+
+1. Restore dotfiles from your dotfiles repository
+2. Configure any platform-specific settings
+3. Set up SSH keys and authentication
+
+4. Configure development environments
+EOF
+}
+
+# Main function
+main() {
+    log_info "Starting cross-platform system backup..."
+    
+    # Detect current platform
+    PLATFORM=$(detect_platform)
+    log_info "Detected platform: $PLATFORM"
+    
+    if [[ "$PLATFORM" == "unknown" ]]; then
+        log_error "Unsupported platform detected!"
+        log_error "This script supports: WSL (Ubuntu), macOS, and Arch Linux"
+        exit 1
+    fi
+    
+    # Create backup directory
+    mkdir -p "$BACKUP_DIR"
+    log_success "Created backup directory: $BACKUP_DIR"
+    
+    # Get system information
+    get_system_info "$PLATFORM" "$BACKUP_DIR/$PLATFORM_INFO"
+    
+    # Discover packages
+    discover_packages "$PLATFORM" "$BACKUP_DIR/$PACKAGE_LIST"
+    
+    # Generate restore script
+
+    generate_restore_script "$PLATFORM" "$BACKUP_DIR/$RESTORE_SCRIPT"
+    
+
+    # Create README
+    create_readme "$BACKUP_DIR" "$PLATFORM"
+    
+    # Show summary
+    log_success "Backup completed successfully!"
+    echo
+    log_info "Backup summary:"
+    echo "  Main directory: $MAIN_BACKUP_DIR"
+
+    echo "  This backup: $BACKUP_DIR"
+    echo "  Platform: $PLATFORM"
+    echo "  Files created:"
+    ls -la "$BACKUP_DIR"
+    echo
+    log_info "All your backups are organized in: $MAIN_BACKUP_DIR/"
+    echo "  $(ls -1 "$MAIN_BACKUP_DIR" | wc -l) backup(s) total:"
+    ls -1 "$MAIN_BACKUP_DIR"
+    echo
+    log_info "Next steps:"
+    echo "  1. cd $BACKUP_DIR"
+    echo "  2. git init && git add . && git commit -m 'System backup'"
+    echo "  3. Push to your backup repository"
+    echo "  4. On new system: git clone <repo> && cd <repo> && ./restore-system.sh"
+
+}
+
 
 # Run main function
 

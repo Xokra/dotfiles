@@ -2,7 +2,7 @@
 #mkdir -p /mnt/c/Users/dixie/AppData/Roaming/Alacritty
 #vi /mnt/c/Users/dixie/AppData/Roaming/Alacritty/alacritty.toml
 [window]
-opacity = 0.77
+opacity = 0.97
 startup_mode = "Maximized"
 decorations = "None"
 
