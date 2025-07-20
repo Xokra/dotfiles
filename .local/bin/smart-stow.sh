@@ -13,7 +13,6 @@ DOTFILES_HISTORY="$DOTFILES_DIR/.zsh_history"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-
 NC='\033[0m' # No Color
 
 log() {
@@ -35,6 +34,7 @@ mkdir -p "$BACKUP_DIR"
 # Function to check if system is fresh (no existing history)
 is_fresh_system() {
     if [ ! -f "$HISTORY_FILE" ] || [ ! -s "$HISTORY_FILE" ]; then
+
         return 0  # Fresh system - no history file or empty history file
     fi
     return 1  # History exists
@@ -54,6 +54,7 @@ backup_history() {
     else
 
         warn "No current history file found or it's empty"
+
         return 1
     fi
 }
@@ -70,10 +71,8 @@ merge_histories() {
     
     if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
         cat "$DOTFILES_HISTORY" >> "$temp_file"
-
     fi
     
-
     # Remove duplicates while preserving order and format
     if [ -s "$temp_file" ]; then
         # Sort by timestamp and remove duplicates
@@ -125,16 +124,21 @@ smart_stow() {
             exit 1
         fi
         
-        # If dotfiles contain a history file, set it up
+        # If dotfiles contain a history file, set it up (only if different files)
         if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
-            cp "$DOTFILES_HISTORY" "$HISTORY_FILE"
-            log "Initialized history from dotfiles"
+            # Check if they're the same file (after stow linking)
+            if [ ! -f "$HISTORY_FILE" ] || [ "$DOTFILES_HISTORY" -ef "$HISTORY_FILE" ]; then
+                log "History file already linked or doesn't exist - no copy needed"
+            else
+                cp "$DOTFILES_HISTORY" "$HISTORY_FILE"
+                log "Initialized history from dotfiles"
+            fi
         fi
+
         
         log "Smart stow completed successfully on fresh system!"
         return
     fi
-
     
     # Existing system with history - run full process
     log "Existing system detected - running full history management"
@@ -144,6 +148,7 @@ smart_stow() {
     
     # Step 2: Merge histories before stowing
     merge_histories
+
     
     # Step 3: Run stow with adopt
     log "Running stow --adopt..."
@@ -153,39 +158,48 @@ smart_stow() {
         error "Stow failed"
         exit 1
     fi
+
     
     # Step 4: Restore history if it was wiped
     restore_history
     
-    # Step 5: Update dotfiles history for next time
+    # Step 5: Update dotfiles history for next time (only if different files)
     if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
-        cp "$HISTORY_FILE" "$DOTFILES_HISTORY"
-        log "Updated dotfiles history"
+        # Check if they're the same file (after stow linking)
+        if [ "$DOTFILES_HISTORY" -ef "$HISTORY_FILE" ]; then
+            log "History files are already linked - no copy needed"
+        else
+            cp "$HISTORY_FILE" "$DOTFILES_HISTORY"
+            log "Updated dotfiles history"
+        fi
+
     fi
     
+
     log "Smart stow completed successfully!"
 }
+
 
 # Function to set up .stow-local-ignore
 setup_stow_ignore() {
     local ignore_file="$DOTFILES_DIR/.stow-local-ignore"
     
     if [ ! -f "$ignore_file" ]; then
-
         log "Creating .stow-local-ignore file..."
         cat > "$ignore_file" << EOF
 # Git files
 .git
+
 .gitignore
 .gitmodules
 README.md
+
 
 # History files (managed separately)
 .zsh_history
 .bash_history
 
 # Backup files
-
 *.bak
 *.backup
 *~
@@ -205,6 +219,7 @@ EOF
 
 # Function to show usage
 usage() {
+
     cat << EOF
 Usage: $0 [OPTION]
 
@@ -215,6 +230,7 @@ Options:
     -r, --restore   Restore history from backup
     -h, --help      Show this help message
 
+
 Examples:
     $0              # Run smart stow
     $0 --ignore     # Set up ignore file
@@ -224,6 +240,7 @@ EOF
 
 # Parse command line arguments
 case "${1:-}" in
+
     -s|--stow)
         smart_stow
         ;;
@@ -233,16 +250,19 @@ case "${1:-}" in
     -b|--backup)
         backup_history
         ;;
-
     -r|--restore)
+
         restore_history
         ;;
+
     -h|--help)
         usage
         ;;
+
     "")
         smart_stow
         ;;
+
     *)
         error "Unknown option: $1"
         usage
