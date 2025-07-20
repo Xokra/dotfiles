@@ -159,6 +159,7 @@ alias la='lazygit'
 alias tx='~/.local/bin/tx'
 alias lgdot='cd ~/dotfiles && lazygit'
 alias lgwsl='cd ~/wsl-backup && lazygit'
+alias lgper='cd ~/personal && lazygit'
 
 # ====================================
 # ZINIT CLEANUP

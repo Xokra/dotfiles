@@ -13,6 +13,7 @@ DOTFILES_HISTORY="$DOTFILES_DIR/.zsh_history"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+
 NC='\033[0m' # No Color
 
 log() {
@@ -31,6 +32,14 @@ error() {
 # Create backup directory
 mkdir -p "$BACKUP_DIR"
 
+# Function to check if system is fresh (no existing history)
+is_fresh_system() {
+    if [ ! -f "$HISTORY_FILE" ] || [ ! -s "$HISTORY_FILE" ]; then
+        return 0  # Fresh system - no history file or empty history file
+    fi
+    return 1  # History exists
+}
+
 # Function to backup current history
 backup_history() {
     if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
@@ -42,8 +51,8 @@ backup_history() {
         find "$BACKUP_DIR" -name "zsh_history.*" -type f | sort -r | tail -n +11 | xargs rm -f
         
         return 0
-
     else
+
         warn "No current history file found or it's empty"
         return 1
     fi
@@ -51,24 +60,25 @@ backup_history() {
 
 # Function to merge histories
 merge_histories() {
+
     local temp_file=$(mktemp)
     
     # Combine both histories if they exist
     if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
         cat "$HISTORY_FILE" >> "$temp_file"
-
     fi
     
-
     if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
         cat "$DOTFILES_HISTORY" >> "$temp_file"
+
     fi
     
+
     # Remove duplicates while preserving order and format
     if [ -s "$temp_file" ]; then
-
         # Sort by timestamp and remove duplicates
         sort -u "$temp_file" > "$DOTFILES_HISTORY"
+
         log "Merged and deduplicated history files"
     fi
     
@@ -85,21 +95,49 @@ restore_history() {
             local latest_backup=$(find "$BACKUP_DIR" -name "zsh_history.*" -type f | sort -r | head -1)
             if [ -n "$latest_backup" ]; then
                 cp "$latest_backup" "$HISTORY_FILE"
+
                 log "Restored history from backup: $latest_backup"
             else
                 warn "No backup found to restore history"
-
             fi
         fi
     fi
 }
 
 # Main stow function
-
 smart_stow() {
     cd "$DOTFILES_DIR"
     
     log "Starting smart stow process..."
+    
+    # Check if this is a fresh system
+
+    if is_fresh_system; then
+        log "Fresh system detected - no existing zsh history found"
+        log "Skipping history operations, proceeding directly to stow..."
+        
+        # Run stow with adopt directly
+        log "Running stow --adopt..."
+        if stow --adopt . 2>&1; then
+            log "Stow completed successfully"
+        else
+            error "Stow failed"
+            exit 1
+        fi
+        
+        # If dotfiles contain a history file, set it up
+        if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
+            cp "$DOTFILES_HISTORY" "$HISTORY_FILE"
+            log "Initialized history from dotfiles"
+        fi
+        
+        log "Smart stow completed successfully on fresh system!"
+        return
+    fi
+
+    
+    # Existing system with history - run full process
+    log "Existing system detected - running full history management"
     
     # Step 1: Backup current history
     backup_history
@@ -112,7 +150,6 @@ smart_stow() {
     if stow --adopt . 2>&1; then
         log "Stow completed successfully"
     else
-
         error "Stow failed"
         exit 1
     fi
@@ -127,15 +164,14 @@ smart_stow() {
     fi
     
     log "Smart stow completed successfully!"
-
 }
-
 
 # Function to set up .stow-local-ignore
 setup_stow_ignore() {
     local ignore_file="$DOTFILES_DIR/.stow-local-ignore"
     
     if [ ! -f "$ignore_file" ]; then
+
         log "Creating .stow-local-ignore file..."
         cat > "$ignore_file" << EOF
 # Git files
@@ -145,13 +181,12 @@ setup_stow_ignore() {
 README.md
 
 # History files (managed separately)
-
 .zsh_history
 .bash_history
 
 # Backup files
-*.bak
 
+*.bak
 *.backup
 *~
 
@@ -180,10 +215,8 @@ Options:
     -r, --restore   Restore history from backup
     -h, --help      Show this help message
 
-
 Examples:
     $0              # Run smart stow
-
     $0 --ignore     # Set up ignore file
     $0 --backup     # Backup current history
 EOF
@@ -192,35 +225,27 @@ EOF
 # Parse command line arguments
 case "${1:-}" in
     -s|--stow)
-
         smart_stow
         ;;
     -i|--ignore)
-
         setup_stow_ignore
         ;;
     -b|--backup)
-
         backup_history
         ;;
+
     -r|--restore)
         restore_history
-
         ;;
     -h|--help)
-
         usage
-
         ;;
     "")
         smart_stow
-
         ;;
     *)
-
         error "Unknown option: $1"
         usage
         exit 1
         ;;
-
 esac
