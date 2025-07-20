@@ -27,7 +27,6 @@ warn() {
 }
 
 error() {
-
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
@@ -38,7 +37,6 @@ info() {
 # Function to detect operating system platform
 detect_platform() {
     local uname_output=$(uname -s)
-
     case "$uname_output" in
         Linux*)
             # Check if we're in WSL
@@ -102,18 +100,88 @@ recognize_platform() {
     echo "$platform"
 }
 
-# Step 2: Make bin scripts executable
+# Function to check if Alacritty config already has shell section commented out
+is_alacritty_shell_commented() {
+    local config_file="$1"
+    
+    if [ ! -f "$config_file" ]; then
+        return 1  # File doesn't exist, so not commented
+    fi
+    
+    # Check if the shell section is commented out
+    # Look for either a commented [shell] section or commented program line
+    if grep -q "^#\[shell\]" "$config_file" || grep -q "^#program = \"wsl\.exe" "$config_file"; then
+        return 0  # Already commented
+    else
 
-make_bin_executable() {
-    info "Making all scripts in ~/.local/bin executable..."
+        return 1  # Not commented
+    fi
+}
+
+# Function to backup file
+backup_file() {
+    local file="$1"
+    if [ -f "$file" ]; then
+        local backup_name="${file}.backup.$(date +%Y%m%d_%H%M%S)"
+        cp "$file" "$backup_name"
+        log "Created backup: $backup_name"
+    fi
+}
+
+# Function to modify dotfiles Alacritty config based on platform
+modify_dotfiles_alacritty_config() {
+
+    local platform="$1"
+    local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
+    
+    info "Checking Alacritty configuration for platform: $platform"
+    
+    if [ ! -f "$alacritty_config" ]; then
+        warn "Alacritty config not found: $alacritty_config"
+        return 1
+    fi
+    
+    # Check current state of the config
+    local is_commented=$(is_alacritty_shell_commented "$alacritty_config" && echo "true" || echo "false")
     
 
-    if [ -d "$DOTFILES_DIR/.local/bin" ]; then
-        chmod +x "$DOTFILES_DIR/.local/bin/"*
-        log "Made all scripts in $DOTFILES_DIR/.local/bin executable"
-    else
-        warn "Directory $DOTFILES_DIR/.local/bin not found"
-    fi
+    log "Current state - Shell section commented: $is_commented"
+    log "Platform: $platform"
+    
+    # Platform-based logic: WSL should be uncommented, non-WSL should be commented
+    case "$platform" in
+        wsl)
+            # WSL: shell section should NOT be commented
+            if [ "$is_commented" = "true" ]; then
+                info "WSL platform: shell section should be uncommented - fixing..."
+                backup_file "$alacritty_config"
+                
+                # Uncomment the shell section for WSL
+                sed -i 's/^#\[shell\]/[shell]/' "$alacritty_config"
+                sed -i 's/^#program = "wsl\.exe/program = "wsl.exe/' "$alacritty_config"
+                
+                log "✓ Uncommented shell section for WSL"
+            else
+                log "✓ WSL platform: shell section already uncommented - correct state"
+            fi
+            ;;
+        mac|arch|linux)
+
+            # Non-WSL: shell section SHOULD be commented
+            if [ "$is_commented" = "false" ]; then
+                info "Non-WSL platform: shell section should be commented - fixing..."
+                backup_file "$alacritty_config"
+                
+                # Comment out the shell section for non-WSL platforms
+                sed -i '/^\[shell\]/,/^$/s/^/#/' "$alacritty_config"
+                sed -i 's/^program = "wsl\.exe/#program = "wsl.exe/' "$alacritty_config"
+                
+                log "✓ Commented out shell section for non-WSL platform"
+            else
+                log "✓ Non-WSL platform: shell section already commented - correct state"
+            fi
+            ;;
+    esac
 }
 
 
@@ -145,211 +213,125 @@ handle_wsl_specific() {
             if [ -d "$startup_dir" ]; then
                 log "Creating startup shortcuts for VBS files..."
                 
-                # Find all VBS files in zedScript and create shortcuts
+                # Find all VBS files in zedScript subdirectories and create shortcuts
                 find "$zed_script_target" -name "*.vbs" -type f | while read -r vbs_file; do
                     local vbs_name=$(basename "$vbs_file" .vbs)
-                    local shortcut_path="$startup_dir/${vbs_name}.lnk"
-
-                    
-                    # Create a simple batch file to run the VBS (Windows will handle the .lnk creation)
                     local batch_file="$startup_dir/${vbs_name}.bat"
-
-                    echo "@echo off" > "$batch_file"
-                    echo "cscript.exe \"$vbs_file\"" >> "$batch_file"
                     
-                    log "Created startup script: $batch_file"
+                    # Convert WSL path to Windows path
+                    local windows_vbs_path=$(echo "$vbs_file" | sed 's|/mnt/c/|C:/|' | sed 's|/|\\|g')
+                    
+                    echo "@echo off" > "$batch_file"
+                    echo "cscript.exe \"$windows_vbs_path\"" >> "$batch_file"
+                    
 
+                    log "Created startup script: $batch_file"
                 done
             else
+
                 warn "Startup directory not found: $startup_dir"
             fi
         else
             warn "zedScript directory not found in dotfiles"
         fi
+
+        
+        # Handle Alacritty configuration for WSL (copy to Windows)
+        handle_alacritty_wsl_copy
+
+        
     else
         log "Not on WSL, skipping Windows-specific setup"
-
     fi
 }
 
-# Function to get the correct Alacritty target path based on platform
-get_alacritty_target() {
-    local platform="$1"
+# Handle Alacritty configuration copy for WSL
+
+handle_alacritty_wsl_copy() {
+    info "Copying Alacritty configuration to Windows..."
     
-    case "$platform" in
-        wsl)
-            local windows_user=$(get_windows_username)
-            echo "/mnt/c/Users/$windows_user/AppData/Roaming/Alacritty"
-            ;;
-
-        mac|arch|linux)
-            echo "$HOME/.config/alacritty"
-            ;;
-        *)
-            echo "$HOME/.config/alacritty"
-            ;;
-    esac
-}
-
-# Function to backup file
-backup_file() {
-    local file="$1"
-    cp "$file" "${file}.backup.$(date +%Y%m%d_%H%M%S)"
-    log "Created backup: ${file}.backup.$(date +%Y%m%d_%H%M%S)"
-}
-
-# Handle Alacritty configuration
-handle_alacritty_config() {
-    local platform="$1"
-    local target_dir=$(get_alacritty_target "$platform")
-
+    local windows_user=$(get_windows_username)
+    local target_dir="/mnt/c/Users/$windows_user/AppData/Roaming/Alacritty"
     local target_config="$target_dir/alacritty.toml"
+
     local dotfiles_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
     
+    log "Target directory for Windows: $target_dir"
+    
 
-    info "Setting up Alacritty configuration for $platform..."
-    log "Target directory: $target_dir"
+    # Check if Windows user directory exists
+    if [ ! -d "/mnt/c/Users/$windows_user" ]; then
+        error "Windows user directory not found: /mnt/c/Users/$windows_user"
+        error "Make sure Windows drive is mounted and user exists"
+        return 1
+    fi
+
     
-    # Create dotfiles alacritty directory
-    mkdir -p "$DOTFILES_DIR/.config/alacritty"
-    
-    # For WSL, check if Windows drive is accessible
-    if [ "$platform" = "wsl" ]; then
-        local windows_user=$(get_windows_username)
-        local windows_appdata="/mnt/c/Users/$windows_user/AppData"
-        
-        # Check if Windows user directory exists
-        if [ ! -d "/mnt/c/Users/$windows_user" ]; then
-            error "Windows user directory not found: /mnt/c/Users/$windows_user"
-            error "Make sure Windows drive is mounted and user exists"
+    # Create AppData structure if it doesn't exist
+    local windows_appdata="/mnt/c/Users/$windows_user/AppData"
+    if [ ! -d "$windows_appdata" ]; then
+        warn "AppData directory not found, creating: $windows_appdata"
+        mkdir -p "$windows_appdata" || {
+            error "Failed to create AppData directory: $windows_appdata"
             return 1
-
-        fi
-        
-
-        # Create AppData structure if it doesn't exist
-        if [ ! -d "$windows_appdata" ]; then
-            warn "AppData directory not found, creating: $windows_appdata"
-            mkdir -p "$windows_appdata"
-        fi
-
-        
-        # Create Roaming directory if it doesn't exist
-        if [ ! -d "$windows_appdata/Roaming" ]; then
-            log "Creating Roaming directory: $windows_appdata/Roaming"
-            mkdir -p "$windows_appdata/Roaming"
-        fi
-        
-        # Create Alacritty directory
-        if [ ! -d "$target_dir" ]; then
-            log "Creating Alacritty directory: $target_dir"
-            mkdir -p "$target_dir"
-        else
-            log "Alacritty directory already exists: $target_dir"
-        fi
-    else
-        # For non-WSL platforms, create target directory normally
-        mkdir -p "$target_dir"
+        }
     fi
     
-    # If target config exists but dotfiles config doesn't, move it to dotfiles first
-    if [ -f "$target_config" ] && [ ! -f "$dotfiles_config" ]; then
-        log "Moving existing Alacritty config to dotfiles..."
+    # Create Roaming directory if it doesn't exist
+    if [ ! -d "$windows_appdata/Roaming" ]; then
+        log "Creating Roaming directory: $windows_appdata/Roaming"
 
-        cp "$target_config" "$dotfiles_config"
+        mkdir -p "$windows_appdata/Roaming" || {
+            error "Failed to create Roaming directory: $windows_appdata/Roaming"
+            return 1
+        }
+    fi
+    
+    # Create Alacritty directory if it doesn't exist
+    if [ ! -d "$target_dir" ]; then
+        log "Creating Alacritty directory: $target_dir"
+
+        mkdir -p "$target_dir" || {
+            error "Failed to create Alacritty directory: $target_dir"
+            return 1
+        }
+
+    else
+        log "Alacritty directory already exists: $target_dir"
+    fi
+    
+    # Backup existing Windows config if it exists
+
+    if [ -f "$target_config" ]; then
         backup_file "$target_config"
     fi
     
-    # Always copy from dotfiles to target (dotfiles is the source of truth)
+    # Copy dotfiles config to Windows
     if [ -f "$dotfiles_config" ]; then
-        log "Copying Alacritty config from dotfiles to $platform..."
+        log "Copying Alacritty config from dotfiles to Windows..."
+        cp "$dotfiles_config" "$target_config" || {
+            error "Failed to copy Alacritty config to Windows"
 
-        cp "$dotfiles_config" "$target_config"
-        log "Alacritty config copied successfully"
+            return 1
+        }
+        log "Alacritty config copied successfully to Windows"
+
         
-        # For WSL, also provide installation hint
-        if [ "$platform" = "wsl" ]; then
-            info "Alacritty config ready for Windows. Install Alacritty on Windows if not already installed:"
-            echo "  - Download from: https://github.com/alacritty/alacritty/releases"
-            echo "  - Or use winget: winget install Alacritty.Alacritty"
-        fi
+        # Provide installation hint
+        info "Alacritty config ready for Windows. Install Alacritty on Windows if not already installed:"
+        echo "  - Download from: https://github.com/alacritty/alacritty/releases"
 
+        echo "  - Or use winget: winget install Alacritty.Alacritty"
     else
-        warn "No Alacritty config found in dotfiles at $dotfiles_config"
-        
-        # Create a basic config file as a starting point
-        if [ "$platform" = "wsl" ]; then
-            log "Creating basic Alacritty config as starting point..."
-            cat > "$dotfiles_config" << 'EOF'
-#C:\Users\dixie\AppData\Roaming\Alacritty
-#mkdir -p /mnt/c/Users/dixie/AppData/Roaming/Alacritty
-#vi /mnt/c/Users/dixie/AppData/Roaming/Alacritty/alacritty.toml
-[window]
-opacity = 0.97
-startup_mode = "Maximized"
-decorations = "None"
-
-[shell]
-program = "wsl.exe ~ -d Ubuntu-24.04"
-
-[font]
-normal.family = "MesloLGLDZ Nerd Font"
-size = 10.5
-
-[colors]
-# Primary colors
-[colors.primary]
-background = '#011423'
-foreground = '#CBE0F0'
-
-# Cursor colors
-[colors.cursor]
-text = "#011423"
-cursor = "#47FF9C"
-
-# Normal colors
-[colors.normal]
-black = "#214969"
-red = "#E52E2E"
-green = "#44FFB1"
-yellow = "#FFE073"
-blue = "#0FC5ED"
-magenta = "#a277ff"
-cyan = "#24EAF7"
-white = "#24EAF7"
-
-# Bright colors
-[colors.bright]
-black = "#21717D"
-red = "#E52E2E"
-green = "#44FFB1"
-yellow = "#FFE073"
-blue = "#A277FF"
-magenta = "#a277ff"
-cyan = "#24EAF7"
-white = "#24EAF7"
-
-# [keyboard]
-# bindings = [
-#   { key = "Backspace", mods = "Control", chars = "" }
-# ]
-
-EOF
-            
-            # Copy the new config to target
-            cp "$dotfiles_config" "$target_config"
-
-            log "Created and copied basic Alacritty config"
-        fi
+        warn "No Alacritty config found in dotfiles"
+        return 1
     fi
-
 }
 
-
 # Step 5: Run smart-stow based on platform
+
 run_smart_stow() {
     local platform="$1"
-
     
     info "Running smart-stow for platform: $platform"
     
@@ -364,173 +346,292 @@ run_smart_stow() {
     fi
 }
 
-# Step 6: Source configuration files
+# Function to install packages based on platform
+install_missing_packages() {
+    local platform="$1"
+    
+    info "Checking and installing missing packages..."
+    
+    # Check for tmux
+    if ! command -v tmux >/dev/null 2>&1; then
+        log "tmux not found, attempting to install..."
+        case "$platform" in
+
+            wsl|arch)
+                if command -v pacman >/dev/null 2>&1; then
+                    sudo pacman -S --noconfirm tmux || warn "Failed to install tmux via pacman"
+                elif command -v apt >/dev/null 2>&1; then
+                    sudo apt update && sudo apt install -y tmux || warn "Failed to install tmux via apt"
+                else
+                    warn "No supported package manager found for tmux installation"
+                fi
+
+                ;;
+            mac)
+                if command -v brew >/dev/null 2>&1; then
+                    brew install tmux || warn "Failed to install tmux via brew"
+                else
+                    warn "Homebrew not found, please install tmux manually: brew install tmux"
+                fi
+                ;;
+        esac
+    else
+        log "✓ tmux is already installed"
+    fi
+    
+    # Check for zsh
+    if ! command -v zsh >/dev/null 2>&1; then
+
+        log "zsh not found, attempting to install..."
+        case "$platform" in
+            wsl|arch)
+                if command -v pacman >/dev/null 2>&1; then
+                    sudo pacman -S --noconfirm zsh || warn "Failed to install zsh via pacman"
+                elif command -v apt >/dev/null 2>&1; then
+                    sudo apt update && sudo apt install -y zsh || warn "Failed to install zsh via apt"
+                else
+                    warn "No supported package manager found for zsh installation"
+                fi
+                ;;
+            mac)
+                log "✓ zsh should be available on macOS by default"
+                ;;
+        esac
+    else
+
+        log "✓ zsh is already installed"
+    fi
+}
+
+# Step 6: Source configuration files with proper error handling
 source_configs() {
+    local platform="$1"
+    
     info "Sourcing configuration files..."
     
-    # List of files to source
-    local config_files=(
-        "$HOME/.zshrc"
-        "$HOME/.tmux.conf"
-    )
-    
-    # Additional platform-specific configs
-    local platform=$(detect_platform)
 
-    case "$platform" in
-        arch)
-            # Add i3 config sourcing if needed
-            if [ -f "$HOME/.config/i3/config" ]; then
+    # Function to safely source a file with better error handling
+    safe_source() {
 
-                log "i3 config found (will be loaded on next i3 restart)"
+        local file="$1"
+        local description="$2"
+        local critical="${3:-false}"
+        
+        if [ -f "$file" ]; then
+            log "Attempting to source $description: $file"
+            
 
-            fi
-            ;;
-        mac)
-            # Add macOS-specific configs
-            if [ -f "$HOME/.bash_profile" ]; then
-                config_files+=("$HOME/.bash_profile")
-            fi
-            ;;
-    esac
-    
-    # Source each config file
-    for config_file in "${config_files[@]}"; do
-        if [ -f "$config_file" ]; then
-            log "Sourcing $config_file..."
+            # Test the file syntax first
+            if bash -n "$file" 2>/dev/null; then
+                # Syntax is OK, try to source it
+                if source "$file" 2>/dev/null; then
+                    log "✓ Successfully sourced $description"
+                    return 0
 
-            case "$config_file" in
-                *.zshrc)
-                    # Source zshrc in current shell if using zsh
-                    if [ "$SHELL" = "$(which zsh)" ] || [ -n "${ZSH_VERSION:-}" ]; then
-                        source "$config_file" 2>/dev/null || warn "Failed to source $config_file"
+                else
+                    if [ "$critical" = "true" ]; then
+                        error "Critical failure sourcing $description - this may cause issues"
                     else
-
-                        log "Not in zsh, $config_file will be sourced on next zsh session"
+                        warn "Failed to source $description, but file will be available for next session"
                     fi
-                    ;;
-                *.tmux.conf)
-                    # Reload tmux config if tmux is running
-                    if command -v tmux > /dev/null 2>&1 && tmux info > /dev/null 2>&1; then
-                        tmux source-file "$config_file" 2>/dev/null || warn "Failed to reload tmux config"
-                        log "Tmux config reloaded"
-                    else
-                        log "Tmux not running, $config_file will be loaded on next tmux session"
-                    fi
-                    ;;
-                *)
-                    source "$config_file" 2>/dev/null || warn "Failed to source $config_file"
-                    ;;
-            esac
+                    return 1
+                fi
+            else
+                error "Syntax error in $description - please check the file"
+                return 1
+            fi
         else
-            warn "Config file not found: $config_file"
+            if [ "$critical" = "true" ]; then
+                warn "$description not found: $file (this is expected after first run)"
+
+            else
+                log "$description not found: $file"
+            fi
+            return 1
         fi
-    done
+    }
+    
+    # Source shell configurations based on current shell and available shells
+    if [ -n "${ZSH_VERSION:-}" ]; then
+        # We're in zsh
+        safe_source "$HOME/.zshrc" "zsh configuration" "true"
+    elif [ -n "${BASH_VERSION:-}" ]; then
+        # We're in bash
+
+        safe_source "$HOME/.bashrc" "bash configuration" "true"
+    else
+        # Unknown shell, try both
+        log "Unknown shell environment, will try available configs"
+
+        safe_source "$HOME/.bashrc" "bash configuration"
+        if command -v zsh >/dev/null 2>&1; then
+            log "zsh available but not current shell - configs will load when switching to zsh"
+        fi
+    fi
+    
+    # Source additional shell configurations (these are usually safe to source from any shell)
+
+    safe_source "$HOME/.profile" "shell profile"
+    safe_source "$HOME/.aliases" "shell aliases" 
+    safe_source "$HOME/.functions" "shell functions"
+    
+    # Handle tmux configuration with proper installation and session management
+    handle_tmux_config "$platform"
+    
+    # Check for editor configurations (these can't be sourced but we can verify they exist)
+    check_editor_configs
 }
 
-# Additional files that might need sourcing
-source_additional_configs() {
-    info "Checking for additional configuration files..."
-
+# Handle tmux configuration properly
+handle_tmux_config() {
+    local platform="$1"
     
-    local additional_configs=(
-        "$HOME/.bashrc"
-        "$HOME/.profile"
-        "$HOME/.vimrc"
-        "$HOME/.config/nvim/init.lua"
-        "$HOME/.aliases"
-        "$HOME/.functions"
-    )
-    
-    for config in "${additional_configs[@]}"; do
-        if [ -f "$config" ]; then
-            case "$config" in
-                *.bashrc|*.profile|*.aliases|*.functions)
-                    log "Found $config (will be loaded in next shell session)"
-                    ;;
-                *.vimrc)
-                    log "Found $config (will be loaded in next vim session)"
-                    ;;
-                *nvim/init.lua)
-                    log "Found $config (will be loaded in next nvim session)"
-                    ;;
+    if [ -f "$HOME/.tmux.conf" ]; then
+        if command -v tmux >/dev/null 2>&1; then
 
+            # Check if we're inside tmux
+            if [ -n "${TMUX:-}" ]; then
+                log "Inside tmux session - reloading configuration..."
+                if tmux source-file "$HOME/.tmux.conf" 2>/dev/null; then
+
+                    log "✓ Successfully reloaded tmux configuration"
+                else
+                    warn "Failed to reload tmux config in current session"
+                fi
+            else
+                # Not in tmux, but tmux is available
+                log "tmux available but not currently running"
+                info "To test tmux config, run: tmux new-session -d 'tmux source-file ~/.tmux.conf && sleep 1' && tmux kill-server"
+                
+                # Test if config is valid
+                if tmux -f "$HOME/.tmux.conf" list-sessions 2>/dev/null >/dev/null; then
+                    log "✓ tmux configuration syntax appears valid"
+                else
+
+                    warn "tmux configuration may have syntax errors"
+                fi
+            fi
+        else
+            warn "tmux configuration found but tmux not installed"
+            info "Install tmux to use the configuration:"
+            case "$platform" in
+                wsl|arch)
+
+                    echo "  - Arch: sudo pacman -S tmux"
+
+                    echo "  - Ubuntu/Debian: sudo apt install tmux"
+                    ;;
+                mac)
+                    echo "  - macOS: brew install tmux"
+                    ;;
             esac
         fi
-
-    done
+    else
+        log "No tmux configuration found"
+    fi
 }
 
+# Check editor configurations
+check_editor_configs() {
+    local configs_to_check=(
+        "$HOME/.vimrc:vim configuration"
+        "$HOME/.config/nvim/init.lua:neovim configuration"
+        "$HOME/.config/nvim/init.vim:neovim configuration (vim format)"
+    )
+
+    
+    local found_configs=0
+    for config_info in "${configs_to_check[@]}"; do
+        local config_file="${config_info%%:*}"
+        local config_desc="${config_info##*:}"
+        
+        if [ -f "$config_file" ]; then
+            log "✓ Found $config_desc: $config_file"
+            ((found_configs++))
+        fi
+
+    done
+    
+    if [ $found_configs -eq 0 ]; then
+        log "No editor configurations found (this is normal if you don't use vim/neovim)"
+    fi
+}
 
 # Main execution function
 main() {
     info "Starting enhanced dotfiles setup..."
     echo "=================================="
+
     
     # Check if dotfiles directory exists
     if [ ! -d "$DOTFILES_DIR" ]; then
         error "Dotfiles directory not found: $DOTFILES_DIR"
-
         exit 1
     fi
     
     # Step 1: Recognize platform
-
     local platform=$(recognize_platform)
     
     echo "=================================="
+    
+    # Step 2: Install missing packages
+    install_missing_packages "$platform"
+    
+    echo "=================================="
 
     
-    # Step 2: Make bin scripts executable
-    make_bin_executable
+    # Step 3: Check and modify Alacritty config based on platform
+
+    info "Handling Alacritty configuration..."
+    modify_dotfiles_alacritty_config "$platform"
     
     echo "=================================="
     
-    # Step 3 & 4: Handle WSL-specific logic
+    # Step 4 & 5: Handle WSL-specific logic (including Windows Alacritty copy)
     handle_wsl_specific "$platform"
     
     echo "=================================="
     
-    # Handle Alacritty configuration
-    handle_alacritty_config "$platform"
-    
-    echo "=================================="
-    
-    # Step 5: Run smart-stow
-
+    # Step 6: Run smart-stow
     run_smart_stow "$platform"
     
     echo "=================================="
+
     
-    # Step 6: Source configuration files
-    source_configs
-    
-    echo "=================================="
-    
-    # Check for additional configs
-    source_additional_configs
+    # Step 7: Source configuration files
+    source_configs "$platform"
     
     echo "=================================="
     log "Setup complete!"
     log "Platform: $platform"
     
+
     # Final instructions
     info "Next steps:"
-    echo "  1. Restart your shell or run: source ~/.zshrc"
-    echo "  2. If using tmux, restart tmux or run: tmux source-file ~/.tmux.conf"
+    echo "  1. Restart your shell or run: exec \$SHELL"
+    echo "  2. For zsh users: source ~/.zshrc"
+    echo "  3. If using tmux, restart tmux or run: tmux source-file ~/.tmux.conf"
     
     case "$platform" in
         arch)
-            echo "  3. Restart i3 to load new configs: \$mod+Shift+r"
+            echo "  4. Restart i3 to load new configs: \$mod+Shift+r"
             ;;
         wsl)
-            echo "  3. Check Windows startup folder for VBS script shortcuts"
+            echo "  4. Check Windows startup folder for VBS script shortcuts"
+            echo "  5. VBS scripts found in subdirectories will be executed at Windows startup"
+            echo "  6. Alacritty config copied to Windows AppData/Roaming/Alacritty/"
             ;;
         mac)
-            echo "  3. You may need to restart Terminal.app for all changes to take effect"
+            echo "  4. You may need to restart Terminal.app for all changes to take effect"
             ;;
     esac
+    
+    info "Current shell: $SHELL"
+    if command -v zsh >/dev/null 2>&1; then
+        info "zsh is available - recommended to switch if not already using it"
+    fi
 }
+
 
 # Run main function
 main "$@"
