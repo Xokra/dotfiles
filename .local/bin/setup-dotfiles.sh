@@ -73,6 +73,7 @@ get_windows_username() {
 
 # Step 1: Platform Recognition
 recognize_platform() {
+
     local platform=$(detect_platform)
     info "Platform detected: $platform"
     
@@ -120,7 +121,6 @@ modify_dotfiles_alacritty_config() {
     
     if [ ! -f "$alacritty_config" ]; then
         warn "Alacritty config not found: $alacritty_config"
-
         return 1
     fi
     
@@ -174,7 +174,6 @@ handle_wsl_specific() {
             log "zedScript copied successfully"
             
             # Create shell:startup shortcuts for VBS files
-
             local startup_dir="/mnt/c/Users/$windows_user/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
             
             if [ -d "$startup_dir" ]; then
@@ -194,10 +193,8 @@ handle_wsl_specific() {
             fi
         else
             warn "zedScript directory not found in dotfiles"
-
         fi
         
-
         # Handle Alacritty configuration for WSL (copy to Windows)
         handle_alacritty_wsl_copy
     else
@@ -208,7 +205,6 @@ handle_wsl_specific() {
 
 # Handle Alacritty configuration copy for WSL
 handle_alacritty_wsl_copy() {
-
     info "Copying Alacritty configuration to Windows..."
 
     
@@ -409,6 +405,7 @@ main() {
     fi
     
     # Step 1: Recognize platform
+
     local platform=$(recognize_platform)
     echo "=================================="
     
@@ -450,6 +447,7 @@ main() {
     info "Next steps:"
     echo "  1. Restart your shell: exec \$SHELL"
     echo "  2. New terminals will auto-start tmux with plugins installed"
+
     
     case "$platform" in
         arch)
@@ -457,6 +455,7 @@ main() {
             ;;
         wsl)
             echo "  3. VBS scripts ready for Windows startup"
+
             ;;
     esac
 }
