@@ -125,6 +125,16 @@ modify_dotfiles_alacritty_config() {
     local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
 
     
+    echo "DEBUG: platform=$platform"
+    echo "DEBUG: config file=$alacritty_config"
+    echo "DEBUG: file exists=$(test -f "$alacritty_config" && echo YES || echo NO)"
+    
+    if [ -f "$alacritty_config" ]; then
+        echo "DEBUG: checking for shell section..."
+        echo "DEBUG: commented check result=$(grep -q "^#\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
+        echo "DEBUG: uncommented check result=$(grep -q "^\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
+    fi
+
     info "Checking Alacritty configuration for platform: $platform"
     
     if [ ! -f "$alacritty_config" ]; then
@@ -435,22 +445,6 @@ install_missing_packages() {
 
 # Step 6: Source configuration files with proper error handling
 
-modify_dotfiles_alacritty_config() {
-    local platform="$1"
-    local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
-    
-    echo "DEBUG: platform=$platform"
-    echo "DEBUG: config file=$alacritty_config"
-    echo "DEBUG: file exists=$(test -f "$alacritty_config" && echo YES || echo NO)"
-    
-    if [ -f "$alacritty_config" ]; then
-        echo "DEBUG: checking for shell section..."
-        echo "DEBUG: commented check result=$(grep -q "^#\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
-        echo "DEBUG: uncommented check result=$(grep -q "^\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
-    fi
-    
-    # ... rest of your existing logic
-}
 
 source_configs() {
     local platform="$1"
