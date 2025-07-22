@@ -618,6 +618,7 @@ main() {
     
     # Step 1: Recognize platform
     local platform=$(recognize_platform)
+    echo "PLATFORM DEBUG: '$platform'"
     echo "=================================="
     
     # Step 2: Install missing packages
