@@ -106,3 +106,10 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   callback = sync_alacritty_configs,
   desc = "Auto-sync Alacritty config to all locations",
 })
+
+vim.g.undotree_WindowLayout = 2
+vim.g.undotree_SplitWidth = 30
+vim.g.undotree_DiffpanelHeight = 10
+vim.g.undotree_SetFocusWhenToggle = 1
+vim.g.undotree_RelativeTimestamp = 1
+vim.g.undotree_ShortIndicators = 0
