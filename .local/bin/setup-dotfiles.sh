@@ -45,7 +45,6 @@ detect_platform() {
             else
                 echo "linux"
             fi
-
             ;;
         Darwin*)
             echo "mac"
@@ -65,7 +64,6 @@ get_windows_username() {
         else
             echo "dixie"
         fi
-
     else
         echo "dixie"
     fi
@@ -121,6 +119,7 @@ modify_dotfiles_alacritty_config() {
     
     if [ ! -f "$alacritty_config" ]; then
         warn "Alacritty config not found: $alacritty_config"
+
         return 1
     fi
     
@@ -162,7 +161,6 @@ handle_wsl_specific() {
         info "Executing WSL-specific setup..."
         
         # Copy zedScript to Windows directory
-
         local windows_user=$(get_windows_username)
         local zed_script_target="/mnt/c/zedScript"
         
@@ -174,6 +172,7 @@ handle_wsl_specific() {
             log "zedScript copied successfully"
             
             # Create shell:startup shortcuts for VBS files
+
             local startup_dir="/mnt/c/Users/$windows_user/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
             
             if [ -d "$startup_dir" ]; then
@@ -193,8 +192,10 @@ handle_wsl_specific() {
             fi
         else
             warn "zedScript directory not found in dotfiles"
+
         fi
         
+
         # Handle Alacritty configuration for WSL (copy to Windows)
         handle_alacritty_wsl_copy
     else
@@ -205,6 +206,7 @@ handle_wsl_specific() {
 
 # Handle Alacritty configuration copy for WSL
 handle_alacritty_wsl_copy() {
+
     info "Copying Alacritty configuration to Windows..."
 
     
