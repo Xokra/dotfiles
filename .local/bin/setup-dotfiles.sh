@@ -123,68 +123,133 @@ backup_file() {
 modify_dotfiles_alacritty_config() {
     local platform="$1"
     local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
-
     
-    echo "DEBUG: platform=$platform"
-    echo "DEBUG: config file=$alacritty_config"
-    echo "DEBUG: file exists=$(test -f "$alacritty_config" && echo YES || echo NO)"
-    
-    if [ -f "$alacritty_config" ]; then
-        echo "DEBUG: checking for shell section..."
-        echo "DEBUG: commented check result=$(grep -q "^#\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
-        echo "DEBUG: uncommented check result=$(grep -q "^\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
-    fi
 
     info "Checking Alacritty configuration for platform: $platform"
     
+    # Step 1: Basic file validation
     if [ ! -f "$alacritty_config" ]; then
         warn "Alacritty config not found: $alacritty_config"
         return 1
     fi
     
-    # Check if shell section exists (commented or uncommented)
+    # Step 2: Debug current state
+    echo "DEBUG: platform=$platform"
+    echo "DEBUG: config file=$alacritty_config"
+    echo "DEBUG: file exists=YES"
+    
 
+    # Step 3: Check if shell section exists at all
     if ! grep -q "^\[shell\]\|^#\[shell\]" "$alacritty_config"; then
         log "No shell section found in Alacritty config - nothing to modify"
         return 0
-
-
     fi
     
-
-
-    backup_file "$alacritty_config"
+    # Step 4: Show current shell section state
+    echo "DEBUG: Current shell section state:"
+    local has_commented_shell=$(grep -q "^#\[shell\]" "$alacritty_config" && echo "true" || echo "false")
+    local has_uncommented_shell=$(grep -q "^\[shell\]" "$alacritty_config" && echo "true" || echo "false")
+    local has_commented_program=$(grep -q "^#program = " "$alacritty_config" && echo "true" || echo "false")
+    local has_uncommented_program=$(grep -q "^program = " "$alacritty_config" && echo "true" || echo "false")
+    
+    echo "DEBUG: - Commented [shell]: $has_commented_shell"
+    echo "DEBUG: - Uncommented [shell]: $has_uncommented_shell"
+    echo "DEBUG: - Commented program: $has_commented_program"
+    echo "DEBUG: - Uncommented program: $has_uncommented_program"
+    
+    # Step 5: Determine what needs to be done
+    local needs_modification=false
+    local target_state=""
     
     case "$platform" in
         wsl)
-            # WSL: shell section should NOT be commented
-            if grep -q "^#\[shell\]" "$alacritty_config"; then
-                info "WSL platform: Uncommenting shell section..."
-                sed -i 's/^#\[shell\]/[shell]/' "$alacritty_config"
-                sed -i 's/^#program = /program = /' "$alacritty_config"
-                log "✓ Shell section uncommented for WSL"
-
+            target_state="uncommented"
+            if [ "$has_commented_shell" = "true" ] || [ "$has_commented_program" = "true" ]; then
+                needs_modification=true
+                info "WSL platform: Shell section needs to be uncommented"
             else
 
-                log "✓ WSL platform: shell section already uncommented"
-
+                log "✓ WSL platform: shell section already in correct state"
             fi
             ;;
         mac|arch|linux)
+            target_state="commented"
+            if [ "$has_uncommented_shell" = "true" ] || [ "$has_uncommented_program" = "true" ]; then
+                needs_modification=true
+                info "Non-WSL platform: Shell section needs to be commented"
 
-            # Non-WSL: shell section SHOULD be commented
-            if grep -q "^\[shell\]" "$alacritty_config"; then
-                info "Non-WSL platform: Commenting shell section..."
-                sed -i 's/^\[shell\]/#[shell]/' "$alacritty_config"
-
-                sed -i 's/^program = /#program = /' "$alacritty_config"
-
-                log "✓ Shell section commented for non-WSL platform"
             else
-                log "✓ Non-WSL platform: shell section already commented"
+                log "✓ Non-WSL platform: shell section already in correct state"
             fi
             ;;
     esac
+    
+    # Step 6: Make modifications if needed
+    if [ "$needs_modification" = "true" ]; then
+        backup_file "$alacritty_config"
+        
+        case "$platform" in
+            wsl)
+                info "Uncommenting shell section for WSL..."
+                sed -i 's/^#\[shell\]/[shell]/' "$alacritty_config"
+                sed -i 's/^#program = /program = /' "$alacritty_config"
+                ;;
+            mac|arch|linux)
+
+                info "Commenting shell section for non-WSL platform..."
+
+                sed -i 's/^\[shell\]/#[shell]/' "$alacritty_config"
+                sed -i 's/^program = /#program = /' "$alacritty_config"
+                ;;
+        esac
+
+        
+        # Step 7: Verify modifications worked
+        echo "DEBUG: Verifying changes..."
+        local verify_commented_shell=$(grep -q "^#\[shell\]" "$alacritty_config" && echo "true" || echo "false")
+        local verify_uncommented_shell=$(grep -q "^\[shell\]" "$alacritty_config" && echo "true" || echo "false")
+        local verify_commented_program=$(grep -q "^#program = " "$alacritty_config" && echo "true" || echo "false")
+
+        local verify_uncommented_program=$(grep -q "^program = " "$alacritty_config" && echo "true" || echo "false")
+        
+        echo "DEBUG: After modification:"
+        echo "DEBUG: - Commented [shell]: $verify_commented_shell"
+        echo "DEBUG: - Uncommented [shell]: $verify_uncommented_shell"
+        echo "DEBUG: - Commented program: $verify_commented_program"
+
+        echo "DEBUG: - Uncommented program: $verify_uncommented_program"
+
+        
+        # Step 8: Validate result matches target
+        case "$target_state" in
+
+            "commented")
+                if [ "$verify_commented_shell" = "true" ] && [ "$verify_commented_program" = "true" ]; then
+                    log "✓ Shell section successfully commented for non-WSL platform"
+                else
+                    error "✗ Failed to comment shell section properly"
+                    echo "DEBUG: Current shell section content:"
+                    grep -A 2 -B 1 "shell\]" "$alacritty_config" || echo "No shell section found"
+                    return 1
+                fi
+                ;;
+            "uncommented")
+                if [ "$verify_uncommented_shell" = "true" ] && [ "$verify_uncommented_program" = "true" ]; then
+                    log "✓ Shell section successfully uncommented for WSL"
+                else
+                    error "✗ Failed to uncomment shell section properly"
+                    echo "DEBUG: Current shell section content:"
+                    grep -A 2 -B 1 "shell\]" "$alacritty_config" || echo "No shell section found"
+                    return 1
+                fi
+
+                ;;
+        esac
+    fi
+    
+    # Step 9: Show final state
+    echo "DEBUG: Final shell section content:"
+    grep -A 2 -B 1 "shell\]" "$alacritty_config" || echo "No shell section found"
 }
 
 # Step 3 & 4: WSL-specific logic
