@@ -1,20 +1,18 @@
 #!/bin/bash
-
-# Enhanced setup-dotfiles.sh
-# Comprehensive dotfiles setup script for WSL, Mac, and Arch Linux
+# smart-stow.sh - Intelligent dotfiles management with history preservation
 
 set -euo pipefail
 
-# Dotfiles directory
-DOTFILES_DIR="$HOME/dotfiles"
 
+DOTFILES_DIR="$HOME/dotfiles"
+BACKUP_DIR="$HOME/.local/share/dotfiles-backup"
+HISTORY_FILE="$HOME/.zsh_history"
+DOTFILES_HISTORY="$DOTFILES_DIR/.zsh_history"
 
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-
 YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 log() {
@@ -22,538 +20,252 @@ log() {
 }
 
 warn() {
+
     echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
 error() {
-
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-info() {
-    echo -e "${BLUE}[SETUP]${NC} $1"
-}
+# Create backup directory
+mkdir -p "$BACKUP_DIR"
 
-# Function to detect operating system platform
-detect_platform() {
-    local uname_output=$(uname -s)
+# Function to check if system is fresh (no existing history)
+is_fresh_system() {
+    if [ ! -f "$HISTORY_FILE" ] || [ ! -s "$HISTORY_FILE" ]; then
 
-    case "$uname_output" in
-        Linux*)
-            # Check if we're in WSL
-            if uname -r | grep -q -i microsoft || uname -r | grep -q -i wsl; then
-                echo "wsl"
-            elif [ -f /etc/arch-release ]; then
-                echo "arch"
-            else
-                echo "linux"
-            fi
-
-            ;;
-        Darwin*)
-            echo "mac"
-            ;;
-        *)
-            echo "unknown"
-            ;;
-    esac
-}
-
-# Function to get Windows username (only for WSL)
-get_windows_username() {
-    if command -v cmd.exe > /dev/null 2>&1; then
-        local username=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r\n')
-        if [ -n "$username" ]; then
-            echo "$username"
-        else
-            echo "dixie"
-        fi
-
-    else
-        echo "dixie"
+        return 0  # Fresh system - no history file or empty history file
     fi
+    return 1  # History exists
 }
 
-# Step 1: Platform Recognition
-recognize_platform() {
-
-    local platform=$(detect_platform)
-    info "Platform detected: $platform"
-    
-    case "$platform" in
-        wsl)
-            log "Running on WSL (Ubuntu)"
-            ;;
-        mac)
-            log "Running on macOS"
-            ;;
-
-        arch)
-            log "Running on Arch Linux (i3)"
-            ;;
-
-        *)
-            error "Unsupported platform: $platform"
-            exit 1
-            ;;
-
-    esac
-    
-    echo "$platform"
-}
-
-# Function to backup file
-backup_file() {
-
-    local file="$1"
-    if [ -f "$file" ]; then
-        local backup_name="${file}.backup.$(date +%Y%m%d_%H%M%S)"
-        cp "$file" "$backup_name"
-        log "Created backup: $backup_name"
-    fi
-}
-
-# Function to modify dotfiles Alacritty config based on platform
-
-modify_dotfiles_alacritty_config() {
-    local platform="$1"
-    local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
-
-    
-    info "Checking Alacritty configuration for platform: $platform"
-    
-    if [ ! -f "$alacritty_config" ]; then
-        warn "Alacritty config not found: $alacritty_config"
-        return 1
-    fi
-    
-    # Check if shell section exists (commented or uncommented)
-    if ! grep -q "^\[shell\]\|^#\[shell\]" "$alacritty_config"; then
-        log "No shell section found in Alacritty config - nothing to modify"
+# Function to backup current history
+backup_history() {
+    if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
+        local backup_file="$BACKUP_DIR/zsh_history.$(date +%Y%m%d_%H%M%S)"
+        cp "$HISTORY_FILE" "$backup_file"
+        log "Backed up current history to: $backup_file"
+        
+        # Keep only last 10 backups
+        find "$BACKUP_DIR" -name "zsh_history.*" -type f | sort -r | tail -n +11 | xargs rm -f
+        
         return 0
-
-    fi
-    
-
-    backup_file "$alacritty_config"
-    
-    case "$platform" in
-        wsl)
-            # WSL: shell section should NOT be commented
-            if grep -q "^#\[shell\]" "$alacritty_config"; then
-                info "WSL platform: Uncommenting shell section..."
-                sed -i 's/^#\[shell\]/[shell]/' "$alacritty_config"
-                sed -i 's/^#program = /program = /' "$alacritty_config"
-                log "✓ Shell section uncommented for WSL"
-            else
-
-                log "✓ WSL platform: shell section already uncommented"
-
-            fi
-            ;;
-        mac|arch|linux)
-            # Non-WSL: shell section SHOULD be commented
-            if grep -q "^\[shell\]" "$alacritty_config"; then
-                info "Non-WSL platform: Commenting shell section..."
-                sed -i 's/^\[shell\]/#[shell]/' "$alacritty_config"
-                sed -i 's/^program = /#program = /' "$alacritty_config"
-
-                log "✓ Shell section commented for non-WSL platform"
-            else
-
-                log "✓ Non-WSL platform: shell section already commented"
-            fi
-            ;;
-    esac
-
-}
-
-
-# Step 3 & 4: WSL-specific logic
-handle_wsl_specific() {
-    local platform="$1"
-    
-    if [ "$platform" = "wsl" ]; then
-        info "Executing WSL-specific setup..."
-
-        
-        # Copy zedScript to Windows directory
-        local windows_user=$(get_windows_username)
-        local zed_script_target="/mnt/c/zedScript"
-        
-        if [ -d "$DOTFILES_DIR/zedScript" ]; then
-            log "Copying zedScript to $zed_script_target..."
-            
-            sudo mkdir -p "$zed_script_target" 2>/dev/null || mkdir -p "$zed_script_target"
-            cp -r "$DOTFILES_DIR/zedScript/"* "$zed_script_target/"
-            log "zedScript copied successfully"
-            
-            # Create shell:startup shortcuts for VBS files
-            local startup_dir="/mnt/c/Users/$windows_user/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
-
-            
-            if [ -d "$startup_dir" ]; then
-
-                log "Creating startup shortcuts for VBS files..."
-                
-                find "$zed_script_target" -name "*.vbs" -type f | while read -r vbs_file; do
-                    local vbs_name=$(basename "$vbs_file" .vbs)
-
-                    local batch_file="$startup_dir/${vbs_name}.bat"
-                    local windows_vbs_path=$(echo "$vbs_file" | sed 's|/mnt/c/|C:/|' | sed 's|/|\\|g')
-                    
-                    echo "@echo off" > "$batch_file"
-                    echo "cscript.exe \"$windows_vbs_path\"" >> "$batch_file"
-                    
-                    log "Created startup script: $batch_file"
-                done
-            else
-                warn "Startup directory not found: $startup_dir"
-            fi
-        else
-            warn "zedScript directory not found in dotfiles"
-
-        fi
-        
-
-        # Handle Alacritty configuration for WSL (copy to Windows)
-        handle_alacritty_wsl_copy
     else
 
-        log "Not on WSL, skipping Windows-specific setup"
-    fi
-}
+        warn "No current history file found or it's empty"
 
-# Handle Alacritty configuration copy for WSL
-handle_alacritty_wsl_copy() {
-
-    info "Copying Alacritty configuration to Windows..."
-
-    
-    local windows_user=$(get_windows_username)
-    local target_dir="/mnt/c/Users/$windows_user/AppData/Roaming/Alacritty"
-    local target_config="$target_dir/alacritty.toml"
-    local dotfiles_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
-    
-    log "Target directory for Windows: $target_dir"
-    
-    if [ ! -d "/mnt/c/Users/$windows_user" ]; then
-        error "Windows user directory not found: /mnt/c/Users/$windows_user"
         return 1
     fi
-    
-    mkdir -p "$target_dir"
-    
-    if [ -f "$target_config" ]; then
-        backup_file "$target_config"
-    fi
-    
-    if [ -f "$dotfiles_config" ]; then
-        log "Copying Alacritty config from dotfiles to Windows..."
-        cp "$dotfiles_config" "$target_config"
-        log "Alacritty config copied successfully to Windows"
-        
-        info "Alacritty config ready for Windows. Install Alacritty on Windows if not already installed:"
-        echo "  - Download from: https://github.com/alacritty/alacritty/releases"
-        echo "  - Or use winget: winget install Alacritty.Alacritty"
-    else
-        warn "No Alacritty config found in dotfiles"
-        return 1
-    fi
-
 }
 
+# Function to merge histories
+merge_histories() {
 
-# Install TPM (Tmux Plugin Manager)
-
-install_tpm() {
-    local tpm_dir="$HOME/.tmux/plugins/tpm"
+    local temp_file=$(mktemp)
     
-    if [ ! -d "$tpm_dir" ]; then
-        info "Installing TPM (Tmux Plugin Manager)..."
-        
-        if command -v git >/dev/null 2>&1; then
-            git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
-            log "✓ TPM installed successfully"
+    # Combine both histories if they exist
+    if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
+        cat "$HISTORY_FILE" >> "$temp_file"
+    fi
+    
+    if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
+        cat "$DOTFILES_HISTORY" >> "$temp_file"
+    fi
+    
+    # Remove duplicates while preserving order and format
+    if [ -s "$temp_file" ]; then
+        # Sort by timestamp and remove duplicates
+        sort -u "$temp_file" > "$DOTFILES_HISTORY"
+
+        log "Merged and deduplicated history files"
+    fi
+    
+    rm -f "$temp_file"
+}
+
+# Function to restore history if it gets wiped
+restore_history() {
+    if [ ! -s "$HISTORY_FILE" ]; then
+        if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
+            cp "$DOTFILES_HISTORY" "$HISTORY_FILE"
+            log "Restored history from dotfiles"
         else
+            local latest_backup=$(find "$BACKUP_DIR" -name "zsh_history.*" -type f | sort -r | head -1)
+            if [ -n "$latest_backup" ]; then
+                cp "$latest_backup" "$HISTORY_FILE"
 
-            error "Git not found - cannot install TPM"
-            return 1
+                log "Restored history from backup: $latest_backup"
+            else
+                warn "No backup found to restore history"
+            fi
         fi
-    else
-        log "✓ TPM already installed"
     fi
 }
 
-# Install TPM plugins automatically
-install_tpm_plugins() {
-    local tpm_dir="$HOME/.tmux/plugins/tpm"
+# Main stow function
+smart_stow() {
+    cd "$DOTFILES_DIR"
     
-    if [ -d "$tpm_dir" ] && [ -f "$HOME/.tmux.conf" ]; then
-        info "Installing TPM plugins..."
+    log "Starting smart stow process..."
+    
+    # Check if this is a fresh system
+
+    if is_fresh_system; then
+        log "Fresh system detected - no existing zsh history found"
+        log "Skipping history operations, proceeding directly to stow..."
         
-        # Run TPM install script
-        "$tpm_dir/scripts/install_plugins.sh"
-        log "✓ TPM plugins installed"
-    else
-        warn "TPM not installed or .tmux.conf not found - skipping plugin installation"
+        # Run stow with adopt directly
+        log "Running stow --adopt..."
+        if stow --adopt . 2>&1; then
+            log "Stow completed successfully"
+        else
+            error "Stow failed"
+            exit 1
+        fi
+        
+        # If dotfiles contain a history file, set it up (only if different files)
+        if [ -f "$DOTFILES_HISTORY" ] && [ -s "$DOTFILES_HISTORY" ]; then
+            # Check if they're the same file (after stow linking)
+            if [ ! -f "$HISTORY_FILE" ] || [ "$DOTFILES_HISTORY" -ef "$HISTORY_FILE" ]; then
+                log "History file already linked or doesn't exist - no copy needed"
+            else
+                cp "$DOTFILES_HISTORY" "$HISTORY_FILE"
+                log "Initialized history from dotfiles"
+            fi
+        fi
+
+        
+        log "Smart stow completed successfully on fresh system!"
+        return
     fi
-}
+    
+    # Existing system with history - run full process
+    log "Existing system detected - running full history management"
+    
+    # Step 1: Backup current history
+    backup_history
+    
+    # Step 2: Merge histories before stowing
+    merge_histories
 
-# Step 5: Run smart-stow based on platform
-
-run_smart_stow() {
-    local platform="$1"
     
-    info "Running smart-stow for platform: $platform"
-    
-    cd "$DOTFILES_DIR" || exit 1
-    
-    if [ -f "$DOTFILES_DIR/.local/bin/smart-stow.sh" ]; then
-        log "Executing smart-stow.sh..."
-        "$DOTFILES_DIR/.local/bin/smart-stow.sh"
+    # Step 3: Run stow with adopt
+    log "Running stow --adopt..."
+    if stow --adopt . 2>&1; then
+        log "Stow completed successfully"
     else
-        error "smart-stow.sh not found in $DOTFILES_DIR/.local/bin/"
+        error "Stow failed"
         exit 1
     fi
-}
-
-# Function to install packages based on platform
-install_missing_packages() {
-    local platform="$1"
-    
-    info "Checking and installing missing packages..."
-    
-    # Check for git first (needed for TPM)
-    if ! command -v git >/dev/null 2>&1; then
-        log "git not found, attempting to install..."
-
-        case "$platform" in
-            wsl|arch)
-                if command -v pacman >/dev/null 2>&1; then
-                    sudo pacman -S --noconfirm git
-                elif command -v apt >/dev/null 2>&1; then
-
-                    sudo apt update && sudo apt install -y git
-                fi
-
-                ;;
-            mac)
-                if command -v brew >/dev/null 2>&1; then
-                    brew install git
-                else
-                    warn "Please install git manually"
-                fi
-                ;;
-        esac
-    else
-        log "✓ git is already installed"
-    fi
-    
-    # Check for tmux
-    if ! command -v tmux >/dev/null 2>&1; then
-
-        log "tmux not found, attempting to install..."
-        case "$platform" in
-            wsl|arch)
-                if command -v pacman >/dev/null 2>&1; then
-                    sudo pacman -S --noconfirm tmux
-                elif command -v apt >/dev/null 2>&1; then
-                    sudo apt update && sudo apt install -y tmux
-
-                fi
-                ;;
-            mac)
-                if command -v brew >/dev/null 2>&1; then
-                    brew install tmux
-                else
-                    warn "Homebrew not found, please install tmux manually"
-                fi
-                ;;
-        esac
-    else
-
-        log "✓ tmux is already installed"
-    fi
-    
-    # Check for zsh
-    if ! command -v zsh >/dev/null 2>&1; then
-        log "zsh not found, attempting to install..."
-        case "$platform" in
-            wsl|arch)
-                if command -v pacman >/dev/null 2>&1; then
-                    sudo pacman -S --noconfirm zsh
-                elif command -v apt >/dev/null 2>&1; then
-                    sudo apt update && sudo apt install -y zsh
-                fi
-                ;;
-            mac)
-                log "✓ zsh should be available on macOS by default"
-                ;;
-        esac
-    else
-        log "✓ zsh is already installed"
-    fi
-}
-
-# Step 6: Source configuration files with proper error handling
-source_configs() {
-    local platform="$1"
 
     
-    info "Sourcing configuration files..."
+    # Step 4: Restore history if it was wiped
+    restore_history
     
-    safe_source() {
-
-        local file="$1"
-        local description="$2"
-        
-        if [ -f "$file" ]; then
-            if source "$file" 2>/dev/null; then
-                log "✓ Successfully sourced $description"
-                return 0
-            else
-                warn "Failed to source $description, but file will be available for next session"
-                return 1
-            fi
+    # Step 5: Update dotfiles history for next time (only if different files)
+    if [ -f "$HISTORY_FILE" ] && [ -s "$HISTORY_FILE" ]; then
+        # Check if they're the same file (after stow linking)
+        if [ "$DOTFILES_HISTORY" -ef "$HISTORY_FILE" ]; then
+            log "History files are already linked - no copy needed"
         else
-            log "$description not found: $file"
-            return 1
+            cp "$HISTORY_FILE" "$DOTFILES_HISTORY"
+            log "Updated dotfiles history"
         fi
-    }
-    
-    # Source shell configurations
-    if [ -n "${ZSH_VERSION:-}" ]; then
-        safe_source "$HOME/.zshrc" "zsh configuration"
-    elif [ -n "${BASH_VERSION:-}" ]; then
-        safe_source "$HOME/.bashrc" "bash configuration"
+
     fi
     
-    safe_source "$HOME/.profile" "shell profile"
-    safe_source "$HOME/.aliases" "shell aliases" 
-    safe_source "$HOME/.functions" "shell functions"
+
+    log "Smart stow completed successfully!"
 }
 
-# Setup auto-tmux for new terminals
-setup_auto_tmux() {
 
-    local shell_config=""
+# Function to set up .stow-local-ignore
+setup_stow_ignore() {
+    local ignore_file="$DOTFILES_DIR/.stow-local-ignore"
     
-    # Determine which shell config to modify
-    if command -v zsh >/dev/null 2>&1; then
-        shell_config="$HOME/.zshrc"
-    else
-        shell_config="$HOME/.bashrc"
+    if [ ! -f "$ignore_file" ]; then
+        log "Creating .stow-local-ignore file..."
+        cat > "$ignore_file" << EOF
+# Git files
+.git
 
-    fi
-    
+.gitignore
+.gitmodules
+README.md
 
-    if [ -f "$shell_config" ]; then
-        # Check if auto-tmux is already set up
-        if ! grep -q "# Auto-start tmux" "$shell_config"; then
-            info "Setting up auto-tmux for new terminals..."
-            
-            cat >> "$shell_config" << 'EOF'
 
-# Auto-start tmux with TPM plugin installation
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    # Install TPM plugins if they haven't been installed yet
-    if [ -d "$HOME/.tmux/plugins/tpm" ] && [ -f "$HOME/.tmux.conf" ]; then
-        tmux new-session -d -s main 2>/dev/null || true
-        tmux send-keys -t main 'source ~/.zshrc' C-m 2>/dev/null || tmux send-keys -t main 'source ~/.bashrc' C-m 2>/dev/null || true
-        tmux send-keys -t main '~/.tmux/plugins/tpm/scripts/install_plugins.sh' C-m 2>/dev/null || true
-        tmux attach-session -t main 2>/dev/null || tmux new-session
-    else
-        tmux attach-session -t main 2>/dev/null || tmux new-session -s main
-    fi
-fi
+# History files (managed separately)
+.zsh_history
+.bash_history
 
+# Backup files
+*.bak
+*.backup
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
 EOF
-            log "✓ Auto-tmux setup complete"
-        else
-            log "✓ Auto-tmux already configured"
-
-        fi
+        log "Created .stow-local-ignore"
+    else
+        log ".stow-local-ignore already exists"
     fi
 }
 
-# Main execution function
-main() {
-    info "Starting enhanced dotfiles setup..."
-    echo "=================================="
+# Function to show usage
+usage() {
 
-    
-    if [ ! -d "$DOTFILES_DIR" ]; then
-        error "Dotfiles directory not found: $DOTFILES_DIR"
+    cat << EOF
+Usage: $0 [OPTION]
+
+Options:
+    -s, --stow      Run smart stow (default)
+    -i, --ignore    Set up .stow-local-ignore file
+    -b, --backup    Backup current history only
+    -r, --restore   Restore history from backup
+    -h, --help      Show this help message
+
+
+Examples:
+    $0              # Run smart stow
+    $0 --ignore     # Set up ignore file
+    $0 --backup     # Backup current history
+EOF
+}
+
+# Parse command line arguments
+case "${1:-}" in
+
+    -s|--stow)
+        smart_stow
+        ;;
+    -i|--ignore)
+        setup_stow_ignore
+        ;;
+    -b|--backup)
+        backup_history
+        ;;
+    -r|--restore)
+
+        restore_history
+        ;;
+
+    -h|--help)
+        usage
+        ;;
+
+    "")
+        smart_stow
+        ;;
+
+    *)
+        error "Unknown option: $1"
+        usage
         exit 1
-    fi
-    
-    # Step 1: Recognize platform
-    local platform=$(recognize_platform)
-    echo "=================================="
-    
-    # Step 2: Install missing packages
-    install_missing_packages "$platform"
-    echo "=================================="
-    
-    # Step 3: Install TPM before stow
-    install_tpm
-    echo "=================================="
-
-    
-    # Step 4: Check and modify Alacritty config
-    info "Handling Alacritty configuration..."
-    modify_dotfiles_alacritty_config "$platform"
-    echo "=================================="
-    
-    # Step 5: Handle WSL-specific logic
-    handle_wsl_specific "$platform"
-    echo "=================================="
-    
-    # Step 6: Run smart-stow
-    run_smart_stow "$platform"
-    echo "=================================="
-    
-    # Step 7: Install TPM plugins after configs are linked
-
-    install_tpm_plugins
-    echo "=================================="
-    
-    # Step 8: Setup auto-tmux
-    setup_auto_tmux
-    echo "=================================="
-    
-    # Step 9: Source configuration files
-    source_configs "$platform"
-    echo "=================================="
-
-    
-    log "Setup complete!"
-    log "Platform: $platform"
-    
-    info "Next steps:"
-
-    echo "  1. Restart your shell or run: exec \$SHELL"
-    echo "  2. New terminals will auto-start tmux with plugins installed"
-    
-    case "$platform" in
-        arch)
-
-            echo "  3. Restart i3 to load new configs: \$mod+Shift+r"
-
-            ;;
-        wsl)
-            echo "  3. Check Windows startup folder for VBS script shortcuts"
-
-            ;;
-        mac)
-            echo "  3. You may need to restart Terminal.app for all changes"
-            ;;
-    esac
-
-}
-
-
-# Run main function
-
-main "$@"
+        ;;
+esac
