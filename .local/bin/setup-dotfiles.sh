@@ -442,6 +442,23 @@ source_configs() {
     safe_source "$HOME/.functions" "shell functions"
 }
 
+modify_dotfiles_alacritty_config() {
+    local platform="$1"
+    local alacritty_config="$DOTFILES_DIR/.config/alacritty/alacritty.toml"
+    
+    echo "DEBUG: platform=$platform"
+    echo "DEBUG: config file=$alacritty_config"
+    echo "DEBUG: file exists=$(test -f "$alacritty_config" && echo YES || echo NO)"
+    
+    if [ -f "$alacritty_config" ]; then
+        echo "DEBUG: checking for shell section..."
+        echo "DEBUG: commented check result=$(grep -q "^#\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
+        echo "DEBUG: uncommented check result=$(grep -q "^\[shell\]" "$alacritty_config" && echo FOUND || echo NOT_FOUND)"
+    fi
+    
+    # ... rest of your existing logic
+}
+
 # Setup one-time auto-tmux for new terminals
 setup_one_time_auto_tmux() {
     local shell_config=""
