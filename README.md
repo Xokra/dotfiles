@@ -80,7 +80,7 @@ yay -S google-chrome firefox brave-bin spotify gimp nerd-fonts-meslo-lg --noconf
 ### SSH Key Setup (All Platforms)
 
 ```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-keygen -t ed25519 -C "dixiemaurece@gmail.com"
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 ```
@@ -111,6 +111,6 @@ cat ~/.ssh/id_ed25519.pub
 mkdir ~/dotfiles
 cd ~/dotfiles
 
-git clone git@github.com:Xokra/dotfiles.git .
+git clone git@github.com:Xokra/dotfiles
 ~/dotfiles/.local/bin/setup-dotfiles.sh
 ```
