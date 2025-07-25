@@ -107,6 +107,36 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   desc = "Auto-sync Alacritty config to all locations",
 })
 
+-- close any LazyGit terminal when you press 'q'
+-- vim.api.nvim_create_autocmd("TermOpen", {
+--   -- match only the terminal buffers running lazygit
+--   pattern = "term://*lazygit*",
+--
+--   callback = function()
+--     -- in terminal‑mode, map 'q' to exit to normal mode then kill the buffer
+--     vim.keymap.set("t", "q", "<C-\\><C-n>:bd!<CR>", { buffer = true, desc = "Quit LazyGit" })
+--   end,
+-- })
+
+-- Helper: get the current buffer's Git root (or its folder if not a repo)
+local function get_git_root()
+  local buf_dir = vim.fn.expand("%:p:h")
+  local toplevel = vim.fn.systemlist("git -C " .. vim.fn.shellescape(buf_dir) .. " rev-parse --show-toplevel")
+  if vim.v.shell_error ~= 0 or toplevel[1] == "" then
+    return buf_dir
+  end
+  return toplevel[1]
+end
+
+-- Map <leader>g to open LazyGit in a split rooted at the file's repo
+vim.keymap.set("n", "<leader>g", function()
+  local root = get_git_root()
+  -- Combine: split → lcd to escaped root → terminal lazygit
+
+  vim.cmd("belowright split | " .. 
+"lcd " .. vim.fn.fnameescape(root) .. " | " .. "terminal lazygit")
+end, { desc = "Open LazyGit at current file's Git root" })
+
 vim.g.undotree_WindowLayout = 2
 vim.g.undotree_SplitWidth = 30
 vim.g.undotree_DiffpanelHeight = 10
